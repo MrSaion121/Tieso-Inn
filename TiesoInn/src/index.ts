@@ -1,6 +1,6 @@
 import express from 'express';
 //Importar libreria de MongoDB
-import { connect } from 'mongoose';
+import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
 //Cargar variables de entorno
@@ -19,7 +19,8 @@ const dbUrl = process.env.DB_URL;
 app.use(router);
 
 //Conexion de MongoDB
-connect(dbUrl as string).then( res => {
+mongoose.connect(dbUrl as string)
+.then( res => {
     console.log('Conexion exitosa con MongoDB!!..');
     app.listen(PORT, () => {
         console.log(`Servidor escuchando en el puerto ${PORT}`);
