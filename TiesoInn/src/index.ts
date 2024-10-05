@@ -20,7 +20,7 @@ app.use(router);
 
 //Conexion de MongoDB
 connect(dbUrl as string).then( res => {
-    console.log('Ya se conecto');
+    console.log('Conexion exitosa con MongoDB!!..');
     app.listen(PORT, () => {
         console.log(`Servidor escuchando en el puerto ${PORT}`);
     });

@@ -1,5 +1,6 @@
-import mongoose, { Schema, Document, mongo } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 
+//Model/Interfaz para Usuarios
 export interface IUser extends Document {
     user_id: string;
     name: string;
@@ -10,6 +11,7 @@ export interface IUser extends Document {
     status: string;
 }
 
+//Schema de Usuario
 const userSchema: Schema = new Schema({
     user_id: {type : String, required: true, unique: true},
     name: {type: String, required: true},

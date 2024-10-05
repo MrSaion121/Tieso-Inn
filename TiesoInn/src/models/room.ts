@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
+//Model/Interfaz para cuartos
 export interface IRoom extends Document {
     room_id: string;
     category_id: mongoose.Schema.Types.ObjectId;
@@ -9,6 +10,7 @@ export interface IRoom extends Document {
     status: string;
 }
 
+//Schema para cuartos
 const roomSchema: Schema = new Schema({
     room_id: { type: String, required: true, unique: true },
     category_id: { type: Schema.Types.ObjectId, ref: 'Category', required: true },

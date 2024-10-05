@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
+//Model/Interfaz para categorias
 export interface ICategory extends Document {
     category_id: string;
     name: string;
@@ -7,6 +8,7 @@ export interface ICategory extends Document {
     capacity: number;
 }
 
+//Schema para cuartos
 const categorySchema: Schema = new Schema({
     category_id: { type: String, required: true, unique: true },
     name: { type: String, required: true },

@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document }from 'mongoose';
 
+//Model/Interfaz para reservaciones
 export interface IReservation extends Document {
     reservation_num: string;
     user_id: mongoose.Schema.Types.ObjectId;
@@ -10,6 +11,7 @@ export interface IReservation extends Document {
     status: string;
 }
 
+//Schema de reservaciones
 const reservationSchema: Schema = new Schema({
     reservation_num: { type: String, required: true, unique: true },
     user_id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
