@@ -16,7 +16,7 @@ class ReservationController {
     //GET | AllReservation
     async getAllReservations(req: Request, res: Response) {
         try {
-            const reservations = await Reservation.find();
+            const reservations = await Reservation.find().populate('room_id', 'category_id');
             res.status(HTTP_STATUS_CODES.SUCCESS).json(reservations);
         } catch (error) {
             res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({ message: 'Error al obtener las reservas', error });
@@ -28,7 +28,7 @@ class ReservationController {
         const { id } = req.params;
 
         try {
-            const reservation = await Reservation.findOne({ reservation_num: id });
+            const reservation = await Reservation.findOne({ reservation_num: id }).populate('room_id', 'category_id');
             if (!reservation) {
                 res.status(HTTP_STATUS_CODES.NOT_FOUND).json({ message: 'Reserva no encontrada' });
             }
@@ -41,10 +41,10 @@ class ReservationController {
 
     //POST | createReservation
     async createReservation(req: Request, res: Response) {
-        const { user_id, room_id, arrival_date, checkout_date, num_of_guest, status } = req.body;
+        const { email, room_id, arrival_date, checkout_date, num_of_guest, status } = req.body;
 
         try {
-            const userExists = await User.findById(user_id);
+            const userExists = await User.findById(email);
             const roomExists = await Room.findById(room_id);
 
             if (!userExists || !roomExists) {
@@ -53,7 +53,7 @@ class ReservationController {
 
             const newReservation = new Reservation({
                 reservation_num: this.reservationCounter++,
-                user_id,
+                email,
                 room_id,
                 arrival_date,
                 checkout_date,
@@ -72,12 +72,12 @@ class ReservationController {
     //POST | UpdateReservation
     async updateReservation(req: Request, res: Response) {
         const { id } = req.params;
-        const { user_id, room_id, arrival_date, checkout_date, num_of_guest, status } = req.body;
+        const { email, room_id, arrival_date, checkout_date, num_of_guest, status } = req.body;
 
         try {
             const updatedReservation = await Reservation.findOneAndUpdate(
                 { reservation_num: id },
-                { user_id, room_id, arrival_date, checkout_date, num_of_guest, status },
+                { email, room_id, arrival_date, checkout_date, num_of_guest, status },
                 { new: true }
             );
 
