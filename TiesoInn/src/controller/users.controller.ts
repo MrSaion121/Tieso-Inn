@@ -2,7 +2,6 @@ import { Request, Response } from 'express'
 import User from '../models/user'
 import { HTTP_STATUS_CODES } from '../types/http-status-codes'
 import bcrypt from 'bcryptjs';
-import user from '../models/user';
 
 class UsersController {
     async getAllUsers(req: Request, res: Response) {
@@ -17,12 +16,15 @@ class UsersController {
 
     async getUserByEmail(req: Request, res: Response) {
         try {
-            const email = req.params['email']
-            const user = await User.findOne({ email });
-            res.status(HTTP_STATUS_CODES.SUCCESS).send(user)
+            const email = req.params['email'];
+            const user = await User.findOne({ email }, { password: 0 });
+            if (!user) {
+                res.status(HTTP_STATUS_CODES.NOT_FOUND).send('Usuario no encontrado');
+            }
+            res.status(HTTP_STATUS_CODES.SUCCESS).send(user);
         } catch (error) {
             console.error(error)
-            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error al conseguir el usuario')
+            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error al conseguir el usuario');
         }
     }
 
@@ -30,8 +32,8 @@ class UsersController {
         try {
             const { name, role, email, password, cellphone, status } = req.body
             const userExists = await User.findOne({ email })
-            
-            if(userExists){
+
+            if (userExists) {
                 return res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('Este email ya se esta usando')
             }
 
@@ -40,6 +42,7 @@ class UsersController {
             const newUser = new User({
                 name,
                 role,
+                email,
                 password: hashPassword,
                 cellphone,
                 status
@@ -67,8 +70,8 @@ class UsersController {
     async deleteUser(req: Request, res: Response) {
         try {
             const email = req.params['email']
-            const deletedUser = await User.findOneAndDelete( { email } )
-            if(!deletedUser){
+            const deletedUser = await User.findOneAndDelete({ email })
+            if (!deletedUser) {
                 return res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('Usuario no encontrado')
             }
             return res.status(HTTP_STATUS_CODES.SUCCESS).send('Usuario eliminado con exito')
