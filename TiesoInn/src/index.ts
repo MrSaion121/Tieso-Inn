@@ -16,6 +16,7 @@ const PORT  = process.env.PORT || 3000;
 const dbUrl = process.env.DB_URL;
 //console.log('Mongo URL:', dbUrl);
 
+app.use(express.json());
 app.use(router);
 
 //Conexion de MongoDB
