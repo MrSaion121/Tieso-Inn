@@ -1,7 +1,7 @@
 {
     "include": ["./src/**/*.ts"],       //Archivo origen
     "compilerOptions": {
-        "outDir": "dist/scripts",       //Archivo destino, donde guardar
+        "outDir": "dist",       //Archivo destino, donde guardar
         "target": "ES6",                //version de JS
         "noImplicitAny": true,
         "esModuleInterop": true,

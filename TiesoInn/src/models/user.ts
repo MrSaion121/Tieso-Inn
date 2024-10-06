@@ -1,25 +1,22 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, {Schema, model, SchemaTypes, Document} from 'mongoose'
 
-//Model/Interfaz para Usuarios
-export interface IUser extends Document {
-    user_id: string;
+interface IUser extends Document {
     name: string;
-    is_admin: boolean;
+    role: string;
     email: string;
     password: string;
     cellphone: string;
     status: string;
 }
 
-//Schema de Usuario
-const userSchema: Schema = new Schema({
-    user_id: {type : String, required: true, unique: true},
-    name: {type: String, required: true},
-    is_admin: {type: Boolean, required: true},
-    email: {type: String, required: true, unique: true},
-    password: {type: String, required: true},
-    cellphone: {type: String, required: true},
-    status: {type: String, default:'active'}
-});
+const userSchema = new Schema<IUser>({
+    name: { type: SchemaTypes.String, required: true },
+    role: { type: SchemaTypes.String, enum:  ['Cliente', 'Recepcionista', 'Gerente', 'Admin'], default: 'Cliente' },
+    email: { type: SchemaTypes.String, required: true, unique: true },
+    password: { type: SchemaTypes.String, required: true },
+    cellphone: { type: SchemaTypes.String, required: true },
+    status: { type: SchemaTypes.String,enum:  ['Activo', 'Eliminado', 'Bloqueado'], default: 'Activo' },
+})
 
-export default mongoose.model<IUser>('User', userSchema);
+const user = model('users', userSchema);
+export default user
