@@ -17,9 +17,9 @@ app.use(router);
 
 mongoose.connect(dbUrl as string)
 .then(res => {
-    console.log('Connected succesfully!')
+    console.log('Conexión exitosa!')
     app.listen(port, () => {
-        console.log(`App is running in port ${port}`)
+        console.log(`La app está corriendo en el puerto ${port}`)
     });
 }).catch(err => {
     console.log("Error");

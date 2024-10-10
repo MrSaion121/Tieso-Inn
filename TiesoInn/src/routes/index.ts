@@ -5,7 +5,7 @@ import roomRoutes from './rooms';
 const router = Router();
 
 router.get('', (req, res) => {
-    res.send('api works!');
+    res.send('La api funciona!');
 })
 
 router.use('/categories', categoryRoutes);

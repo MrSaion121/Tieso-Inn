@@ -1,9 +1,8 @@
-import { Schema, model, SchemaTypes, Document } from 'mongoose';
-import Category from './category';
+import mongoose, { Schema, model, SchemaTypes, Document } from 'mongoose';
 
 interface IRoom extends Document {
-    room_id: string;
-    category_id: string,
+    room_id: Schema.Types.ObjectId;
+    category_id: Schema.Types.ObjectId;
     price_per_night: number;
     description: string;
     image_url: string;
@@ -11,12 +10,12 @@ interface IRoom extends Document {
 }
 
 const roomSchema = new Schema ({
-    room_id: { type: SchemaTypes.String, required: true },
-    category_id: { type: SchemaTypes.String, ref: 'Category', required: true },
-    price_per_night: { type: SchemaTypes.Number, required: true }, 
-    description: { type: SchemaTypes.String, required: true },
-    image_url: { type: SchemaTypes.String, required: true},
-    status: { type: SchemaTypes.String, enum: ['occupied', 'available'], default: 'available'}
+    room_id: { type: Schema.Types.ObjectId, required: true },
+    category_id: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
+    price_per_night: { type: Number, required: true }, 
+    description: { type: String, required: true },
+    image_url: { type: String, required: true},
+    status: { type: String, enum: ['Ocupado', 'Disponible'], default: 'Disponible'}
 })
 
 const room = model('room', roomSchema);

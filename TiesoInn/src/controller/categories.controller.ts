@@ -10,7 +10,7 @@ class CategoriesController {
             res.status(HTTP_STATUS_CODES.SUCCESS).send(categories);
         } catch (error) {
             console.error(error);
-            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error getting categories')
+            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error al conseguir las categorías');
         }
     }
 
@@ -19,12 +19,12 @@ class CategoriesController {
             const category_id = req.params['category_id'];
             const category = await Category.findOne({ category_id });
             if (!category) {
-                res.status(HTTP_STATUS_CODES.NOT_FOUND).send('Category not found');
+                res.status(HTTP_STATUS_CODES.NOT_FOUND).send('Categoría no encontrada');
             }
             res.status(HTTP_STATUS_CODES.SUCCESS).send(category);
         } catch (error) {
             console.error(error);
-            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error getting category');
+            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error al obtener la categoría');
         }
     }
 
@@ -34,7 +34,7 @@ class CategoriesController {
             const categoryExists = await Category.findOne({ category_id });
             
             if (categoryExists) {
-                return res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('Category already exists');
+                return res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('Esta categoria ya existe');
             }
 
             const newCategory = new Category ({
@@ -48,7 +48,7 @@ class CategoriesController {
             res.status(HTTP_STATUS_CODES.CREATED).send(newCategory);
         } catch (error) {
             console.error(error);
-            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error creating category');
+            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error al crear la categoría');
         }
     }
 
@@ -56,10 +56,10 @@ class CategoriesController {
         try {
             const category_id = req.params['category_id'];
             const updatedCategory = await Category.findOneAndUpdate({ category_id }, req.body, { new: true });
-            res.status(HTTP_STATUS_CODES.SUCCESS).send('Category ' + updatedCategory + ' updated');
+            res.status(HTTP_STATUS_CODES.SUCCESS).send('Categoría ' + updatedCategory + ' actualizada correctamente');
         } catch (error) {
             console.error(error);
-            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error updating category');
+            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error al actualizar la categoría');
         }
     }
 
@@ -68,12 +68,12 @@ class CategoriesController {
             const category_id = req.params['category_id'];
             const deletedCategory = await Category.findOneAndDelete({ category_id });
             if (!deletedCategory) {
-                return res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('Category not found');
+                return res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('Categoría no encontrada');
             }
-            return res.status(HTTP_STATUS_CODES.SUCCESS).send('Category deleted succesfully');
+            return res.status(HTTP_STATUS_CODES.SUCCESS).send('Categoría eliminada correctamente');
         } catch (error) {
             console.error(error);
-            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error deleting category');
+            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error al eliminar la categoría');
         }
     }
 }

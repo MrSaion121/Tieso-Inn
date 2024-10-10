@@ -11,7 +11,7 @@ class RoomsController {
             res.status(HTTP_STATUS_CODES.SUCCESS).send(rooms);
         } catch (error) {
             console.error(error);
-            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error getting rooms');
+            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error al conseguir las habitaciones');
         }
     }
 
@@ -20,12 +20,12 @@ class RoomsController {
             const room_id = req.params['room_id'];
             const room = await Room.findOne({ room_id });
             if (!room) {
-                res.status(HTTP_STATUS_CODES.NOT_FOUND).send('Room not found');
+                res.status(HTTP_STATUS_CODES.NOT_FOUND).send('Habitación no encontrada');
             }
             res.status(HTTP_STATUS_CODES.SUCCESS).send(room);
         } catch (error) {
             console.error(error);
-            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error getting room');
+            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error obteniendo la habitación');
         }
     }
 
@@ -36,10 +36,10 @@ class RoomsController {
             const categoryExists = await Category.findOne({ category_id });
 
             if (roomExists) {
-                return res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('Room already exists');
+                return res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('Esta habitación ya existe');
             }
             if (!categoryExists) {
-                return res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('Category ' + category_id + ' not found');
+                return res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('Categoría ' + category_id + ' no encontrada');
             }
 
             const newRoom = new Room ({
@@ -55,7 +55,7 @@ class RoomsController {
             res.status(HTTP_STATUS_CODES.CREATED).send(newRoom);
         } catch (error) {
             console.error(error);
-            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error creating room');
+            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error creando la habitación');
         }
     }
 
@@ -63,10 +63,10 @@ class RoomsController {
         try {
             const room_id = req.params['room_id'];
             const updatedRoom = await Room.findOneAndUpdate({ room_id }, req.body, { new: true });
-            res.status(HTTP_STATUS_CODES.SUCCESS).send('Room ' + updatedRoom + ' updated succesfully');
+            res.status(HTTP_STATUS_CODES.SUCCESS).send('Habitación ' + updatedRoom + ' actualizada correctamente');
         } catch (error) {
             console.error(error);
-            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error updating room');
+            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error actualizando la habitación');
         }
     }
 
@@ -75,12 +75,12 @@ class RoomsController {
             const room_id = req.params['room_id'];
             const deletedRoom = await Room.findOneAndDelete({ room_id });
             if (!deletedRoom) {
-                return res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('Room not found');
+                return res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('Habitación no encontrada');
             }
-            return res.status(HTTP_STATUS_CODES.SUCCESS).send('Room deleted succesfully');
+            return res.status(HTTP_STATUS_CODES.SUCCESS).send('Habitación eliminada correctamente');
         } catch (error) {
             console.error(error);
-            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error deleting room');
+            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error eliminando la habitación');
         }
     }
 }
