@@ -1,12 +1,25 @@
 import { Router } from 'express';
 import { reservationController } from '../controller/reservation.controller'
 
+//Importacion middlewares
+import { authenticateToken } from '../middlewares/auth';
+import { authorizaRole } from '../middlewares/permissions';
+
 const router = Router();
 
-router.get('/', reservationController.getAllReservations);
-router.get('/:id', reservationController.getReservationById);
-router.post('/', reservationController.createReservation);
-router.put('/:id', reservationController.updateReservation);
-router.delete('/:id', reservationController.deleteReservation);
+//Obtener todas las reservaciones | Permisos [Recepcionista]
+router.get('/', authenticateToken, authorizaRole(['Recepcionista']), reservationController.getAllReservations);
+
+//Obtener la reservacion por ID | Permisos [Cliente, Recepcionista]
+router.get('/:id', authenticateToken, authorizaRole(['Cliente', 'Recepcionista']), reservationController.getReservationById);
+
+//Crear una reservacion | Permisos [Cliente]
+router.post('/',  authenticateToken, authorizaRole(['Cliente']),  reservationController.createReservation);
+
+//Actualizar una reservacion | Permisos [Recepcionista]
+router.put('/:id',  authenticateToken, authorizaRole(['Recepcionista']),  reservationController.updateReservation);
+
+//Eliminar una reservacion | Permisos [Recepcionista]
+router.delete('/:id',  authenticateToken, authorizaRole(['Recepcionista']), reservationController.deleteReservation);
 
 export default router;
