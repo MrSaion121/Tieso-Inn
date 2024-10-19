@@ -7,8 +7,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 //importar rutas
-import router from './routes';
-
+import router from './routes'
 const app = express();
 const PORT  = process.env.PORT || 3000;
 
