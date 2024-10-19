@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import User from '../models/user'
 import { HTTP_STATUS_CODES } from '../types/http-status-codes'
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 
 class UsersController {
     async getAllUsers(req: Request, res: Response) {
@@ -107,7 +107,7 @@ class UsersController {
         } catch(error) {
             if(error instanceof Error) {
                 console.error(error)
-                res.status(HTTP_STATUS_CODES.AUTHORIZATION).json({error: error.message}); 
+                res.status(HTTP_STATUS_CODES.UNATHORIZED).json({error: error.message});
             } else {
                 console.error('Error inesperado', error)
                 res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({error: 'Error inesperado'})
