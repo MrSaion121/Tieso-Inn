@@ -87,31 +87,31 @@ class UsersController {
             const { email, password } = req.body;
             const user = await User.findOne({ email });
 
-            if(!user) {
+            if (!user) {
                 throw new Error(`El correo no existe`);
             }
 
-            if(user.status === 'Eliminado' || user.status === 'Bloqueado') {
+            if (user.status === 'Eliminado' || user.status === 'Bloqueado') {
                 throw new Error(`El usuario esta bloqueado o eliminado`);
             }
 
             const matchPassword = await bcrypt.compare(password, user.password);
-            if(!matchPassword) {
+            if (!matchPassword) {
                 throw new Error('Contraseña incorrecta');
             }
 
             const token = jwt.sign({ email: email, role: user.role }, process.env.SECRET_KEY!, {
                 expiresIn: '1h'
             });
-            res.status(HTTP_STATUS_CODES.SUCCESS).send(token);
-        } catch(error) {
-            if(error instanceof Error) {
+            res.status(HTTP_STATUS_CODES.SUCCESS).send('Token del usuario:' + token);
+        } catch (error) {
+            if (error instanceof Error) {
                 console.error(error)
-                res.status(HTTP_STATUS_CODES.UNATHORIZED).json({error: error.message});
+                res.status(HTTP_STATUS_CODES.UNATHORIZED).json({ error: error.message });
             } else {
                 console.error('Error inesperado', error)
-                res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({error: 'Error inesperado'})
-            }   
+                res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({ error: 'Error inesperado' })
+            }
         }
     }
 
