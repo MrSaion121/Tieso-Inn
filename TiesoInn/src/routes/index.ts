@@ -12,4 +12,7 @@ router.get('/', (req, res) => {
 // /users
 router.use('/users', userRoutes);
 
+// /reservation
+router.use('/reservation', reservationRoutes);
+
 export default router;
