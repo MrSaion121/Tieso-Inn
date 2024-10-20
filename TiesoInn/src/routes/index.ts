@@ -1,14 +1,18 @@
-import { Router } from 'express';
-import categoryRoutes from './categories';
-import roomRoutes from './rooms';
+import { Router } from "express";
+import reservationRoutes from './reservation'
+import userRoutes from './user'
 
 const router = Router();
 
-router.get('', (req, res) => {
-    res.send('La api funciona!');
-})
+//Ruta raiz
+router.get('/', (req, res) => {
+    res.send('API Raiz funcionando');
+});
 
-router.use('/categories', categoryRoutes);
-router.use('/rooms', roomRoutes);
+// /users
+router.use('/users', userRoutes);
+
+//reservations
+router.use('/reservations', reservationRoutes);
 
 export default router;

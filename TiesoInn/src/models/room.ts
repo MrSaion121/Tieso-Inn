@@ -1,22 +1,23 @@
-import mongoose, { Schema, model, SchemaTypes, Document } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 
-interface IRoom extends Document {
-    room_id: Schema.Types.ObjectId;
-    category_id: Schema.Types.ObjectId;
+//Model/Interfaz para cuartos
+export interface IRoom extends Document {
+    room_id: string;
+    category_id: mongoose.Schema.Types.ObjectId;
     price_per_night: number;
     description: string;
     image_url: string;
     status: string;
 }
 
-const roomSchema = new Schema ({
-    room_id: { type: Schema.Types.ObjectId, required: true },
+//Schema para cuartos
+const roomSchema: Schema = new Schema({
+    room_id: { type: String, required: true, unique: true },
     category_id: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
-    price_per_night: { type: Number, required: true }, 
-    description: { type: String, required: true },
-    image_url: { type: String, required: true},
-    status: { type: String, enum: ['Ocupado', 'Disponible'], default: 'Disponible'}
-})
+    price_per_night: { type: Number, required: true },
+    description: { type: String},
+    image_url: { type: String },
+    status: {type: String, default: 'avaliable'}
+});
 
-const room = model('room', roomSchema);
-export default room;
+export default mongoose.model<IRoom>('Room', roomSchema);
