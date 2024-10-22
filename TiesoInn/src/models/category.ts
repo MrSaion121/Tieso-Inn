@@ -1,19 +1,18 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import { Schema, model, SchemaTypes, Document } from 'mongoose';
 
-//Model/Interfaz para categorias
-export interface ICategory extends Document {
-    category_id: string;
+interface ICategory extends Document {
+    category_id: Schema.Types.ObjectId;
     name: string;
     num_of_beds: number;
     capacity: number;
 }
 
-//Schema para cuartos
-const categorySchema: Schema = new Schema({
-    category_id: { type: String, required: true, unique: true },
+const categorySchema = new Schema<ICategory>({
+    category_id: { type: Schema.Types.ObjectId, required: true, unique: true },
     name: { type: String, required: true },
     num_of_beds: { type: Number, required: true },
     capacity: { type: Number, required: true }
 });
 
-export default mongoose.model<ICategory>('Category', categorySchema);
+const category = model('category', categorySchema);
+export default category;
