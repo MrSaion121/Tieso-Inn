@@ -3,6 +3,7 @@ import User from '../models/user'
 import { HTTP_STATUS_CODES } from '../types/http-status-codes'
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken'
+import mongoose from 'mongoose';
 
 class UsersController {
     async getAllUsers(req: Request, res: Response) {
@@ -38,14 +39,7 @@ class UsersController {
                 return res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('Este email ya se esta usando')
             }
 
-            const lastUser = await User.findOne().sort({ user_id: -1 })
-            let user_id = '1'
-
-            if(lastUser) {
-                const lastID = parseInt(lastUser.user_id, 10)
-                user_id = (lastID + 1).toString()
-            }
-
+            const user_id = new mongoose.Types.ObjectId()
             const hashPassword = await bcrypt.hash(password, 11)
 
             const newUser = new User({
