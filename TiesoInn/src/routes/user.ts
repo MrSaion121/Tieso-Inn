@@ -13,8 +13,8 @@ router.get('/', authenticateToken, authorizaRole(['Admin', 'Gerente']), usersCon
 //Ruta para Obtener un usuario por el email | Permisos [ everyone ]
 router.get('/:id', authenticateToken, usersController.getUserById);
 
-//Ruta para crear un nuevo usuario | Permisos [Admin]
-router.post('/', authenticateToken, authorizaRole(['Admin']), usersController.createUser);
+//Ruta para crear un nuevo usuario | Permisos [Todos]
+router.post('/', authenticateToken, usersController.createUser);
 
 //Ruta para actualizar info del usuario | Permisos [Admin, Gerente]
 router.put('/:id', authenticateToken, authorizaRole(['Admin', 'Gerente']), usersController.updateUser);

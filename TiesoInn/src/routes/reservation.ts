@@ -8,18 +8,18 @@ import { authorizaRole } from '../middlewares/permissions';
 const router = Router();
 
 //Obtener todas las reservaciones | Permisos [Recepcionista]
-router.get('/', authenticateToken, authorizaRole(['Recepcionista']), reservationController.getAllReservations);
+router.get('/', authenticateToken, authorizaRole(['Recepcionista', 'Gerente']), reservationController.getAllReservations);
 
 //Obtener la reservacion por ID | Permisos [Cliente, Recepcionista]
 router.get('/:id', authenticateToken, authorizaRole(['Cliente', 'Recepcionista']), reservationController.getReservationById);
 
 //Crear una reservacion | Permisos [Cliente]
-router.post('/',  authenticateToken, authorizaRole(['Cliente']),  reservationController.createReservation);
+router.post('/',  authenticateToken, authorizaRole(['Cliente', 'Recepcionista']),  reservationController.createReservation);
 
 //Actualizar una reservacion | Permisos [Recepcionista]
-router.put('/:id',  authenticateToken, authorizaRole(['Recepcionista']),  reservationController.updateReservation);
+router.put('/:id',  authenticateToken, authorizaRole(['Cliente','Recepcionista']),  reservationController.updateReservation);
 
 //Eliminar una reservacion | Permisos [Recepcionista]
-router.delete('/:id',  authenticateToken, authorizaRole(['Recepcionista']), reservationController.deleteReservation);
+router.delete('/:id',  authenticateToken, authorizaRole(['Cliente','Recepcionista']), reservationController.deleteReservation);
 
 export default router;
