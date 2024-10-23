@@ -1,6 +1,7 @@
 import {Schema, model, SchemaTypes, Document} from 'mongoose'
 
 interface IUser extends Document {
+    user_id: Schema.Types.ObjectId;
     name: string;
     role: string;
     email: string;
@@ -10,6 +11,7 @@ interface IUser extends Document {
 }
 
 const userSchema = new Schema<IUser>({
+    user_id: { type: Schema.Types.ObjectId, required: true, unique: true},
     name: { type: SchemaTypes.String, required: true },
     role: { type: SchemaTypes.String, enum:  ['Cliente', 'Recepcionista', 'Gerente', 'Admin'], default: 'Cliente' },
     email: { type: SchemaTypes.String, required: true, unique: true },

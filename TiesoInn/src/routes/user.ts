@@ -11,16 +11,16 @@ const router = Router();
 router.get('/', authenticateToken, authorizaRole(['Admin', 'Gerente']), usersController.getAllUsers);
 
 //Ruta para Obtener un usuario por el email | Permisos [ everyone ]
-router.get('/:email', authenticateToken, usersController.getUserByEmail);
+router.get('/:id', authenticateToken, usersController.getUserById);
 
 //Ruta para crear un nuevo usuario | Permisos [Admin]
 router.post('/', authenticateToken, authorizaRole(['Admin']), usersController.createUser);
 
 //Ruta para actualizar info del usuario | Permisos [Admin, Gerente]
-router.put('/:email', authenticateToken, authorizaRole(['Admin', 'Gerente']), usersController.updateUser);
+router.put('/:id', authenticateToken, authorizaRole(['Admin', 'Gerente']), usersController.updateUser);
 
 //Ruta para eliminar un usuario | Permisos [Admin]
-router.delete('/:email', authenticateToken, authorizaRole(['Admin']), usersController.deleteUser);
+router.delete('/:id', authenticateToken, authorizaRole(['Admin']), usersController.deleteUser);
 
 //Ruta para el inicio de sesion | Permisos [ everyone ]
 router.post('/login', usersController.login);

@@ -45,12 +45,12 @@ class ReservationController {
 
     // POST | createReservation
     async createReservation(req: Request, res: Response) {
-    const { email, room_id, arrival_date, checkout_date, num_of_guest, status } = req.body;
+    const { user_id, room_id, arrival_date, checkout_date, num_of_guest, status } = req.body;
 
     try {
         console.log("Datos recibidos en el cuerpo:", req.body);
 
-        const userExists = await User.findOne({ email });
+        const userExists = await User.findOne({ user_id });
         const roomObjectId = mongoose.Types.ObjectId.isValid(room_id) ? new mongoose.Types.ObjectId(room_id) : null;
         const roomExists = roomObjectId ? await Room.findById(roomObjectId) : null;
 
@@ -75,7 +75,7 @@ class ReservationController {
         // Crea la nueva reservación
         const newReservation = new Reservation({
             reservation_num: reservationNumber.toString(), // Número de reserva auto-incremental
-            email,
+            user_id,
             room_id: roomObjectId,                      // ( _id de la habitacion)
             arrival_date,
             checkout_date,
@@ -99,12 +99,12 @@ class ReservationController {
     //POST | UpdateReservation
     async updateReservation(req: Request, res: Response) {
     const { id } = req.params;
-    const { email, room_id, arrival_date, checkout_date, num_of_guest, status } = req.body;
+    const { user_id, room_id, arrival_date, checkout_date, num_of_guest, status } = req.body;
 
     try {
         const updatedReservation = await Reservation.findOneAndUpdate(
             { reservation_num: id },
-            { email, room_id, arrival_date, checkout_date, num_of_guest, status },
+            { user_id, room_id, arrival_date, checkout_date, num_of_guest, status },
             { new: true }
         );
 
