@@ -3,7 +3,6 @@ import reservationRoutes from './reservation';
 import userRoutes from './user';
 import categoryRoutes from './categories';
 import roomRoutes from './rooms';
-import room from "../models/room";
 
 const router = Router();
 
