@@ -23,4 +23,3 @@ const reservationSchema: Schema = new Schema({
 });
 
 export default mongoose.model<IReservation>('Reservation', reservationSchema);
-

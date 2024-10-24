@@ -1,7 +1,13 @@
 import express from 'express';
+
 //Importar libreria de MongoDB
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+
+//Importar swagger
+import swaggerJSDoc from 'swagger-jsdoc';
+import { serve, setup } from 'swagger-ui-express';
+import swaggerConfig from './../swagger.config.json';
 
 //Cargar variables de entorno
 dotenv.config();
@@ -17,6 +23,11 @@ const dbUrl = process.env.DB_URL;
 
 app.use(express.json());
 app.use(router);
+
+//Conexion a Swagger
+
+const swaggerDocs = swaggerJSDoc(swaggerConfig);
+app.use('/swagger', serve, setup(swaggerDocs));
 
 //Conexion de MongoDB
 mongoose.connect(dbUrl as string)

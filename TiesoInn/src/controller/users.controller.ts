@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import User from '../models/user'
 import { HTTP_STATUS_CODES } from '../types/http-status-codes'
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 
 class UsersController {
