@@ -1,6 +1,10 @@
 import { Router } from 'express';
 import categoriesController from '../controller/categories.controller';
 
+//Importacion middlewares
+import { authenticateToken } from '../middlewares/auth';
+import { authorizaRole } from '../middlewares/permissions';
+
 const router = Router();
 
 /**
@@ -16,7 +20,8 @@ const router = Router();
  *              description: server error
  */
 
-router.get('', categoriesController.getAll);
+//Obtener todas las categorias | Permisos [Todos]
+router.get('', authenticateToken, categoriesController.getAll);
 
 /**
  * @swagger
@@ -33,7 +38,8 @@ router.get('', categoriesController.getAll);
  *              description: server error
  */
 
-router.get('/:category_id', categoriesController.getCategoryByID);
+//Obtener las categorias por ID | Permisos [Todos]
+router.get('/:category_id', authenticateToken,  categoriesController.getCategoryByID);
 
 /**
  * @swagger
@@ -60,7 +66,8 @@ router.get('/:category_id', categoriesController.getCategoryByID);
  *              description: server error
  */
 
-router.post('', categoriesController.createCategory);
+//Crear nueva categoria | Permisos [Admin]
+router.post('', authenticateToken, authorizaRole(['Admin']), categoriesController.createCategory);
 
 /**
  * @swagger
@@ -83,7 +90,8 @@ router.post('', categoriesController.createCategory);
  *              description: server error
  */
 
-router.put('/:category_id', categoriesController.updateCategory);
+//Actualizar categoria | Permisos [Admin]
+router.put('/:category_id', authenticateToken, authorizaRole(['Admin']), categoriesController.updateCategory);
 
 /**
  * @swagger
@@ -100,6 +108,7 @@ router.put('/:category_id', categoriesController.updateCategory);
  *              description: server error
  */
 
-router.delete('/:category_id', categoriesController.deleteCategory);
+//Eliminar categoria | permiso [Admin]
+router.delete('/:category_id', authenticateToken, authorizaRole(['Admin']), categoriesController.deleteCategory);
 
 export default router;

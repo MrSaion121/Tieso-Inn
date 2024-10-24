@@ -1,6 +1,10 @@
 import { Router } from 'express';
 import roomsController from '../controller/rooms.controller';
 
+//Importacion middlewares
+import { authenticateToken } from '../middlewares/auth';
+import { authorizaRole } from '../middlewares/permissions';
+
 const router = Router();
 
 /**
@@ -16,7 +20,8 @@ const router = Router();
  *              description: server error
  */
 
-router.get('', roomsController.getAll);
+//Obtener todas las habitaciones | Permisos [Todos]
+router.get('', authenticateToken, roomsController.getAll);
 
 /**
  * @swagger
@@ -33,7 +38,8 @@ router.get('', roomsController.getAll);
  *              description: server error
  */
 
-router.get('/:room_id', roomsController.getRoomByID);
+//Obtener la habitacion por el ID | Permisos [Todos]
+router.get('/:room_id',  authenticateToken, roomsController.getRoomByID);
 
 /**
  * @swagger
@@ -60,7 +66,8 @@ router.get('/:room_id', roomsController.getRoomByID);
  *              description: server error
  */
 
-router.post('', roomsController.createRoom);
+//Crear una habitacion | Permisos [Gerente]
+router.post('',  authenticateToken, authorizaRole(['Gerente']), roomsController.createRoom);
 
 /**
  * @swagger
@@ -83,7 +90,8 @@ router.post('', roomsController.createRoom);
  *              description: server error
  */
 
-router.put('/:room_id', roomsController.updateRoom);
+//Actualizar una habitacion | Permisos [Gerente]
+router.put('/:room_id',  authenticateToken, authorizaRole(['Gerente']), roomsController.updateRoom);
 
 /**
  * @swagger
@@ -100,6 +108,7 @@ router.put('/:room_id', roomsController.updateRoom);
  *              description: server error
  */
 
-router.delete('/:room_id', roomsController.deteleRoom);
+//Eliminar una habitacion | Permisos [Gerente]
+router.delete('/:room_id',  authenticateToken, authorizaRole(['Gerente']), roomsController.deteleRoom);
 
 export default router;

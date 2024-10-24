@@ -2,8 +2,8 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 //Model/Interfaz para reservaciones
 export interface IReservation extends Document {
-    reservation_num: mongoose.Schema.Types.ObjectId;
-    email: string;
+    reservation_num: string;
+    user_id: mongoose.Schema.Types.ObjectId;
     room_id: mongoose.Schema.Types.ObjectId;
     arrival_date: Date;
     checkout_date: Date;
@@ -14,7 +14,7 @@ export interface IReservation extends Document {
 //Schema de reservaciones
 const reservationSchema: Schema = new Schema({
     reservation_num: { type: String, required: true, unique: true },
-    email: { type: String, ref: 'User', required: true },
+    user_id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     room_id: { type: Schema.Types.ObjectId, ref: 'room', required: true },
     arrival_date: { type: Date, required: true },
     checkout_date: { type: Date, required: true },
@@ -23,4 +23,3 @@ const reservationSchema: Schema = new Schema({
 });
 
 export default mongoose.model<IReservation>('Reservation', reservationSchema);
-

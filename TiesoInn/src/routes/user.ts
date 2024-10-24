@@ -1,6 +1,10 @@
 import { Router } from "express"
 import usersController from "../controller/users.controller";
 
+//Importacion middlewares
+import { authenticateToken } from '../middlewares/auth';
+import { authorizaRole } from '../middlewares/permissions';
+
 const router = Router();
 
 /**
@@ -16,7 +20,8 @@ const router = Router();
  *              description: server error
  */
 
-router.get('/', usersController.getAllUsers);
+//Ruta para Obtener todos los usuarios | Permisos [Admin, Gerente]
+router.get('/', authenticateToken, authorizaRole(['Admin', 'Gerente']), usersController.getAllUsers);
 
 /**
  * @swagger
@@ -33,7 +38,8 @@ router.get('/', usersController.getAllUsers);
  *              description: server error
  */
 
-router.get('/:email', usersController.getUserByEmail);
+//Ruta para Obtener un usuario por el email | Permisos [ everyone ]
+router.get('/:id', authenticateToken, usersController.getUserById);
 
 /**
  * @swagger
@@ -60,7 +66,8 @@ router.get('/:email', usersController.getUserByEmail);
  *              description: server error
  */
 
-router.post('/', usersController.createUser);
+//Ruta para crear un nuevo usuario | Permisos [Todos]
+router.post('/', authenticateToken, usersController.createUser);
 
 /**
  * @swagger
@@ -83,7 +90,8 @@ router.post('/', usersController.createUser);
  *              description: server error
  */
 
-router.put('/:email', usersController.updateUser);
+//Ruta para actualizar info del usuario | Permisos [Admin, Gerente]
+router.put('/:id', authenticateToken, authorizaRole(['Admin', 'Gerente']), usersController.updateUser);
 
 /**
  * @swagger
@@ -100,6 +108,43 @@ router.put('/:email', usersController.updateUser);
  *              description: server error
  */
 
-router.delete('/:email', usersController.deleteUser);
+//Ruta para eliminar un usuario | Permisos [Admin]
+router.delete('/:id', authenticateToken, authorizaRole(['Admin']), usersController.deleteUser);
+
+/**
+ * @swagger
+ * /login:
+ *  post:
+ *      tags: [Auth]
+ *      description: login and obtain jwt token
+ *      requestBody:
+ *          required: true
+ *          content: 
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          email:
+ *                              type: string
+ *                          password:
+ *                              type: string
+ *      responses: 
+ *          200:
+ *              description: token generated succesfully
+ *          401:
+ *              description: authentication failed
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              error:
+ *                                  type: string
+ *          500: 
+ *              description: server error
+ */
+
+//Ruta para el inicio de sesion | Permisos [ everyone ]
+router.post('/login', usersController.login);
 
 export default router;

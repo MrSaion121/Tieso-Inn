@@ -1,7 +1,10 @@
 import express from 'express';
+
 //Importar libreria de MongoDB
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+
+//Importar swagger
 import swaggerJSDoc from 'swagger-jsdoc';
 import { serve, setup } from 'swagger-ui-express';
 import swaggerConfig from './../swagger.config.json';
