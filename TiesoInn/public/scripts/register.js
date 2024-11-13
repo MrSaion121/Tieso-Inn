@@ -1,24 +1,31 @@
+//Escucha el evento DOMContentLoaded que indica que el documento HTML ha sido completamente cargado
 document.addEventListener('DOMContentLoaded', () => {
     const passwordInput = document.getElementById('password');
     const confirmPasswordInput = document.getElementById('confirmPassword');
     const togglePassword = document.getElementById('togglePassword');
     const registerForm = document.getElementById('register-form');
 
+    //elementos de los requisitos de la contraseña para mostrar su estado
     const passwordRequirements = {
         length: document.getElementById('length-requirement'),
         uppercase: document.getElementById('uppercase-requirement'),
         special: document.getElementById('special-requirement')
     };
+    //Spinner de carga
     const loadingSpinner = document.getElementById('loading-spinner');
 
     // Expresión regular para validar la contraseña
     const passwordRegex = /^(?=.*[A-Z])(?=.*[!.@#$%^&*])(?=.{8,})/;
 
-    // Mostrar/ocultar contraseña
+    // Mostrar/ocultar contraseña (Ojo)
     togglePassword.addEventListener('click', () => {
         const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
         passwordInput.setAttribute('type', type);
         confirmPasswordInput.setAttribute('type', type);
+
+        // Cambiar el icono
+        togglePassword.innerHTML = type === 'password' ? '<i class="fa-solid fa-eye-slash"></i>' : '<i class="fa-solid fa-eye"></i>';
+
     });
 
     // Validación de requisitos de contraseña en tiempo real
@@ -43,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
 
         //Alert | no coinciden las contraseñas
-        if (passwordInput.value !== confirmPasswordInput.value){
+        if (passwordInput.value !== confirmPasswordInput.value) {
             alert("Las contraseñas no coinciden");
             return;
         }
@@ -54,8 +61,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        //Mostrar spinner de carga
         loadingSpinner.classList.remove('hidden');
 
+        //Crear objeto formData con el dato
         const formData = new FormData(registerForm);
         const data = {
             name: formData.get('name'),
@@ -65,19 +74,25 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
+            //Realiza la peticion POST para registrar el usuario
             const response = await fetch('/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             });
 
+            //Respuesta exitosa
             if (response.ok) {
                 alert('Usuario registrado exitosamente.');
                 window.location.href = '/login';
+
+            //Error
             } else {
                 const errorMessage = await response.text();
                 alert(`Error al registrar: ${errorMessage}`);
             }
+
+        //atrapa el error
         } catch (error) {
             console.error("Error en el registro:", error);
             alert('Ocurrió un error. Inténtelo nuevamente.');
