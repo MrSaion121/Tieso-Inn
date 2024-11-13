@@ -2,6 +2,7 @@ import express from 'express';
 //Importar libreria de MongoDB
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import path from 'path';
 
 //Cargar variables de entorno
 dotenv.config();
@@ -14,6 +15,9 @@ const PORT  = process.env.PORT || 3000;
 //Importar la Hash de MongoDB
 const dbUrl = process.env.DB_URL;
 //console.log('Mongo URL:', dbUrl);
+
+//Path para estilos. (CSS)
+app.use('/', express.static(path.join(__dirname, '..', 'public')))
 
 app.use(express.json());
 app.use(router);
