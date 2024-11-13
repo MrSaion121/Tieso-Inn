@@ -1,10 +1,11 @@
 import { Router } from "express";
+import path from "path";
 
 const router = Router();
 
 //Ruta raiz
 router.get('/', (req, res) => {
-    res.send(' Interfaz de login ');
+    res.sendFile(path.join(__dirname, '..', 'views', 'login.html'));
 });
 
 //Ruta Login POST

@@ -20,6 +20,7 @@ const dbUrl = process.env.DB_URL;
 app.use('/', express.static(path.join(__dirname, '..', 'public')))
 
 app.use(express.json());
+
 app.use(router);
 
 //Conexion de MongoDB

@@ -3,6 +3,8 @@ import reservationRoutes from './reservation'
 import userRoutes from './user'
 import categoryRoutes from './categories';
 import roomRoutes from './rooms';
+import loginRoutes from './login';
+import registerRoutes from './register';
 
 const router = Router();
 
@@ -10,6 +12,12 @@ const router = Router();
 router.get('/', (req, res) => {
     res.send('API Raiz funcionando');
 });
+
+// /login
+router.use('/login', loginRoutes);
+
+// /register
+router.use('/register', registerRoutes);
 
 // /users
 router.use('/users', userRoutes);
