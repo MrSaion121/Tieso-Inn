@@ -19,7 +19,11 @@ const dbUrl = process.env.DB_URL;
 //Path para estilos. (CSS)
 app.use('/', express.static(path.join(__dirname, '..', 'public')))
 
+// Middleware para manejar JSON
 app.use(express.json());
+
+// Middleware para manejar datos del formulario (x-www-form-urlencoded)
+app.use(express.urlencoded({ extended: true }));
 
 app.use(router);
 

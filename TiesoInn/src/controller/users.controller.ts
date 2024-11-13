@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 class UsersController {
+    //Obtener todos los usuarios
     async getAllUsers(req: Request, res: Response) {
         try {
             const users = await User.find({}, { password: 0 });
@@ -15,6 +16,7 @@ class UsersController {
         }
     }
 
+    //Obtener usuario By Email
     async getUserByEmail(req: Request, res: Response) {
         try {
             const email = req.params['email'];
@@ -29,11 +31,18 @@ class UsersController {
         }
     }
 
+    //Crear usuario
     async createUser(req: Request, res: Response) {
         try {
-            const { name, role, email, password, cellphone, status } = req.body
-            const userExists = await User.findOne({ email })
+            const { name, role, email, password, cellphone, status } = req.body;
 
+            //Validad passwords
+            if(!password) {
+                return res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('La contraseña es requerida.');
+            }
+
+            //Validar si usuario existe en DB
+            const userExists = await User.findOne({ email });
             if (userExists) {
                 return res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('Este email ya se esta usando')
             }
@@ -46,11 +55,22 @@ class UsersController {
                 email,
                 password: hashPassword,
                 cellphone,
-                status
-            })
+            });
 
             await newUser.save();
-            res.status(HTTP_STATUS_CODES.CREATED).send(newUser);
+
+            //Generar el token
+            const token = jwt.sign({ email: email, role: newUser.role }, process.env.SECRET_KEY!, {
+                expiresIn: '1h'
+            });
+
+            //responder con el token y redireccionar al user
+            res.status(HTTP_STATUS_CODES.CREATED).json({
+                message: 'Usuario Registrado con exito',
+                //token: token
+            });
+
+            //Caso error:
         } catch (error) {
             console.error(error)
             res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error al crear el usuario')
