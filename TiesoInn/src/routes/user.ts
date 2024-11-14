@@ -22,7 +22,4 @@ router.put('/:email', authenticateToken, authorizaRole(['Admin', 'Gerente']), us
 //Ruta para eliminar un usuario | Permisos [Admin]
 router.delete('/:email', authenticateToken, authorizaRole(['Admin']), usersController.deleteUser);
 
-//Ruta para el inicio de sesion | Permisos [ everyone ]
-router.post('/login', usersController.login);
-
 export default router;

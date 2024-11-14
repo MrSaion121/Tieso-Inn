@@ -1,5 +1,6 @@
 import { Router } from "express";
 import path from "path";
+import UserController from "../controller/users.controller";
 
 const router = Router();
 
@@ -9,9 +10,6 @@ router.get('/', (req, res) => {
 });
 
 //Ruta Login POST
-router.post('/', (req, res) => {
-    const { username, password } = req.body;
-    res.send(' Interfaz post login')
-});
+router.post('/', UserController.login);
 
 export default router;
