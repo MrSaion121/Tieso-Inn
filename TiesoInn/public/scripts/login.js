@@ -9,9 +9,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         try {
 
-            //Debugg
-            console.log('Enviando solicitud de login a /login');
-
             const response = await fetch('/login', {
                 method: 'POST',
                 headers: {
@@ -20,24 +17,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: JSON.stringify(loginData)
             });
 
-            //Debugg: Verificar el estado de la respuesta
-            console.log('Estado de la respuesta:', response.status);
-
             const data = await response.json();
-
-            //Debugg
-            console.log('Respuesta del servidor:', data);
 
             if (response.ok) {
 
-                //Debugg
-                console.log('Login exitoso, token recibido:', data.token);
 
                 // Si la respuesta es exitosa, redirigir al home
                 localStorage.setItem('token', data.token); //almacena token
 
-                //Debugg
-                console.log('Token almacenado en localStorage:', localStorage.getItem('token'));
 
                 setTimeout(() => {
                     window.location.href = '/home';// Redirige a la página home
