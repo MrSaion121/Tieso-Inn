@@ -16,7 +16,7 @@ const PORT  = process.env.PORT || 3000;
 const dbUrl = process.env.DB_URL;
 //console.log('Mongo URL:', dbUrl);
 
-//Path para estilos. (CSS)
+//Path para estilos. (CSS/JS)
 app.use('/', express.static(path.join(__dirname, '..', 'public')))
 
 // Middleware para manejar JSON
