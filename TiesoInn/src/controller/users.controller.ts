@@ -37,7 +37,7 @@ class UsersController {
             const { name, role, email, password, cellphone, status } = req.body;
 
             //Validad passwords
-            if(!password) {
+            if (!password) {
                 return res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('La contraseña es requerida.');
             }
 
@@ -102,9 +102,11 @@ class UsersController {
         }
     }
 
+    //Login
     async login(req: Request, res: Response) {
         try {
             const { email, password } = req.body;
+
             const user = await User.findOne({ email });
 
             if (!user) {
@@ -116,14 +118,18 @@ class UsersController {
             }
 
             const matchPassword = await bcrypt.compare(password, user.password);
+
             if (!matchPassword) {
                 throw new Error('Contraseña incorrecta');
             }
 
+            //Token
             const token = jwt.sign({ email: email, role: user.role }, process.env.SECRET_KEY!, {
                 expiresIn: '1h'
             });
-            res.status(HTTP_STATUS_CODES.SUCCESS).send('Token del usuario:' + token);
+
+            res.status(HTTP_STATUS_CODES.SUCCESS).json({ token });
+
         } catch (error) {
             if (error instanceof Error) {
                 console.error(error)
