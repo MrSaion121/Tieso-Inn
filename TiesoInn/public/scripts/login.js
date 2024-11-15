@@ -1,10 +1,27 @@
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('login-form').addEventListener('submit', async function (event) {
+    // Elementos del formulario y contraseña
+    const loginForm = document.getElementById('login-form');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('togglePassword');
+
+    // Mostrar/ocultar contraseña
+    togglePassword.addEventListener('click', () => {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+
+        // Cambiar el icono del toggle
+        togglePassword.innerHTML = type === 'password'
+            ? '<i class="fa-solid fa-eye-slash"></i>'
+            : '<i class="fa-solid fa-eye"></i>';
+    });
+
+    // Función para manejar el submit del formulario de login
+    const handleLogin = async (event) => {
         event.preventDefault();
 
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-
+        const email = emailInput.value;
+        const password = passwordInput.value;
         const loginData = { email, password };
 
         try {
@@ -16,27 +33,26 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: JSON.stringify(loginData)
             });
 
-            //const data = await response.json();
-
-
+            // Si la respuesta es exitosa, redirigir al home
             if (response.ok) {
                 const data = await response.json();
                 const token = data.token;
-                // Si la respuesta es exitosa, redirigir al home
-                localStorage.setItem('token', data.token); //almacena token
+
+                localStorage.setItem('token', token); // Almacena el token
 
                 setTimeout(() => {
-                    window.location.href = '/home';     // Redirige a la página home
+                    window.location.href = '/home';  // Redirige a la página home
                 }, 500);
-
             } else {
                 const data = await response.json();
-                //si el login falla = Error
-                alert(`Error: ${data.error}`);
+                alert(`Error: ${data.error}`);  // Muestra el error de login
             }
         } catch (error) {
             console.error('Error de red:', error);
             alert('Error al iniciar sesión, por favor intente nuevamente.');
-        };
-    });
+        }
+    };
+
+    // Agregar el listener de submit al formulario
+    loginForm.addEventListener('submit', handleLogin);
 });

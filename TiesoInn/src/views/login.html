@@ -26,6 +26,11 @@
         </div>
     </div>
 
+    <!-- Modal de carga -->
+    <div id="loadingModal" class="loading-modal">
+        <div class="spinner"></div>
+        <p>Cargando...</p>
+    </div>
 
     <div class="login-container" id="login-form">
         <h1>Iniciar Sesión</h1>
@@ -34,12 +39,21 @@
             <input type="email" id="email" name="email" required>
 
             <label for="password">Contraseña</label>
-            <input type="password" id="password" name="password" required>
+            <div class="password-container">
+                <input type="password" id="password" name="password" required>
+                <span id="togglePassword" class="toggle-password">
+                    <i class="fa-solid fa-eye-slash"></i>
+                </span>
+            </div>
 
             <button type="submit">Ingresar</button>
         </form>
         <p>¿No tienes una cuenta? <a href="/register">Regístrate aquí</a></p>
+
+        <!-- Área de notificación -->
+        <div id="notification" class="notification"></div>
     </div>
+
     <script src="/scripts/login.js"></script>
     <!--Iconos-->
     <script src="https://kit.fontawesome.com/79b3d7b09d.js" crossorigin="anonymous"></script>
