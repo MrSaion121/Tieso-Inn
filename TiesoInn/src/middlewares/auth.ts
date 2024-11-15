@@ -20,7 +20,7 @@ declare global {
 //Funcion para validar el token del usuario
 export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
     // Intentar Obtener el token desde el header de autorizacion
-    const token = req.headers['authorization']?.split(' ')[1] || req.cookies?.token;
+    const token = req.headers['authorization']?.split(' ')[1];
 
     //Verifica si no se proporciono el token
     if (!token) {

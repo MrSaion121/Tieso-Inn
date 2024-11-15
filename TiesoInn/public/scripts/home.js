@@ -1,9 +1,9 @@
 setTimeout(() => {
     const token = localStorage.getItem('token');
-    //Debugg
-    console.log('Token desde el LocalStorage:', token);
+
     if (!token) {
-        console.error('No se encontró el token en localStorage');
+        alert('No se encontró el token en localStorage');
+        window.location.href='/login';
         return;
     }
 
@@ -11,9 +11,7 @@ setTimeout(() => {
     fetch('/home', {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
-    }).then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error(error));
+    });
 }, 1000);
