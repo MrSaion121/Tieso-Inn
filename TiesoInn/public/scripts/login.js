@@ -5,6 +5,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const passwordInput = document.getElementById('password');
     const togglePassword = document.getElementById('togglePassword');
 
+    //Modal Carga
+    const loadingModal = document.getElementById('loadingModal');
+
+
     // Mostrar/ocultar contraseña
     togglePassword.addEventListener('click', () => {
         const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -20,6 +24,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const handleLogin = async (event) => {
         event.preventDefault();
 
+        // Mostrar el modal de carga
+        loadingModal.style.display = 'flex';
+
         const email = emailInput.value;
         const password = passwordInput.value;
         const loginData = { email, password };
@@ -32,6 +39,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 body: JSON.stringify(loginData)
             });
+
+            // Ocultar el modal de carga
+            loadingModal.style.display = 'none';
 
             // Si la respuesta es exitosa, redirigir al home
             if (response.ok) {
