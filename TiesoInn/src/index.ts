@@ -3,18 +3,19 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import path from 'path';
+//importar rutas
+import router from './routes'
+//importacion google
+import { googleAuth } from './middlewares/authGoogle';
 
 //Cargar variables de entorno
 dotenv.config();
 
-//importar rutas
-import router from './routes'
 const app = express();
 const PORT  = process.env.PORT || 3000;
 
 //Importar la Hash de MongoDB
 const dbUrl = process.env.DB_URL;
-//console.log('Mongo URL:', dbUrl);
 
 //Path para estilos. (CSS/JS)
 app.use('/', express.static(path.join(__dirname, '..', 'public')))
@@ -25,6 +26,10 @@ app.use(express.json());
 // Middleware para manejar datos del formulario (x-www-form-urlencoded)
 app.use(express.urlencoded({ extended: true }));
 
+// Configurar autenticación con Google
+googleAuth(app);
+
+//Configuracion de rutas
 app.use(router);
 
 //Conexion de MongoDB

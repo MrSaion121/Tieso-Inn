@@ -6,6 +6,7 @@ import roomRoutes from './rooms';
 import loginRoutes from './login';
 import registerRoutes from './register';
 import homeRoutes from './home'
+import googleRoutes from './google';
 
 const router = Router();
 
@@ -19,6 +20,9 @@ router.use('/login', loginRoutes);
 
 // /register
 router.use('/register', registerRoutes);
+
+// /google
+router.use('/auth/google', googleRoutes);
 
 // /home
 router.use('/home', homeRoutes);
