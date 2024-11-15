@@ -8,6 +8,7 @@
         "moduleResolution": "NodeNext",
         "module": "NodeNext",
         "resolveJsonModule": true,
-        "strict": true
+        "strict": true,
+        "baseUrl": "src"
     }
 }

@@ -144,7 +144,4 @@ router.delete('/:id', authenticateToken, authorizaRole(['Admin']), usersControll
  */
 
 
-//Ruta para el inicio de sesion | Permisos [ everyone ]
-router.post('/login', usersController.login);
-
 export default router;

@@ -3,6 +3,10 @@ import reservationRoutes from './reservation'
 import userRoutes from './user'
 import categoryRoutes from './categories';
 import roomRoutes from './rooms';
+import loginRoutes from './login';
+import registerRoutes from './register';
+import homeRoutes from './home'
+import googleRoutes from './google';
 
 const router = Router();
 
@@ -137,6 +141,17 @@ router.get('/', (req, res) => {
  *          200:
  *              description: api success
  */
+// /login
+router.use('/login', loginRoutes);
+
+// /register
+router.use('/register', registerRoutes);
+
+// /google
+router.use('/auth/google', googleRoutes);
+
+// /home
+router.use('/home', homeRoutes);
 
 // /users
 router.use('/users', userRoutes);

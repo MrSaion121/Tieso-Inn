@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 
 class UsersController {
+    //Obtener todos los usuarios
     async getAllUsers(req: Request, res: Response) {
         try {
             const users = await User.find({}, { password: 0 });
@@ -16,7 +17,8 @@ class UsersController {
         }
     }
 
-    async getUserById(req: Request, res: Response) {
+    //Obtener usuario By Email
+    async getUserByEmail(req: Request, res: Response) {
         try {
             const user_id = req.params['id'];
             const user = await User.findOne({ user_id }, { password: 0, cellphone: 0 });
@@ -30,11 +32,18 @@ class UsersController {
         }
     }
 
+    //Crear usuario
     async createUser(req: Request, res: Response) {
         try {
-            const { name, role, email, password, cellphone, status } = req.body
-            const userExists = await User.findOne({ email })
+            const { name, role, email, password, cellphone, status } = req.body;
 
+            //Validad passwords
+            if (!password) {
+                return res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('La contraseña es requerida.');
+            }
+
+            //Validar si usuario existe en DB
+            const userExists = await User.findOne({ email });
             if (userExists) {
                 return res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('Este email ya se esta usando')
             }
@@ -49,11 +58,22 @@ class UsersController {
                 email,
                 password: hashPassword,
                 cellphone,
-                status
-            })
+            });
 
             await newUser.save();
-            res.status(HTTP_STATUS_CODES.CREATED).send(newUser);
+
+            //Generar el token
+            const token = jwt.sign({ email: email, role: newUser.role }, process.env.SECRET_KEY!, {
+                expiresIn: '1h'
+            });
+
+            //responder con el token y redireccionar al user
+            res.status(HTTP_STATUS_CODES.CREATED).json({
+                message: 'Usuario Registrado con exito',
+                //token: token
+            });
+
+            //Caso error:
         } catch (error) {
             console.error(error)
             res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error al crear el usuario')
@@ -85,9 +105,11 @@ class UsersController {
         }
     }
 
+    //Login
     async login(req: Request, res: Response) {
         try {
             const { email, password } = req.body;
+
             const user = await User.findOne({ email });
 
             if (!user) {
@@ -99,14 +121,18 @@ class UsersController {
             }
 
             const matchPassword = await bcrypt.compare(password, user.password);
+
             if (!matchPassword) {
                 throw new Error('Contraseña incorrecta');
             }
 
+            //Token
             const token = jwt.sign({ email: email, role: user.role }, process.env.SECRET_KEY!, {
                 expiresIn: '1h'
             });
-            res.status(HTTP_STATUS_CODES.SUCCESS).send('Token del usuario:' + token);
+
+            res.status(HTTP_STATUS_CODES.SUCCESS).json({ token });
+
         } catch (error) {
             if (error instanceof Error) {
                 console.error(error)
