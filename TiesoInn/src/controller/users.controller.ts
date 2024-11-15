@@ -18,7 +18,7 @@ class UsersController {
     }
 
     //Obtener usuario By Email
-    async getUserByEmail(req: Request, res: Response) {
+    async getUserById(req: Request, res: Response) {
         try {
             const user_id = req.params['id'];
             const user = await User.findOne({ user_id }, { password: 0, cellphone: 0 });
