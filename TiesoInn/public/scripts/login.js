@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
     const togglePassword = document.getElementById('togglePassword');
-    const googleLoginButton = document.getElementById('googleLoginButton');
 
     //Modal Carga
     const loadingModal = document.getElementById('loadingModal');
@@ -62,40 +61,6 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('Error al iniciar sesión, por favor intente nuevamente.');
         }
     };
-
-    // Funcionalidad para manejar el inicio de sesión con Google
-    const handleGoogleLogin = async () => {
-        try {
-            const googleUser = await google.accounts.id.prompt();
-            const idToken = googleUser.credential;
-
-            // Enviar el token al backend
-            const response = await fetch('/auth/google', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ token: idToken }),
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                localStorage.setItem('token', data.token); // guardar el token en localStorage
-
-                // Redirigir al home
-                window.location.href = '/home';
-            } else {
-                const errorData = await response.json();
-                alert(`Error: ${errorData.error}`);
-            }
-        } catch (error) {
-            console.error('Error en el inicio de sesión con Google:', error);
-            alert('No se pudo completar el inicio de sesión con Google.');
-        }
-    };
-
-    // Agregar evento al botón de Google
-    googleLoginButton.addEventListener('click', handleGoogleLogin);
 
     // Agregar el listener de submit al formulario
     loginForm.addEventListener('submit', handleLogin);

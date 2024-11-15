@@ -115,9 +115,6 @@ a {
     text-decoration: none;
 }
 
-a:hover {
-    text-decoration: underline;
-}
 
 /* Contenedor de la contraseña */
 .password-container {

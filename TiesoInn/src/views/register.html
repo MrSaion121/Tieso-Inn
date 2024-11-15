@@ -29,19 +29,19 @@
     <div class="register-container">
         <h1>Registro</h1>
         <form id="register-form" action="/register" method="POST">
-            <label for="name">Nombre completo</label>
+            <label for="name">Nombre completo <span class="requerido">*</span></label>
             <input type="text" id="name" name="name" placeholder="Escribe Tu nombre" required>
 
-            <label for="email">Correo electrónico</label>
+            <label for="email">Correo electrónico <span class="requerido">*</span></label>
             <input type="email" id="email" name="email" placeholder="Escribe Tu Correo electronico" required>
 
-            <label for="password">Contraseña</label>
+            <label for="password">Contraseña <span class="requerido">*</span></label>
             <div class="password-container">
                 <input type="password" id="password" name="password" placeholder="Escribe tu contraseña" required>
                 <span id="togglePassword" class="toggle-password"><i class="fa-solid fa-eye-slash"></i></span>
             </div>
 
-            <label for="confirmPassword">Confirmar Contraseña</label>
+            <label for="confirmPassword">Confirmar Contraseña <span class="requerido">*</span></label>
             <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirme su contraseña"
                 required>
 
@@ -51,7 +51,7 @@
                 <p id="special-requirement">- Al menos 1 caracter especial</p>
             </div>
 
-            <label for="cellphone">Número de teléfono</label>
+            <label for="cellphone">Número de teléfono <span class="requerido">*</span></label>
             <input type="tel" id="cellphone" name="cellphone" placeholder="Escribe Tu telefono" required>
 
             <button type="submit">Crear cuenta</button>
