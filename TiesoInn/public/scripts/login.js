@@ -46,11 +46,15 @@ document.addEventListener('DOMContentLoaded', function () {
             if (response.ok) {
                 const data = await response.json();
                 const token = data.token;
+                const user_id = data.user_id;
+                const name = data.name
 
                 localStorage.setItem('token', token); // Almacena el token
+                localStorage.setItem('user_id', user_id); // Almacena el user_id
+                localStorage.setItem('name', name); // Almacena el nombre
 
                 setTimeout(() => {
-                    window.location.href = '/home';  // Redirige a la página home
+                    window.location.href = '/';  // Redirige a la página home
                 }, 500);
             } else {
                 const data = await response.json();

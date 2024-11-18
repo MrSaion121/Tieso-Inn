@@ -17,25 +17,25 @@ declare global {
     }
 }
 
-//Funcion para validar el token del usuario
 export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
-    // Intentar Obtener el token desde el header de autorizacion
     const token = req.headers['authorization']?.split(' ')[1];
 
-    //Verifica si no se proporciono el token
     if (!token) {
-        return res.status(HTTP_STATUS_CODES.UNATHORIZED).json({ message: 'Token no proporcionado' });
+        if (req.headers['accept']?.includes('text/html')) {
+            console.log('Token no existe')
+            return res.redirect('/login');
+        }
+        return res.status(401).json({ message: 'Token no proporcionado' });
     }
 
     try {
-        //Verifica y decodifica el token usando la clave secreta
         const decoded = jwt.verify(token, process.env.SECRET_KEY!) as AuthUserPayload;
-
-        // Guardamos la info del usuario en req.user
         req.user = decoded;
         next();
     } catch (error) {
-        console.error('Error de autenticación:', error);
-        res.status(HTTP_STATUS_CODES.UNATHORIZED).json({ message: 'Token inválido' });
+        if (req.headers['accept']?.includes('text/html')) {
+            return res.redirect('/login');
+        }
+        res.status(401).json({ message: 'Token inválido' });
     }
 };

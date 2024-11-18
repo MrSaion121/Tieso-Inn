@@ -17,15 +17,15 @@ class UsersController {
         }
     }
 
-    //Obtener usuario By Email
+    //Obtener usuario By ID
     async getUserById(req: Request, res: Response) {
         try {
             const user_id = req.params['id'];
-            const user = await User.findOne({ user_id }, { password: 0, cellphone: 0 });
+            const user = await User.findOne({ user_id }, { password: 0 });
             if (!user) {
-                res.status(HTTP_STATUS_CODES.NOT_FOUND).send('Usuario no encontrado');
+                return res.status(HTTP_STATUS_CODES.NOT_FOUND).send('Usuario no encontrado');
             }
-            res.status(HTTP_STATUS_CODES.SUCCESS).send(user);
+            return res.status(HTTP_STATUS_CODES.SUCCESS).send(user);
         } catch (error) {
             console.error(error)
             res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error al conseguir el usuario');
@@ -58,6 +58,7 @@ class UsersController {
                 email,
                 password: hashPassword,
                 cellphone,
+                status
             });
 
             await newUser.save();
@@ -131,7 +132,7 @@ class UsersController {
                 expiresIn: '1h'
             });
 
-            res.status(HTTP_STATUS_CODES.SUCCESS).json({ token });
+            res.status(HTTP_STATUS_CODES.SUCCESS).json({ token, user_id: user.user_id, name: user.name });
 
         } catch (error) {
             if (error instanceof Error) {
@@ -141,6 +142,52 @@ class UsersController {
                 console.error('Error inesperado', error)
                 res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({ error: 'Error inesperado' })
             }
+        }
+    }
+
+    async register(req: Request, res: Response) {
+        try {
+            const { name, email, password, cellphone } = req.body;
+
+            //Validad passwords
+            if (!password) {
+                return res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('La contraseña es requerida.');
+            }
+
+            //Validar si usuario existe en DB
+            const userExists = await User.findOne({ email });
+            if (userExists) {
+                return res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('Este email ya se esta usando')
+            }
+
+            const user_id = new mongoose.Types.ObjectId()
+            const hashPassword = await bcrypt.hash(password, 11)
+
+            const newUser = new User({
+                user_id,
+                name,
+                email,
+                password: hashPassword,
+                cellphone,
+            });
+
+            await newUser.save();
+
+            //Generar el token
+            const token = jwt.sign({ email: email, role: newUser.role }, process.env.SECRET_KEY!, {
+                expiresIn: '1h'
+            });
+
+            //responder con el token y redireccionar al user
+            res.status(HTTP_STATUS_CODES.CREATED).json({
+                message: 'Usuario Registrado con exito',
+                //token: token
+            });
+
+            //Caso error:
+        } catch (error) {
+            console.error(error)
+            res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error al crear el usuario')
         }
     }
 
