@@ -25,7 +25,7 @@ export const googleAuth = (app: any) => {
                     if (!existingUser) {
                         //Existe o no el usuario
                         existingUser = await userModel.create({
-                            name:profile.displayName,
+                            name: profile.displayName,
                             email: profile.emails![0].value,
                             role: 'Cliente',
                             password: '',
