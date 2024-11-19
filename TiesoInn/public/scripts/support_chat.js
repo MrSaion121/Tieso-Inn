@@ -1,3 +1,12 @@
+function logout() {
+    alert('Se ha cerrado su sesion')
+    localStorage.removeItem("user_id")
+    localStorage.removeItem('token')
+    localStorage.removeItem('name')
+    window.location.href = '/login';
+}
+
+
 // Función para crear elementos de mensaje
 function createMessageElement({ className, user, message, isEvent = false }) {
     const newMessage = document.createElement("div");
@@ -73,6 +82,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             } else {
                 console.error("Error al crear el chat");
             }
+        } else if (response.status === 401) {
+            logout()
         } else {
             console.error("Error al verificar el chat");
         }
@@ -137,6 +148,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (response.ok) {
                 socket.emit("sendNewMessage", { user: username, message: msg, room: roomID });
+            } else if (response.status === 401) {
+                logout()
             } else {
                 console.error("Error al enviar el mensaje");
             }

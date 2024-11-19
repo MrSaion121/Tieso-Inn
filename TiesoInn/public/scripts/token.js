@@ -13,6 +13,7 @@ if (!token) {
   })
     .then(response => {
       if (response.ok) {
+        console.log("Prueba exitosa")
         return response.text(); // Si es válido, obtiene el contenido HTML
       } else if (response.status === 401) {
         // Si no es válido, redirige al login
