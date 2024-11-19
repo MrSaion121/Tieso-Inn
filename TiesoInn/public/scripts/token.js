@@ -16,6 +16,9 @@ if (!token) {
         return response.text(); // Si es válido, obtiene el contenido HTML
       } else if (response.status === 401) {
         // Si no es válido, redirige al login
+        localStorage.removeItem("user_id")
+        localStorage.removeItem('token')
+        localStorage.removeItem('name')
         window.location.href = '/login';
       } else {
         throw new Error('Ocurrió un error inesperado');

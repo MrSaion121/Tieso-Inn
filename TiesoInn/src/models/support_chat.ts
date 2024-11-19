@@ -3,6 +3,7 @@ import { Schema, model, SchemaTypes, Document } from 'mongoose';
 interface IMessage {
   sender: Schema.Types.ObjectId;
   text: string;
+  timestamp: Date;
 }
 
 interface IChat extends Document {
@@ -14,6 +15,7 @@ interface IChat extends Document {
 const messageSchema = new Schema<IMessage>({
   sender: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   text: { type: SchemaTypes.String, required: true },
+  timestamp: { type: SchemaTypes.Date, default: Date.now}
 });
 
 const chatSchema = new Schema<IChat>({

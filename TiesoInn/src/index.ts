@@ -57,8 +57,6 @@ mongoose.connect(dbUrl as string)
     const io = new Server(server);
 
 io.on('connection', (socket) => {
-    console.log('A user connected');
-
     socket.on('joinRoom', (userData) => {
         socket.join('room-' + userData.room)
         socket.to('room-' + userData.room).emit('joinRoom', userData.user)
