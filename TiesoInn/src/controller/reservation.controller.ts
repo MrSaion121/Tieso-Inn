@@ -2,9 +2,29 @@ import { Request, Response } from "express";
 import Reservation from '../models/reservation';
 import User from '../models/user';
 import Room from '../models/room';
-import { HTTP_STATUS_CODES } from '../types/http-status-codes'
-import mongoose, { mongo } from "mongoose";
+import { HTTP_STATUS_CODES } from '../types/http-status-codes';
+import mongoose from "mongoose";
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import fs from 'fs';
+import path from 'path';
+import { generateReservationPDF } from '../utils/pdfGenerator';
+import dotenv from 'dotenv';
 
+dotenv.config();
+
+// Configuración de cliente S3
+const accessKey = process.env.S3_ACCESS_KEY!;
+const secretKey = process.env.S3_SECRET_KEY!;
+const region = process.env.S3_REGION!;
+const bucketName = process.env.S3_BUCKET_NAME!;
+
+const s3Client = new S3Client({
+    credentials: {
+      accessKeyId: accessKey,
+      secretAccessKey: secretKey,
+    },
+    region: region,
+  });
 
 class ReservationController {
     /*
@@ -43,40 +63,38 @@ class ReservationController {
     }
 }
 
-    // POST | createReservation
-    async createReservation(req: Request, res: Response) {
+async createReservation(req: Request, res: Response) {
     const { user_id, room_id, arrival_date, checkout_date, num_of_guest, status } = req.body;
 
     try {
         console.log("Datos recibidos en el cuerpo:", req.body);
 
+        // Validamos si el usuario y la habitación existen
         const userExists = await User.findOne({ user_id });
         const roomObjectId = mongoose.Types.ObjectId.isValid(room_id) ? new mongoose.Types.ObjectId(room_id) : null;
         const roomExists = roomObjectId ? await Room.findById(roomObjectId) : null;
 
-        // validacion si usuario o la habitación no existen = error
         if (!userExists || !roomExists) {
             console.log("Usuario o habitación no válidos");
             return res.status(HTTP_STATUS_CODES.NOT_FOUND).json({ message: 'Usuario o habitación no válidos' });
         }
 
-        // Buscamos todos los números de reservación y los almacenamos en un array
+        // Buscamos los números de reservación usados y calculamos el siguiente número
         const allReservationNumbers = await Reservation.find({}).select('reservation_num').lean();
         const usedReservationNumbers = allReservationNumbers.map(reservation => reservation.reservation_num);
-
-        //Generacion del siguiente numero
         let reservationNumber = 1;
+
         while (usedReservationNumbers.includes(reservationNumber.toString())) {
             reservationNumber++;
         }
 
         console.log("Nuevo número de reservación:", reservationNumber);
 
-        // Crea la nueva reservación
+        // Crear la nueva reservación
         const newReservation = new Reservation({
-            reservation_num: reservationNumber.toString(), // Número de reserva auto-incremental
+            reservation_num: reservationNumber.toString(),
             user_id,
-            room_id: roomObjectId,                      // ( _id de la habitacion)
+            room_id: roomObjectId,
             arrival_date,
             checkout_date,
             num_of_guest,
@@ -85,18 +103,42 @@ class ReservationController {
 
         console.log("Nueva reservación creada:", newReservation);
 
-        // almacenamos la reservación en la base de datos
+        // Guardamos la reservación en la base de datos
         await newReservation.save();
         console.log("Reservación guardada correctamente");
-        res.status(HTTP_STATUS_CODES.CREATED).json(newReservation);
+        
+        if (newReservation.status === 'Confirmado') {
+            // Generación del PDF
+            const pdfPath = path.join(__dirname, `../../uploads/reservation_${newReservation.reservation_num}.pdf`);
+            await generateReservationPDF(newReservation, pdfPath);
+            console.log(`PDF generado correctamente: ${pdfPath}`);
 
+            // Subir el PDF a S3
+            const fileContent = fs.readFileSync(pdfPath);
+            const uploadParams = {
+                Bucket: bucketName,
+                Key: `reservations/reservation_${newReservation.reservation_num}.pdf`, // Ruta dentro del bucket S3
+                Body: fileContent,
+                ContentType: 'application/pdf',
+            };
+
+            // Subir el archivo a S3
+            await s3Client.send(new PutObjectCommand(uploadParams));
+            console.log(`PDF subido correctamente a S3: ${uploadParams.Key}`);
+            
+            // Eliminar el archivo local
+            fs.unlinkSync(pdfPath);
+            console.log(`Archivo local eliminado: ${pdfPath}`);
+        }
+        // Responder con la nueva reservación
+        res.status(HTTP_STATUS_CODES.CREATED).json(newReservation);
     } catch (error) {
-        console.error('Error capturado al crear la reserva:', error);
-        res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({ message: 'Error al crear la reserva' });
+        console.error('Error al crear la reservación:', error);
+        res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({ message: 'Error al crear la reservación' });
     }
 }
 
-    //POST | UpdateReservation
+    //PUT | UpdateReservation
     async updateReservation(req: Request, res: Response) {
     const { id } = req.params;
     const { user_id, room_id, arrival_date, checkout_date, num_of_guest, status } = req.body;
@@ -114,10 +156,10 @@ class ReservationController {
 
         res.status(HTTP_STATUS_CODES.SUCCESS).json(updatedReservation);
 
-    } catch (error) {
+        } catch (error) {
         res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({ message: 'Error al actualizar la reservacion', error });
+        }
     }
-}
 
     //DELETE
     async deleteReservation(req: Request, res: Response) {
@@ -131,10 +173,9 @@ class ReservationController {
         }
 
         res.status(HTTP_STATUS_CODES.SUCCESS).json({ message: 'Reserva Eliminada Correctamente' });
-    } catch (error) {
+        } catch (error) {
         res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({ message: 'Error al eliminar la reserva', error });
+        }
     }
 }
-}
-
 export const reservationController = new ReservationController();

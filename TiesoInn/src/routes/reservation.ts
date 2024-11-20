@@ -67,7 +67,7 @@ router.get('/:id', authenticateToken, authorizaRole(['Cliente', 'Recepcionista']
  */
 
 //Crear una reservacion | Permisos [Cliente]
-router.post('/',  authenticateToken, authorizaRole(['Cliente', 'Recepcionista']),  reservationController.createReservation);
+router.post('/',  authenticateToken, authorizaRole(['Cliente', 'Recepcionista']), reservationController.createReservation);
 
 /**
  * @swagger
@@ -110,5 +110,4 @@ router.put('/:id',  authenticateToken, authorizaRole(['Cliente','Recepcionista']
 
 //Eliminar una reservacion | Permisos [Recepcionista]
 router.delete('/:id',  authenticateToken, authorizaRole(['Cliente','Recepcionista']), reservationController.deleteReservation);
-
 export default router;

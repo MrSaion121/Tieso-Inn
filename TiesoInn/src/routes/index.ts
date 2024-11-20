@@ -159,8 +159,6 @@ router.use('/users', userRoutes);
 // /reservations
 router.use('/reservations', reservationRoutes);
 
-// /categories
-
 //categories
 router.use('/categories', categoryRoutes);
 
