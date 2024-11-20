@@ -7,6 +7,8 @@ import loginRoutes from './login';
 import registerRoutes from './register';
 import homeRoutes from './home'
 import googleRoutes from './google';
+import chatRoutes from './support_chat'
+import path from "path";
 
 const router = Router();
 
@@ -128,7 +130,7 @@ const router = Router();
 
 //Ruta raiz
 router.get('/', (req, res) => {
-    res.send('API Raiz funcionando');
+    res.sendFile(path.join(__dirname, '..', 'views', 'home.html'));
 });
 
 /**
@@ -150,9 +152,6 @@ router.use('/register', registerRoutes);
 // /google
 router.use('/auth/google', googleRoutes);
 
-// /home
-router.use('/home', homeRoutes);
-
 // /users
 router.use('/users', userRoutes);
 
@@ -164,5 +163,8 @@ router.use('/categories', categoryRoutes);
 
 //rooms
 router.use('/rooms', roomRoutes);
+
+//chat
+router.use('/support', chatRoutes);
 
 export default router;

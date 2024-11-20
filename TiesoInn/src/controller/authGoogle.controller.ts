@@ -6,7 +6,7 @@ export const googleCallback = (req: Request, res: Response, next: NextFunction) 
 
     if (!user) {
         // Si no hay usuario, redirige al login
-        return res.redirect('/login');
+        return res.redirect('/');
     }
 
     // Generar el token JWT
@@ -17,5 +17,5 @@ export const googleCallback = (req: Request, res: Response, next: NextFunction) 
     );
 
     // redirigir al usuario a home con el token en la url
-    res.redirect(`/home?token=${token}`);
+    res.redirect(`/?token=${token}&name=${encodeURIComponent(user.name)}&user_id=${user.user_id}`);
 };

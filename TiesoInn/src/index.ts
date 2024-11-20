@@ -17,6 +17,9 @@ import swaggerConfig from './../swagger.config.json';
 //Cargar variables de entorno
 dotenv.config();
 
+//Cargar server
+import { Server } from 'socket.io'
+
 const app = express();
 const PORT  = process.env.PORT || 3000;
 
@@ -47,9 +50,31 @@ app.use('/swagger', serve, setup(swaggerDocs));
 mongoose.connect(dbUrl as string)
 .then( res => {
     console.log('Conexion exitosa con MongoDB!!..');
-    app.listen(PORT, () => {
+    const server = app.listen(PORT, () => {
         console.log(`Servidor escuchando en el puerto ${PORT}`);
     });
+
+    const io = new Server(server);
+
+io.on('connection', (socket) => {
+    socket.on('joinRoom', (userData) => {
+        socket.join('room-' + userData.room)
+        socket.to('room-' + userData.room).emit('joinRoom', userData.user)
+    })
+
+    socket.on('sendNewMessage', (data) => {
+        //console.log('You got a new message:',data)
+
+        //socket.broadcast.emit('messageReceived', data)
+        socket.to('room-' + data.room).emit('messageReceived', data)
+    })
+
+    socket.on('leftRoom', (userData) => {
+        //console.log('A user has disconnected')
+        socket.to('room-' + userData.room).emit('leftRoom', userData.user)
+    })
+    
+});
 }).catch(err => {
     console.log('Error al conectar:', err);
 });

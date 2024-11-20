@@ -10,6 +10,6 @@ router.get('/', (req, res) => {
 });
 
 //Ruta register | POST
-router.post('/', UserController.createUser);
+router.post('/', UserController.register);
 
 export default router;

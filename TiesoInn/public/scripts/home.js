@@ -1,39 +1,28 @@
-setTimeout(() => {
-    const token = localStorage.getItem('token');
-    const urlParams = new URLSearchParams(window.location.search);
-    const tokenUrl = urlParams.get('token');
+document.addEventListener("DOMContentLoaded", function () {
+  const supportChatLink = document.getElementById("supportChatLink");
+  const userId = localStorage.getItem("user_id");
 
-    if (tokenUrl) {
-        // Guardar el token en localStorage
-        localStorage.setItem('token', tokenUrl);
+  if (userId) {
+    supportChatLink.href = `/support/${userId}`; 
+    supportChatLink.hidden = false;
+  }
+});
 
-        // Redirigir a la página de inicio
-        window.location.href = '/home';
-    } else {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            alert('No se encontró el token en la URL');
-            window.location.href = '/login';
-        }
-    }
+const params = new URLSearchParams(window.location.search);
+const token = params.get('token');
+const username = params.get('name');
+const userId = params.get('user_id');
 
+if (token) {
+    // Almacenar los valores en localStorage
+    localStorage.setItem('token', token);
+    if (username) localStorage.setItem('name', username);
+    if (userId) localStorage.setItem('user_id', userId);
 
-    // Hacer la solicitud con el token
-    fetch('/home', {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-    }).then(response => {
-        if (response.ok) {
-            // Redirigir a /home si todo sale bien
-            //window.location.href = '/home';
-        } else {
-            // Si la respuesta no es exitosa, redirigir a login
-            window.location.href = '/login';
-        }
-    }).catch(err => {
-        console.error('Error de autenticación:', err);
-        window.location.href = '/login';
-    });
-}, 1000);
+    // Limpiar la URL para mayor seguridad
+    params.delete('token');
+    params.delete('name');
+    params.delete('user_id');
+    const newUrl = `${window.location.origin}${window.location.pathname}`;
+    history.replaceState(null, '', newUrl);
+}

@@ -1,0 +1,30 @@
+* {
+    font-family: Verdana, sans-serif;
+}
+
+.bg-orange {
+    background-color: #ff6600 !important;
+}
+
+h4 {
+    color: #ff6600;
+    text-align: center;
+}
+
+h4 ~ p{
+    text-align: center;
+}
+
+.card {
+    min-height: 200px;
+    max-height: 350px;
+}
+
+.carousel-item img {
+    max-height: 500px;
+}
+
+.btn-success {
+    background-color: #ff6600;
+    border-color: #b64900;
+}
