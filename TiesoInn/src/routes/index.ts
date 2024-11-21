@@ -5,7 +5,6 @@ import categoryRoutes from './categories';
 import roomRoutes from './rooms';
 import loginRoutes from './login';
 import registerRoutes from './register';
-import homeRoutes from './home'
 import googleRoutes from './google';
 import chatRoutes from './support_chat'
 import path from "path";
@@ -130,7 +129,7 @@ const router = Router();
 
 //Ruta raiz
 router.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'home.html'));
+    res.render('home');
 });
 
 /**

@@ -110,38 +110,5 @@ router.put('/:id', authenticateToken, authorizaRole(['Admin', 'Gerente']), users
 //Ruta para eliminar un usuario | Permisos [Admin]
 router.delete('/:id', authenticateToken, authorizaRole(['Admin']), usersController.deleteUser);
 
-/**
- * @swagger
- * /login:
- *  post:
- *      tags: [Auth]
- *      description: login and obtain jwt token
- *      requestBody:
- *          required: true
- *          content: 
- *              application/json:
- *                  schema:
- *                      type: object
- *                      properties:
- *                          email:
- *                              type: string
- *                          password:
- *                              type: string
- *      responses: 
- *          200:
- *              description: token generated succesfully
- *          401:
- *              description: authentication failed
- *              content:
- *                  application/json:
- *                      schema:
- *                          type: object
- *                          properties:
- *                              error:
- *                                  type: string
- *          500: 
- *              description: server error
- */
-
 
 export default router;

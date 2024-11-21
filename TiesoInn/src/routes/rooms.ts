@@ -21,7 +21,7 @@ const router = Router();
  */
 
 //Obtener todas las habitaciones | Permisos [Todos]
-router.get('', authenticateToken, roomsController.getAll);
+router.get('', roomsController.getAll);
 
 /**
  * @swagger
@@ -39,7 +39,7 @@ router.get('', authenticateToken, roomsController.getAll);
  */
 
 //Obtener la habitacion por el ID | Permisos [Todos]
-router.get('/:room_id',  authenticateToken, roomsController.getRoomByID);
+router.get('/:room_id', roomsController.getRoomByID);
 
 /**
  * @swagger
