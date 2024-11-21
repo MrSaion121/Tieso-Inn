@@ -1,46 +1,63 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const supportChatLink = document.getElementById("supportChatLink");
-  const userId = localStorage.getItem("user_id");
+function logout() {
+  localStorage.removeItem("user_id");
+  localStorage.removeItem("token");
+  localStorage.removeItem("name");
+  location.reload();
+}
 
-  if (userId) {
-    supportChatLink.href = `/support/${userId}`;
-    supportChatLink.hidden = false;
+document.addEventListener("DOMContentLoaded", async function () {
+  const userId = localStorage.getItem("user_id");
+  const token = localStorage.getItem("token");
+  if (token) {
+    try {
+      const response = await fetch(`/users/${userId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        //Menu dropdown
+        const dropdown = document.getElementById("dropdownId");
+        dropdown.innerHTML = "Mi Perfil";
+
+        const option1 = document.getElementById("option-1");
+        option1.href = "/profile";
+        option1.innerHTML = "Mi perfil";
+
+        const option2 = document.getElementById("option-2");
+        option2.href = "/reservations";
+        option2.innerHTML = "Reservaciones";
+
+        const logoutBtn = document.createElement("a");
+        logoutBtn.className = "dropdown-item";
+        logoutBtn.onclick = logout;
+        logoutBtn.innerHTML = "Cerrar sesion";
+
+        const menu = document.getElementById("dropdownMenu");
+        menu.appendChild(logoutBtn);
+
+        //Enlace a chat
+        const supportChatLink = document.getElementById("supportChatLink");
+        supportChatLink.href = `/support/${userId}`;
+        supportChatLink.hidden = false;
+      } else if (response.status == 401) {
+        logout();
+      }
+    } catch (error) {
+      console.error("Error de red: ", error);
+    }
   }
 });
 
-const tokenStorage = localStorage.getItem("token");
-// Realiza una solicitud al servidor con el token en el encabezado
-fetch(window.location.href, {
-  method: "GET",
-  headers: {
-    Authorization: `Bearer ${tokenStorage}`,
-  },
-})
-  .then((response) => {
-    if (response.ok) {
-      return response.text(); // Si es válido, obtiene el contenido HTML
-    } else if (response.status === 401) {
-      // Si no es válido, redirige al login
-      localStorage.removeItem("user_id");
-      localStorage.removeItem("token");
-      localStorage.removeItem("name");
-    } else {
-      throw new Error("Ocurrió un error inesperado");
-    }
-  })
-  .catch((error) => {
-    console.error("Error:", error);
-    alert("Hubo un problema al cargar la página.");
-  });
-
 const params = new URLSearchParams(window.location.search);
-const token = params.get("token");
+const tokenParam = params.get("token");
 const username = params.get("name");
 const userId = params.get("user_id");
 
-if (token) {
+if (tokenParam) {
   // Almacenar los valores en localStorage
-  localStorage.setItem("token", token);
+  localStorage.setItem("token", tokenParam);
   if (username) localStorage.setItem("name", username);
   if (userId) localStorage.setItem("user_id", userId);
 

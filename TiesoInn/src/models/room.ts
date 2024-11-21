@@ -11,7 +11,7 @@ interface IRoom extends Document {
 
 const roomSchema = new Schema ({
     room_id: { type: Schema.Types.ObjectId, required: true },
-    category_id: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
+    category_id: { type: Schema.Types.ObjectId, ref: 'category', required: true },
     price_per_night: { type: Number, required: true }, 
     description: { type: String, required: true },
     image_url: { type: String, required: true},

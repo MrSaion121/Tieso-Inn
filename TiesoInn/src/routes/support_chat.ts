@@ -6,7 +6,7 @@ import { authenticateToken } from "../middlewares/auth";
 const router = Router();
 
 router.get('/:id', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'support_chat.html'))
+    res.render('support_chat')
 });
 
 router.get('/chat/:id', authenticateToken, ChatController.getChat)
