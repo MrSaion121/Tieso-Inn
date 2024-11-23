@@ -73,8 +73,10 @@ io.on('connection', (socket) => {
         //console.log('A user has disconnected')
         socket.to('room-' + userData.room).emit('leftRoom', userData.user)
     })
-    
 });
 }).catch(err => {
     console.log('Error al conectar:', err);
 });
+
+//Requerido para pruebas
+export default app;
