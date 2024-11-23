@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     socket.on("messageReceived", (data) => {
         const className = data.sender === user_id ? "own-message" : "received-message";
-        const user = sender === user_id ? username : sender === roomID ? "Cliente" : "Soporte";
+        const user = data.sender === user_id ? username : data.sender === roomID ? "Cliente" : "Soporte";
         const newMessage = createMessageElement({
             className,
             user,
@@ -133,7 +133,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         messageInput.value = "";
 
         try {
-            console.log(`PUT URL: /support/${roomID}`)
             const response = await fetch(`/support/${roomID}`, {
                 method: "PUT",
                 headers: {
@@ -147,7 +146,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
 
             if (response.ok) {
-                socket.emit("sendNewMessage", { user: username, message: msg, room: roomID });
+                socket.emit("sendNewMessage", { sender: username, message: msg, room: roomID });
             } else if (response.status === 401) {
                 logout()
             } else {

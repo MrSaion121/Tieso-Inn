@@ -1,28 +1,70 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const supportChatLink = document.getElementById("supportChatLink");
-  const userId = localStorage.getItem("user_id");
+function logout() {
+  localStorage.removeItem("user_id");
+  localStorage.removeItem("token");
+  localStorage.removeItem("name");
+  location.reload();
+}
 
-  if (userId) {
-    supportChatLink.href = `/support/${userId}`; 
-    supportChatLink.hidden = false;
+document.addEventListener("DOMContentLoaded", async function () {
+  const userId = localStorage.getItem("user_id");
+  const token = localStorage.getItem("token");
+  if (token) {
+    try {
+      const response = await fetch(`/users/${userId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        //Menu dropdown
+        const dropdown = document.getElementById("dropdownId");
+        dropdown.innerHTML = "Mi Perfil";
+
+        const option1 = document.getElementById("option-1");
+        option1.href = "/profile";
+        option1.innerHTML = "Mi perfil";
+
+        const option2 = document.getElementById("option-2");
+        option2.href = "/reservations";
+        option2.innerHTML = "Reservaciones";
+
+        const logoutBtn = document.createElement("a");
+        logoutBtn.className = "dropdown-item";
+        logoutBtn.onclick = logout;
+        logoutBtn.innerHTML = "Cerrar sesion";
+
+        const menu = document.getElementById("dropdownMenu");
+        menu.appendChild(logoutBtn);
+
+        //Enlace a chat
+        const supportChatLink = document.getElementById("supportChatLink");
+        supportChatLink.href = `/support/${userId}`;
+        supportChatLink.hidden = false;
+      } else if (response.status == 401) {
+        logout();
+      }
+    } catch (error) {
+      console.error("Error de red: ", error);
+    }
   }
 });
 
 const params = new URLSearchParams(window.location.search);
-const token = params.get('token');
-const username = params.get('name');
-const userId = params.get('user_id');
+const tokenParam = params.get("token");
+const username = params.get("name");
+const userId = params.get("user_id");
 
-if (token) {
-    // Almacenar los valores en localStorage
-    localStorage.setItem('token', token);
-    if (username) localStorage.setItem('name', username);
-    if (userId) localStorage.setItem('user_id', userId);
+if (tokenParam) {
+  // Almacenar los valores en localStorage
+  localStorage.setItem("token", tokenParam);
+  if (username) localStorage.setItem("name", username);
+  if (userId) localStorage.setItem("user_id", userId);
 
-    // Limpiar la URL para mayor seguridad
-    params.delete('token');
-    params.delete('name');
-    params.delete('user_id');
-    const newUrl = `${window.location.origin}${window.location.pathname}`;
-    history.replaceState(null, '', newUrl);
+  // Limpiar la URL para mayor seguridad
+  params.delete("token");
+  params.delete("name");
+  params.delete("user_id");
+  const newUrl = `${window.location.origin}${window.location.pathname}`;
+  history.replaceState(null, "", newUrl);
 }
