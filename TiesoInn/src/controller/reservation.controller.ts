@@ -41,7 +41,7 @@ class ReservationController {
     try {
       const reservations = await Reservation.find().populate(
         "room_id",
-        "category_id"
+        "user_id"
       );
       res.status(HTTP_STATUS_CODES.SUCCESS).json(reservations);
     } catch (error) {

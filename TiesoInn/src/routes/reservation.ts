@@ -110,11 +110,8 @@ router.put('/:id',  authenticateToken, authorizaRole(['Cliente','Recepcionista']
 
 //Eliminar una reservacion | Permisos [Recepcionista]
 router.delete('/:id',  authenticateToken, authorizaRole(['Cliente','Recepcionista']), reservationController.deleteReservation);
-<<<<<<< HEAD
-=======
 
 router.get('/room/:id', authenticateToken, reservationController.getReservationsByRoomId)
 
 
->>>>>>> SO
 export default router;

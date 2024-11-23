@@ -1,0 +1,282 @@
+<head>
+  <title>Tieso Inn - Perfil</title>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  <!-- Bootstrap CSS -->
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="stylesheet"
+    href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
+    integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ"
+    crossorigin="anonymous"
+  />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/styles/home.css" />
+  <link rel="stylesheet" href="/styles/profile.css" />
+</head>
+
+<body>
+  <!-- Nav Bar -->
+  <nav class="navbar navbar-expand-sm navbar-dark bg-orange">
+    <a class="navbar-brand" href="/"><i class="fa" aria-hidden="true"></i>
+      Tieso Inn</a>
+    <button
+      class="navbar-toggler d-lg-none"
+      type="button"
+      data-toggle="collapse"
+      data-target="#collapsibleNavId"
+      aria-controls="collapsibleNavId"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <i class="fa fa-caret-down" aria-hidden="true"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavId">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Reservar</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown active">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="dropdownId"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >Ingreso</a>
+          <div
+            class="dropdown-menu"
+            aria-labelledby="dropdownId"
+            id="dropdownMenu"
+          >
+            <a class="dropdown-item" id="option-1" href="/login">
+              Ingresar
+            </a>
+            <a class="dropdown-item" id="option-2" href="/register">
+              Registro
+            </a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="supportChatLink" href="#" hidden>Ayuda</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- User Profile -->
+  <div class="container mt-4">
+    <h1>Perfil de Usuario</h1>
+    <!-- Role-Specific Tabs -->
+    <ul class="nav nav-tabs mt-4" id="roleTabs">
+      <li class="nav-item">
+        <a
+          class="nav-link active"
+          id="tab-general"
+          data-toggle="tab"
+          href="#general"
+        >General</a>
+      </li>
+      {{#if (eq this.role "Cliente")}}
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            id="tab-bookings"
+            data-toggle="tab"
+            href="#bookings"
+          >Mis Reservas</a>
+        </li>
+      {{/if}}
+      {{#if
+        (or
+          (eq this.role "Recepcionista")
+          (eq this.role "Gerente")
+          (eq this.role "Admin")
+        )
+      }}
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            id="tab-management"
+            data-toggle="tab"
+            href="#management"
+          >Gestión</a>
+        </li>
+      {{/if}}
+      {{#if (eq this.role "Admin")}}
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            id="tab-settings"
+            data-toggle="tab"
+            href="#settings"
+          >Configuraciones</a>
+        </li>
+      {{/if}}
+      {{#if showTab}}
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            id="tab-chats"
+            data-toggle="tab"
+            href="#chats"
+          >Chats</a>
+        </li>
+      {{/if}}
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content mt-3">
+      <div class="tab-pane fade show active" id="general">
+        <p>Bienvenido al sistema Tieso Inn.</p>
+        <p><strong>Nombre:</strong> {{this.name}}</p>
+        <p><strong>Email:</strong> {{this.email}}</p>
+        <p><strong>Telefono:</strong> {{this.cellphone}}</p>
+      </div>
+      {{#if (eq this.role "Cliente")}}
+        <div class="tab-pane fade" id="bookings">
+          <p>Aquí encontrarás tus reservas actuales.</p>
+        </div>
+      {{/if}}
+      {{#if
+        (or
+          (eq this.role "Recepcionista")
+          (eq this.role "Gerente")
+        )
+      }}
+        <div class="tab-pane fade" id="management">
+          <p>Sección de gestión de clientes y reservas.</p>
+        </div>
+      {{/if}}
+      {{#if (eq this.role "Admin")}}
+        <div class="tab-pane fade" id="admin-settings">
+          <h4>Configuraciones avanzadas</h4>
+
+          <!-- Sub-tabs -->
+          <ul class="nav nav-tabs mt-3" id="adminSettingsSubTabs">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                id="sub-tab-general-settings"
+                data-toggle="tab"
+                href="#general-settings"
+              >General</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                id="sub-tab-user-management"
+                data-toggle="tab"
+                href="#user-management"
+              >Gestión de Usuarios</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                id="sub-tab-system-settings"
+                data-toggle="tab"
+                href="#system-settings"
+              >Configuración del Sistema</a>
+            </li>
+          </ul>
+
+          <!-- Sub-tab Content -->
+          <div class="tab-content mt-3">
+            <!-- General Settings -->
+            <div class="tab-pane fade show active" id="general-settings">
+              <p>Ajustes generales del sistema.</p>
+              <!-- Aquí podrías agregar formularios o controles específicos -->
+            </div>
+
+            <!-- User Management -->
+            <div class="tab-pane fade" id="user-management">
+              <p>Administrar usuarios del sistema.</p>
+              <!-- Ejemplo de tabla de usuarios -->
+              <table class="table table-striped mt-3">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Juan Pérez</td>
+                    <td>Recepcionista</td>
+                    <td>
+                      <button class="btn btn-warning btn-sm">Editar</button>
+                      <button class="btn btn-danger btn-sm">Eliminar</button>
+                    </td>
+                  </tr>
+                  <!-- Más filas dinámicas -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- System Settings -->
+            <div class="tab-pane fade" id="system-settings">
+              <p>Configuraciones avanzadas del sistema, como la integración con
+                APIs, ajustes de seguridad, etc.</p>
+              <!-- Ejemplo de un formulario -->
+              <form>
+                <div class="form-group">
+                  <label for="api-key">API Key</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="api-key"
+                    placeholder="Ingresa la clave de API"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="security-settings">Nivel de seguridad</label>
+                  <select class="form-control" id="security-settings">
+                    <option>Bajo</option>
+                    <option>Medio</option>
+                    <option>Alto</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {{/if}}
+
+      {{#if showTab}}
+        <div class="tab-pane fade" id="chats">
+          <p>Chats de usuarios</p>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+
+  <script src="/scripts/token.js"></script>
+  <script src="/scripts/profile.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+  ></script>
+  <script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+  ></script>
+</body>

@@ -19,15 +19,13 @@ document.addEventListener("DOMContentLoaded", async function () {
       if (response.ok) {
         //Menu dropdown
         const dropdown = document.getElementById("dropdownId");
-        dropdown.innerHTML = "Mi Perfil";
+        dropdown.innerHTML = "Cuenta";
 
         const option1 = document.getElementById("option-1");
-        option1.href = "/profile";
+        option1.href = `/users/profile/${userId}`
         option1.innerHTML = "Mi perfil";
 
-        const option2 = document.getElementById("option-2");
-        option2.href = "/reservations";
-        option2.innerHTML = "Reservaciones";
+        document.getElementById("option-2").outerHTML = '';
 
         const logoutBtn = document.createElement("a");
         logoutBtn.className = "dropdown-item";

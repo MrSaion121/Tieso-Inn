@@ -3,6 +3,16 @@ import SupportChat from '../models/support_chat';
 import { HTTP_STATUS_CODES } from '../types/http-status-codes';
 
 class ChatController {
+    async getChats(req: Request, res: Response) {
+        try {
+            const chats = await SupportChat.find({})
+            res.status(HTTP_STATUS_CODES.SUCCESS).json(chats)
+        } catch(error){
+            console.error(error)
+            res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({message: 'Error al obtener el chat'})
+        }
+    }
+
     async getChat(req: Request, res: Response) {
         try {
             const chat_id = req.params['id']

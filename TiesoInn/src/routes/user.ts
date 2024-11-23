@@ -24,10 +24,10 @@ router.get('/', authenticateToken, authorizaRole(['Admin', 'Gerente']), usersCon
 
 /**
  * @swagger
- * /users{email}:
+ * /users{id}:
  *  get:
  *      tags: [Users]
- *      description: get one user by email
+ *      description: get one user by id
  *      responses:
  *          200:
  *              description: user
@@ -37,8 +37,11 @@ router.get('/', authenticateToken, authorizaRole(['Admin', 'Gerente']), usersCon
  *              description: server error
  */
 
-//Ruta para Obtener un usuario por el email | Permisos [ everyone ]
+//Ruta para Obtener un usuario por el id | Permisos [ everyone ]
 router.get('/:id', authenticateToken, usersController.getUserById);
+
+
+router.get('/profile/:id', usersController.getRenderUserById)
 
 /**
  * @swagger

@@ -37,6 +37,35 @@ class UsersController {
     }
   }
 
+  //Obtener usuario By ID
+  async getRenderUserById(req: Request, res: Response) {
+    try {
+      const user_id = req.params["id"];
+      const user = await User.findOne({ user_id }, { password: 0 });
+      if (!user) {
+        return res
+          .status(HTTP_STATUS_CODES.NOT_FOUND)
+          .send("Usuario no encontrado");
+      }
+      // Verificar el encabezado Accept para determinar el tipo de respuesta
+      const acceptHeader = req.headers.accept || "";
+      if (acceptHeader.includes("application/json")) {
+        return res.status(HTTP_STATUS_CODES.SUCCESS).json(user);
+      } else {
+        // Renderizar la vista utilizando Handlebars
+        const showTab = user_id === process.env.HOTEL_HELP_ID!;
+        return res.status(HTTP_STATUS_CODES.SUCCESS).render("profile", {
+          ...user.toObject(),
+          showTab,
+        });
+      }
+    } catch (error) {
+      res
+        .status(HTTP_STATUS_CODES.SERVER_ERROR)
+        .json({ message: "Error al conseguir el usuario" });
+    }
+  }
+
   //Crear usuario
   async createUser(req: Request, res: Response) {
     try {
@@ -83,7 +112,7 @@ class UsersController {
 
       //responder con el token y redireccionar al user
       res.status(HTTP_STATUS_CODES.CREATED).json({
-        message: "Usuario Registrado con exito",
+        message: "Usuario creado con exito",
         //token: token
       });
 

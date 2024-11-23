@@ -45,7 +45,17 @@ googleAuth(app);
 app.use(router);
 
 // Configuración del motor de plantillas
-app.engine('handlebars', engine());
+type HandlebarsHelpers = {
+    eq: (a: string | number, b: string | number) => boolean;
+    or: (...args: any[]) => boolean;
+}
+
+const helpers: HandlebarsHelpers = {
+    eq: (a, b) => a === b,
+    or: (...args) => args.slice(0, -1).some(Boolean),
+}
+
+app.engine('handlebars', engine({helpers}));
 app.set('view engine', 'handlebars');
 
 //Conexion a Swagger

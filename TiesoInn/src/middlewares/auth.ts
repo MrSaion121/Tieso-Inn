@@ -32,6 +32,7 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
         req.user = decoded;
         next();
     } catch (error) {
+        console.log('ERROR DE TOKEN')
         if (req.headers['accept']?.includes('text/html')) {
             return res.redirect('/login');
         }
