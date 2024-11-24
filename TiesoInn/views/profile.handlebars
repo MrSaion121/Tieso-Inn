@@ -47,7 +47,7 @@
           <a class="nav-link" href="/">Inicio</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Reservar</a>
+          <a class="nav-link" href="/rooms">Reservar</a>
         </li>
       </ul>
       <ul class="navbar-nav">
@@ -103,13 +103,7 @@
           >Mis Reservas</a>
         </li>
       {{/if}}
-      {{#if
-        (or
-          (eq this.role "Recepcionista")
-          (eq this.role "Gerente")
-          (eq this.role "Admin")
-        )
-      }}
+      {{#if (or (eq this.role "Recepcionista") (eq this.role "Gerente"))}}
         <li class="nav-item">
           <a
             class="nav-link"
@@ -125,7 +119,7 @@
             class="nav-link"
             id="tab-settings"
             data-toggle="tab"
-            href="#settings"
+            href="#admin-settings"
           >Configuraciones</a>
         </li>
       {{/if}}
@@ -137,6 +131,16 @@
             data-toggle="tab"
             href="#chats"
           >Chats</a>
+        </li>
+      {{/if}}
+      {{#if (eq this.role "Gerente")}}
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            id="sub-tab-rooms"
+            data-toggle="tab"
+            href="#room-management"
+          >Configuración de Habitaciones</a>
         </li>
       {{/if}}
     </ul>
@@ -154,29 +158,29 @@
           <p>Aquí encontrarás tus reservas actuales.</p>
         </div>
       {{/if}}
-      {{#if
-        (or
-          (eq this.role "Recepcionista")
-          (eq this.role "Gerente")
-        )
-      }}
+      {{#if (or (eq this.role "Recepcionista") (eq this.role "Gerente"))}}
         <div class="tab-pane fade" id="management">
           <p>Sección de gestión de clientes y reservas.</p>
         </div>
       {{/if}}
+      {{#if (eq this.role "Gerente")}}
+        <div class="tab-pane fade" id="room-management">
+
+        </div>
+      {{/if}}
       {{#if (eq this.role "Admin")}}
         <div class="tab-pane fade" id="admin-settings">
-          <h4>Configuraciones avanzadas</h4>
+          <h4>Configuracion de Sistema</h4>
 
           <!-- Sub-tabs -->
           <ul class="nav nav-tabs mt-3" id="adminSettingsSubTabs">
             <li class="nav-item">
               <a
                 class="nav-link active"
-                id="sub-tab-general-settings"
+                id="sub-tab-create-user"
                 data-toggle="tab"
-                href="#general-settings"
-              >General</a>
+                href="#create-user"
+              >Crear Usuarios</a>
             </li>
             <li class="nav-item">
               <a
@@ -186,77 +190,94 @@
                 href="#user-management"
               >Gestión de Usuarios</a>
             </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                id="sub-tab-system-settings"
-                data-toggle="tab"
-                href="#system-settings"
-              >Configuración del Sistema</a>
-            </li>
           </ul>
 
           <!-- Sub-tab Content -->
           <div class="tab-content mt-3">
             <!-- General Settings -->
-            <div class="tab-pane fade show active" id="general-settings">
-              <p>Ajustes generales del sistema.</p>
-              <!-- Aquí podrías agregar formularios o controles específicos -->
+            <div class="tab-pane fade show active" id="create-user">
+              <form id="createUserForm">
+                <h3>Crear Usuario</h3>
+
+                <div class="mb-3">
+                  <label for="nameInput" class="form-label">Nombre</label>
+                  <input
+                    type="text"
+                    id="nameInput"
+                    class="form-control"
+                    placeholder="Nombre del usuario"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="roleInput" class="form-label">Rol</label>
+                  <select id="roleInput" class="form-control">
+                    <option value="Cliente">Cliente</option>
+                    <option value="Recepcionista">Recepcionista</option>
+                    <option value="Gerente">Gerente</option>
+                    <option value="Admin">Admin</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label for="emailInput" class="form-label">Correo Electrónico</label>
+                  <input
+                    type="email"
+                    id="emailInput"
+                    class="form-control"
+                    placeholder="ejemplo@correo.com"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label
+                    for="passwordInput"
+                    class="form-label"
+                  >Contraseña</label>
+                  <input
+                    type="password"
+                    id="passwordInput"
+                    class="form-control"
+                    placeholder="Contraseña"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label
+                    for="cellphoneInput"
+                    class="form-label"
+                  >Teléfono</label>
+                  <input
+                    type="text"
+                    id="cellphoneInput"
+                    class="form-control"
+                    placeholder="Teléfono"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="statusInput" class="form-label">Estado</label>
+                  <select id="statusInput" class="form-control">
+                    <option value="Activo">Activo</option>
+                    <option value="Eliminado">Eliminado</option>
+                    <option value="Bloqueado">Bloqueado</option>
+                  </select>
+                </div>
+
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  onclick="crearUsuario()"
+                >Crear Usuario</button>
+              </form>
+
             </div>
 
             <!-- User Management -->
             <div class="tab-pane fade" id="user-management">
-              <p>Administrar usuarios del sistema.</p>
-              <!-- Ejemplo de tabla de usuarios -->
-              <table class="table table-striped mt-3">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Rol</th>
-                    <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Juan Pérez</td>
-                    <td>Recepcionista</td>
-                    <td>
-                      <button class="btn btn-warning btn-sm">Editar</button>
-                      <button class="btn btn-danger btn-sm">Eliminar</button>
-                    </td>
-                  </tr>
-                  <!-- Más filas dinámicas -->
-                </tbody>
-              </table>
-            </div>
-
-            <!-- System Settings -->
-            <div class="tab-pane fade" id="system-settings">
-              <p>Configuraciones avanzadas del sistema, como la integración con
-                APIs, ajustes de seguridad, etc.</p>
-              <!-- Ejemplo de un formulario -->
-              <form>
-                <div class="form-group">
-                  <label for="api-key">API Key</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="api-key"
-                    placeholder="Ingresa la clave de API"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="security-settings">Nivel de seguridad</label>
-                  <select class="form-control" id="security-settings">
-                    <option>Bajo</option>
-                    <option>Medio</option>
-                    <option>Alto</option>
-                  </select>
-                </div>
-                <button type="submit" class="btn btn-primary">Guardar</button>
-              </form>
             </div>
           </div>
         </div>

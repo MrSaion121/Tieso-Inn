@@ -96,6 +96,28 @@ class ReservationController {
     }
   }
 
+  //GET | ReservationById
+  async getReservationsByUserId(req: Request, res: Response) {
+    const { id } = req.params;
+
+    try {
+      const reservation = await Reservation.find({
+        user_id: id,
+      }).populate("room_id", "category_id");
+      if (!reservation) {
+        res
+          .status(HTTP_STATUS_CODES.NOT_FOUND)
+          .json({ message: "La habitacion no tiene reservaciones" });
+      }
+
+      res.status(HTTP_STATUS_CODES.SUCCESS).json(reservation);
+    } catch (error) {
+      res
+        .status(HTTP_STATUS_CODES.SERVER_ERROR)
+        .json({ message: "Error al obtener la reserva", error });
+    }
+  }
+
     // POST | createReservation
     async createReservation(req: Request, res: Response) {
     const { user_id, room_id, arrival_date, checkout_date, num_of_guest, status } = req.body;
@@ -152,19 +174,12 @@ class ReservationController {
     //POST | UpdateReservation
     async updateReservation(req: Request, res: Response) {
     const { id } = req.params;
-    const {
-      user_id,
-      room_id,
-      arrival_date,
-      checkout_date,
-      num_of_guest,
-      status,
-    } = req.body;
+    const updatedData = req.body;
 
     try {
       const updatedReservation = await Reservation.findOneAndUpdate(
         { reservation_num: id },
-        { user_id, room_id, arrival_date, checkout_date, num_of_guest, status },
+        updatedData,
         { new: true }
       );
 

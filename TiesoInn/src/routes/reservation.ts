@@ -113,5 +113,6 @@ router.delete('/:id',  authenticateToken, authorizaRole(['Cliente','Recepcionist
 
 router.get('/room/:id', authenticateToken, reservationController.getReservationsByRoomId)
 
+router.get('/user/:id', authenticateToken, reservationController.getReservationsByUserId)
 
 export default router;

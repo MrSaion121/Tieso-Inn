@@ -19,8 +19,8 @@ const router = Router();
  *              description: server error
  */
 
-//Ruta para Obtener todos los usuarios | Permisos [Admin, Gerente]
-router.get('/', authenticateToken, authorizaRole(['Admin', 'Gerente']), usersController.getAllUsers);
+//Ruta para Obtener todos los usuarios | Permisos [Admin]
+router.get('/', authenticateToken, authorizaRole(['Admin']), usersController.getAllUsers);
 
 /**
  * @swagger
