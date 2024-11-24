@@ -189,7 +189,7 @@ class UsersController {
       if (!password) {
         return res
           .status(HTTP_STATUS_CODES.BAD_REQUEST)
-          .send("La contraseña es requerida.");
+          .json("La contraseña es requerida.");
       }
 
       //Validar si usuario existe en DB
@@ -197,7 +197,7 @@ class UsersController {
       if (userExists) {
         return res
           .status(HTTP_STATUS_CODES.BAD_REQUEST)
-          .send("Este email ya se esta usando");
+          .json("Este email ya se esta usando");
       }
 
       const user_id = new mongoose.Types.ObjectId();
