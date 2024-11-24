@@ -141,17 +141,23 @@ class UsersController {
       const user = await User.findOne({ email });
 
       if (!user) {
-        throw new Error(`El correo no existe`);
+        return res
+          .status(HTTP_STATUS_CODES.UNATHORIZED)
+          .json({ error: 'El correo no existe' });
       }
 
       if (user.status === "Eliminado" || user.status === "Bloqueado") {
-        throw new Error(`El usuario esta bloqueado o eliminado`);
+        return res
+          .status(HTTP_STATUS_CODES.UNATHORIZED)
+          .json({ error: 'El usuario esta bloqueado o eliminado' });
       }
 
       const matchPassword = await bcrypt.compare(password, user.password);
 
       if (!matchPassword) {
-        throw new Error("Contraseña incorrecta");
+        return res
+          .status(HTTP_STATUS_CODES.UNATHORIZED)
+          .json({ error: 'Contraseña incorrecta' });
       }
 
       //Token
@@ -163,9 +169,11 @@ class UsersController {
         }
       );
 
-      res
-        .status(HTTP_STATUS_CODES.SUCCESS)
-        .json({ token, user_id: user.user_id, name: user.name });
+      return res.status(HTTP_STATUS_CODES.SUCCESS).json({
+        token,
+        user_id: user.user_id,
+        name: user.name
+      });
     } catch (error) {
       if (error instanceof Error) {
         console.error(error);
