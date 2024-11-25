@@ -12,7 +12,7 @@ dotenv.config();
 
 jest.mock('../../models/user'); // Mockear el modelo de User
 jest.mock('bcryptjs');          // Mockear bcrypt
-//jest.mock('jsonwebtoken');    // Mockear jwt
+jest.mock('jsonwebtoken');      // Mockear jwt
 
 describe('Pruebas del endpoint /login', () => {
     //Limpiar todos los mocks antes de cada prueba
@@ -25,42 +25,14 @@ describe('Pruebas del endpoint /login', () => {
         await mongoose.connection.close(); // Cierra la conexión a MongoDB
     });
 
-    //Prueba 1: usuario encontrado en la base de datos
-    it('Debería de encontrar el user_id dentro de la base de datos', async () => {
-        const mockUser = {
-            email: 'johndoe@example.com',
-            password: 'securePassword123',
-            status: 'Activo',
-            user_id: '67435bfbd9d05121f51cfd45',        //<---Tienes que poner el user_id de mongoDB
-            name: 'John Doe',
-            role: 'Cliente',
-        };
-
-        //Configuracion de los mocks
-        // Mockeando User.findOne
-        (User.findOne as jest.Mock).mockResolvedValue(mockUser);
-        // Mockeando bcrypt.compare
-        (bcrypt.compare as jest.Mock).mockResolvedValue(true);
-
-        //Realizar peticion
-        const response = await request(app)
-            .post('/login')
-            .send({
-                email: 'johndoe@example.com',
-                password: 'securePassword123',
-            });
-
-        expect(response.statusCode).toBe(HTTP_STATUS_CODES.SUCCESS);
-        expect(response.body).toHaveProperty('user_id', mockUser.user_id);
-        expect(response.body).toHaveProperty('name', mockUser.name);
-    });
-
-    //Prueba 2: usuario autenticado con token devuelto (Pendiente por ver el token)
-    /*
+    //Prueba 1: usuario autenticado con token devuelto (Pendiente por ver el token)
     it('Debería de hacer un login exitoso y devolver un token', async () => {
         const mockUser = {
+            user_id: new mongoose.Types.ObjectId().toString(),
+            name: 'John Doe',
             email: 'johndoe@example.com',
-            password: 'securePassword123',
+            password: 'hashedPassword123',
+            status: 'Activo',
         };
 
         //Configuracion de los mocks
@@ -80,12 +52,12 @@ describe('Pruebas del endpoint /login', () => {
             });
 
         expect(response.statusCode).toBe(HTTP_STATUS_CODES.SUCCESS);
-        //verificando el token mockeado
-        expect(response.body).toHaveProperty('token', 'mockedToken');
+        expect(response.body).toHaveProperty('token', 'mockedToken');       // Validar que regresa el token
+        expect(response.body).toHaveProperty('user_id', mockUser.user_id);  // Validar el ID de usuario
+        expect(response.body).toHaveProperty('name', mockUser.name);        // Validar el nombre del usuario
     });
-    */
 
-    //Prueba 3: Retornar el error si no existe el correo
+    //Prueba 2: Retornar el error si no existe el correo
     it('Debería retornar error si el correo no existe', async () => {
         (User.findOne as jest.Mock).mockResolvedValue(null);
 
@@ -100,7 +72,7 @@ describe('Pruebas del endpoint /login', () => {
         expect(response.body).toHaveProperty('error', 'El correo no existe');
     });
 
-    //Prueba 4: El usuario escribe contraseña incorrecta, o no hay
+    //Prueba 3: El usuario escribe contraseña incorrecta, o no hay
     it('Debería retornar error si la contraseña es incorrecta', async () => {
         const mockUser = {
             email: 'johndoe@example.com',
@@ -122,7 +94,7 @@ describe('Pruebas del endpoint /login', () => {
         expect(response.body).toHaveProperty('error', 'Contraseña incorrecta');
     });
 
-    //Prueba 5: usuario tiene la cuenta habilitada (Activa)
+    //Prueba 4: usuario tiene la cuenta habilitada (Activa)
     it('Debería retornar exito si el estado de la cuenta esta activa', async () => {
         const mockUser = {
             email: 'johndoe@example.com',
@@ -146,7 +118,7 @@ describe('Pruebas del endpoint /login', () => {
         expect(response.statusCode).toBe(HTTP_STATUS_CODES.SUCCESS);
     });
 
-    //Prueba 6: usuario tiene la cuenta bloqueada o anda elimianda (Pendiente por ver)
+    //Prueba 5: usuario tiene la cuenta bloqueada o anda elimianda (Pendiente por ver)
     it('Debería retornar error si el usuario está bloqueado o eliminado', async () => {
         //Caso 1: Usuario Bloqueado
         const blockedUser = {

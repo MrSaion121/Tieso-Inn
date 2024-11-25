@@ -19,7 +19,6 @@ describe('Arranque de Servidor basico', () => {
         await mongoose.connection.close(); // Cierra la conexión a MongoDB
     });
 
-
     //Caso 1: verificar rutas desconocidas
     it('Debe iniciar y responder con un estatus 404 para rutas desconocidas', async () => {
         const response = await request(app).get('/ruta-desconocida'); //Realiza la solicitud a una ruta random

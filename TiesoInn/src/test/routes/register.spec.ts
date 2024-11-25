@@ -23,8 +23,8 @@ describe('Pruebas del endpoint /register', () => {
 
     //Prueba 1: Registro exitoso
     it('Debería registrar un usuario con éxito', async () => {
-        (User.findOne as jest.Mock).mockResolvedValue(null);        // Simula que el usuario no existe
-        (User.prototype.save as jest.Mock).mockResolvedValue({});   // Simula que el usuario se guarda exitosamente
+        (User.findOne as jest.Mock).mockResolvedValue(null);        // Simular que el usuario no existe
+        (User.prototype.save as jest.Mock).mockResolvedValue({});   // Simular que el usuario se guarda exitosamente
 
         const response = await request(app)
             .post('/register')

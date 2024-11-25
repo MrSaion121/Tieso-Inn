@@ -7,13 +7,6 @@ import mongoose from 'mongoose';
 //Cargar variables de entorno
 import dotenv from 'dotenv';
 dotenv.config();
-/*
-//Leer el servidor corriendo
-const SERVER_URL = process.env.SERVER_URL || '';
-const PORT = process.env.PORT || 3000;
-//url del servidor
-const serverUrl = `${SERVER_URL}:${PORT}`
-*/
 
 //Plantilla Mock User Admin
 const mockTokenAdmin = jwt.sign(
@@ -46,7 +39,7 @@ describe('Prueba de edpoints de la API', () => {
     });
 
     //Endpoint: /
-    it('Debe de responder correctamente en la ruta raiz /', async () => {
+    it('Debe responder correctamente en la ruta raiz /', async () => {
         const response = await request(app).get('/');             //Solicita la peticion en Raiz
         expect(response.statusCode).toBe(HTTP_STATUS_CODES.SUCCESS);    //Se espera que responda con 200
         expect(response.text).toContain('<html');                       //Se espera que contenga contenido HTML
@@ -73,7 +66,6 @@ describe('Prueba de edpoints de la API', () => {
     });
 
     //Requieren permisos especiales (Roles, token)
-
     //Endpoint: /auth/google
     it('Debe responder correctamente en la ruta /auth/google/login', async () => {
         const response = await request(app).get('/auth/google/login');     //Solicita la peticion en /auth/google/login
@@ -88,7 +80,7 @@ describe('Prueba de edpoints de la API', () => {
 
         expect(response.statusCode).toBe(HTTP_STATUS_CODES.SUCCESS);    //Se espera que responda con 200
     });
-    
+
     //Endpoint: /reservations
     it('Debe responder correctamente en la ruta /reservations', async () => {
         const response = await request(app)
