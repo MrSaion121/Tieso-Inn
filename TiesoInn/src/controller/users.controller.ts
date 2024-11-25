@@ -102,6 +102,13 @@ class UsersController {
       const updatedUser = await User.findOneAndUpdate({ user_id }, req.body, {
         new: true,
       });
+
+      if(!updatedUser){
+        return res
+          .status(HTTP_STATUS_CODES.NOT_FOUND)
+          .json({ message: "Usuario no encontrado" });
+      }
+
       res
         .status(HTTP_STATUS_CODES.SUCCESS)
         .json({ message: "Usuario actualizado ", updatedUser });
@@ -119,7 +126,7 @@ class UsersController {
       const deletedUser = await User.findOneAndDelete({ user_id });
       if (!deletedUser) {
         return res
-          .status(HTTP_STATUS_CODES.BAD_REQUEST)
+          .status(HTTP_STATUS_CODES.NOT_FOUND)
           .send("Usuario no encontrado");
       }
       return res
