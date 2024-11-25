@@ -1,15 +1,12 @@
 import request from 'supertest';
-//import app from '../../index';
+import app from '../../index';
 import User from '../../models/user';
 import { HTTP_STATUS_CODES } from '../../types/http-status-codes';
+import mongoose from 'mongoose';
 
-//Server - Cargar variables de entorno
+//Cargar variables de entorno
 import dotenv from 'dotenv';
 dotenv.config();
-const SERVER_URL = process.env.SERVER_URL || '';
-const PORT = process.env.PORT || 3000;
-//url del servidor
-const serverUrl = `${SERVER_URL}:${PORT}`
 
 jest.mock('../../models/user'); // Mockear el modelo de User para las pruebas
 
@@ -19,12 +16,17 @@ describe('Pruebas del endpoint /register', () => {
         jest.clearAllMocks();
     });
 
+    // Cerrar recursos después de las pruebas
+    afterAll(async () => {
+        await mongoose.connection.close(); // Cierra la conexión a MongoDB
+    });
+
     //Prueba 1: Registro exitoso
     it('Debería registrar un usuario con éxito', async () => {
         (User.findOne as jest.Mock).mockResolvedValue(null);        // Simula que el usuario no existe
         (User.prototype.save as jest.Mock).mockResolvedValue({});   // Simula que el usuario se guarda exitosamente
 
-        const response = await request(serverUrl)
+        const response = await request(app)
             .post('/register')
             .send({
                 name: 'John Doe',
@@ -41,7 +43,7 @@ describe('Pruebas del endpoint /register', () => {
     it('Debería retornar error si el email ya está en uso', async () => {
         (User.findOne as jest.Mock).mockResolvedValue({ email: 'johndoe@example.com' });
 
-        const response = await request(serverUrl)
+        const response = await request(app)
             .post('/register')
             .send({
                 name: 'John Doe',
@@ -60,7 +62,7 @@ describe('Pruebas del endpoint /register', () => {
 
     //Prueba 3: Registro - Falta el campo de contraseña = error
     it('Debería retornar error si falta la contraseña', async () => {
-        const response = await request(serverUrl)
+        const response = await request(app)
             .post('/register')
             .send({
                 name: 'John Doe',
