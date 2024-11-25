@@ -9,7 +9,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
 
-//Plantilla Mock User
+//Plantilla Mock Token
 const mockToken = jwt.sign(
     { email: 'admin@example.com', role: 'Admin' },
     process.env.SECRET_KEY!,
