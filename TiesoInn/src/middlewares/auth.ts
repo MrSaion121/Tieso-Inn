@@ -24,7 +24,7 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
             console.log('Token no existe')
             return res.redirect('/login');
         }
-        return res.status(401).json({ message: 'Token no proporcionado' });
+        return res.status(HTTP_STATUS_CODES.UNATHORIZED).json({ message: 'Token no proporcionado' });
     }
 
     try {
@@ -35,6 +35,6 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
         if (req.headers['accept']?.includes('text/html')) {
             return res.redirect('/login');
         }
-        res.status(401).json({ message: 'Token inválido' });
+        res.status(HTTP_STATUS_CODES.UNATHORIZED).json({ message: 'Token inválido' });
     }
 };
