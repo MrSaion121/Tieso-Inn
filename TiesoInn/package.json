@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "console": "echo \"Error: no test specified\" && exit 1",
-    "test": "jest src/test/routes/support_chat.spec.ts",
+    "test": "jest src/test/routes",
     "start": "node .",
     "dev": "nodemon src/index.ts",
     "scripts": "tsc"
