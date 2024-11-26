@@ -131,6 +131,13 @@ class UsersController {
       const updatedUser = await User.findOneAndUpdate({ user_id }, req.body, {
         new: true,
       });
+
+      if(!updatedUser){
+        return res
+          .status(HTTP_STATUS_CODES.NOT_FOUND)
+          .json({ message: "Usuario no encontrado" });
+      }
+
       res
         .status(HTTP_STATUS_CODES.SUCCESS)
         .json({ message: "Usuario actualizado ", updatedUser });
@@ -148,7 +155,7 @@ class UsersController {
       const deletedUser = await User.findOneAndDelete({ user_id });
       if (!deletedUser) {
         return res
-          .status(HTTP_STATUS_CODES.BAD_REQUEST)
+          .status(HTTP_STATUS_CODES.NOT_FOUND)
           .send("Usuario no encontrado");
       }
       return res
@@ -170,17 +177,23 @@ class UsersController {
       const user = await User.findOne({ email });
 
       if (!user) {
-        throw new Error(`El correo no existe`);
+        return res
+          .status(HTTP_STATUS_CODES.UNATHORIZED)
+          .json({ error: 'El correo no existe' });
       }
 
       if (user.status === "Eliminado" || user.status === "Bloqueado") {
-        throw new Error(`El usuario esta bloqueado o eliminado`);
+        return res
+          .status(HTTP_STATUS_CODES.UNATHORIZED)
+          .json({ error: 'El usuario esta bloqueado o eliminado' });
       }
 
       const matchPassword = await bcrypt.compare(password, user.password);
 
       if (!matchPassword) {
-        throw new Error("Contraseña incorrecta");
+        return res
+          .status(HTTP_STATUS_CODES.UNATHORIZED)
+          .json({ error: 'Contraseña incorrecta' });
       }
 
       //Token
@@ -192,9 +205,11 @@ class UsersController {
         }
       );
 
-      res
-        .status(HTTP_STATUS_CODES.SUCCESS)
-        .json({ token, user_id: user.user_id, name: user.name });
+      return res.status(HTTP_STATUS_CODES.SUCCESS).json({
+        token,
+        user_id: user.user_id,
+        name: user.name
+      });
     } catch (error) {
       if (error instanceof Error) {
         console.error(error);
@@ -218,7 +233,7 @@ class UsersController {
       if (!password) {
         return res
           .status(HTTP_STATUS_CODES.BAD_REQUEST)
-          .send("La contraseña es requerida.");
+          .json("La contraseña es requerida.");
       }
 
       //Validar si usuario existe en DB
@@ -226,7 +241,7 @@ class UsersController {
       if (userExists) {
         return res
           .status(HTTP_STATUS_CODES.BAD_REQUEST)
-          .send("Este email ya se esta usando");
+          .json("Este email ya se esta usando");
       }
 
       const user_id = new mongoose.Types.ObjectId();
