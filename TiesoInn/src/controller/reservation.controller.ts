@@ -126,13 +126,18 @@ class ReservationController {
       console.log("Datos recibidos en el cuerpo:", req.body);
 
         const userExists = await User.findOne({ user_id });
-        const roomObjectId = mongoose.Types.ObjectId.isValid(room_id) ? new mongoose.Types.ObjectId(room_id) : null;
-        const roomExists = roomObjectId ? await Room.findById(roomObjectId) : null;
+        //const roomObjectId = mongoose.Types.ObjectId.isValid(room_id) ? new mongoose.Types.ObjectId(room_id) : null;
+        const roomExists = await Room.findOne({ room_id });//roomObjectId ? await Room.findById(roomObjectId) : null;
 
         // validacion si usuario o la habitación no existen = error
-        if (!userExists || !roomExists) {
-            console.log("Usuario o habitación no válidos");
-            return res.status(HTTP_STATUS_CODES.NOT_FOUND).json({ message: 'Usuario o habitación no válidos' });
+        if (!userExists) {
+            console.log("Usuario no válidos");
+            return res.status(HTTP_STATUS_CODES.NOT_FOUND).json({ message: 'Usuario no válido' });
+        }
+
+        if (!roomExists) {
+            console.log("Habitación no valida");
+            return res.status(HTTP_STATUS_CODES.NOT_FOUND).json({ message: 'Habitación no válida' });
         }
 
         // Buscamos todos los números de reservación y los almacenamos en un array
@@ -151,7 +156,7 @@ class ReservationController {
         const newReservation = new Reservation({
             reservation_num: reservationNumber.toString(), // Número de reserva auto-incremental
             user_id,
-            room_id: roomObjectId,                      // ( _id de la habitacion)
+            room_id, // : roomObjectId,                      // ( _id de la habitacion)
             arrival_date,
             checkout_date,
             num_of_guest,
@@ -171,7 +176,7 @@ class ReservationController {
     }
   }
 
-    //POST | UpdateReservation
+    //PUT | UpdateReservation
     async updateReservation(req: Request, res: Response) {
     const { id } = req.params;
     const updatedData = req.body;
