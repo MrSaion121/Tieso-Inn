@@ -41,6 +41,7 @@
     <h1>Reservar habitación</h1>
     <img src="{{this.image_url}}" class="card-img-top w-50 h-auto" alt="{{this.image_url}}" />
     <p class="card-text">{{this.description}}</p>
+    <hr>
     <form action="/reservations" method="POST">
       <div class="form-group">
         <label for="arrival_date">Fecha de llegada:</label>
@@ -77,6 +78,7 @@
           style="width: 10%" 
         />
       </div>
+      <hr>
       <p class="card-text">Costo por noche ${{this.price_per_night}}</p>
       <button type="submit" class="btn btn-success" id="confirm-reservation">Confirmar reserva</button>
     </form>
