@@ -48,8 +48,9 @@ async function modificarUsuario(id) {
     name: document.getElementById("nameInput").value,
     role: document.getElementById("roleInput").value,
     email: document.getElementById("emailInput").value,
-    status: document.getElementById("roomStatusInput").value,
+    status: document.getElementById("statusInput").value,
   };
+  console.log(updatedUser)
 
   try {
     const response = await fetch(`/users/${id}?userId=${userId}`, {
@@ -217,12 +218,12 @@ function showEditUserForm(user) {
 
 function crearUsuario() {
   const newUser = {
-    name: document.getElementById("nameInput").value,
-    role: document.getElementById("roleInput").value,
-    email: document.getElementById("emailInput").value,
+    name: document.getElementById("nameCreateInput").value,
+    role: document.getElementById("roleCreateInput").value,
+    email: document.getElementById("emailCreateInput").value,
     password: document.getElementById("passwordInput").value,
     cellphone: document.getElementById("cellphoneInput").value,
-    status: document.getElementById("statusInput").value,
+    status: document.getElementById("statusCreateInput").value,
   };
 
   fetch("/users", {
