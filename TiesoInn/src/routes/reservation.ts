@@ -111,7 +111,38 @@ router.put('/:id',  authenticateToken, authorizaRole(['Gerente','Recepcionista']
 //Eliminar una reservacion | Permisos [Recepcionista]
 router.delete('/:id',  authenticateToken, authorizaRole(['Cliente','Recepcionista']), reservationController.deleteReservation);
 
+/**
+ * @swagger
+ * /reservations/room{reservation_num}:
+ *  get:
+ *      tags: [Reservations]
+ *      description: Get all reservations for a specific room
+ *      responses:
+ *          200:
+ *              description: reservations
+ *          404:
+ *              description: reservations not found
+ *          500:
+ *              description: server error
+ */
+
+//Eliminar una reservacion | Permisos [Recepcionista]
 router.get('/room/:id', authenticateToken, reservationController.getReservationsByRoomId)
+
+/**
+ * @swagger
+ * /reservations/user{reservation_num}:
+ *  get:
+ *      tags: [Reservations]
+ *      description: Get all reservations that a user made
+ *      responses:
+ *          200:
+ *              description: reservations
+ *          404:
+ *              description: reservations not found
+ *          500:
+ *              description: server error
+ */
 
 router.get('/user/:id', authenticateToken, reservationController.getReservationsByUserId)
 
