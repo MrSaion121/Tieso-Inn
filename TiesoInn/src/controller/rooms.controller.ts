@@ -2,18 +2,31 @@ import { Request, Response } from "express";
 import Room from "../models/room";
 import { HTTP_STATUS_CODES } from "../types/http-status-codes";
 import Category from "../models/category";
+import mongoose from "mongoose";
 
 class RoomsController {
   async getAll(req: Request, res: Response) {
     try {
-      const rooms = await Room.find().populate({ path: 'category_id', model: 'category', select: 'name' });
+      const rooms = await Room.aggregate([
+        {
+          $lookup: {
+            from: "categories",
+            localField: "category_id",
+            foreignField: "category_id",
+            as: "category"
+          }
+        },
+        { 
+          $unwind: "$category"
+        }
+      ]);      
       console.log(rooms)
       const acceptHeader = req.headers.accept || "";
       if (acceptHeader.includes("application/json")) {
         res.json(rooms);
       } else {
         const plainRooms = rooms.map((room, index) => ({
-          ...room.toObject(),
+          ...room,
           roomNumber: 101 + index,
         }));
         res.render("rooms", { rooms: plainRooms });
@@ -29,11 +42,22 @@ class RoomsController {
   async getRoomByID(req: Request, res: Response) {
     try {
       const room_id = req.params["room_id"];
-      const room = await Room.findOne({ room_id }).populate({
-        path: 'category_id',
-        model: 'category',
-        select: 'name',
-      });
+      const room = await Room.aggregate([
+        {
+          $match: { room_id: new mongoose.Types.ObjectId(room_id) }
+        },
+        {
+          $lookup: {
+            from: "categories",
+            localField: "category_id",
+            foreignField: "category_id",
+            as: "category"
+          }
+        },
+        { 
+          $unwind: "$category"
+        }
+      ]);
   
       if (!room) {
         return res
@@ -47,7 +71,8 @@ class RoomsController {
         return res.json(room);
       } else {
         // Renderizar la vista utilizando Handlebars
-        return res.render("room",  room.toObject() );
+        console.log(room)
+        return res.render("room",  room );
       }
     } catch (error) {
       console.error(error);
@@ -64,6 +89,7 @@ class RoomsController {
         room_id,
         category_id,
         price_per_night,
+        name,
         description,
         image_url,
         status,
@@ -83,6 +109,7 @@ class RoomsController {
       }
 
       const newRoom = new Room({
+        name,
         room_id,
         category_id,
         price_per_night,

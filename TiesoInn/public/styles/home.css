@@ -16,8 +16,8 @@ h4 ~ p{
 }
 
 .card {
-    min-height: 200px;
-    max-height: 350px;
+    max-width: 100%;
+    max-height: fit-content;
 }
 
 .carousel-item img {

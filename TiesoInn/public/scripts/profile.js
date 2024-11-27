@@ -299,7 +299,6 @@ document.addEventListener("DOMContentLoaded", () => {
           .join("");
 
         roomManageContent.innerHTML = `<p>Administrar las habitaciones</p>
-          <button class="btn btn-primary">Crear habitacion</button>
           <table class="table table-striped mt-3">
             <thead>
               <tr>
@@ -380,7 +379,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (bookingTab) {
-    bookingContent.addEventListener("click", async () => {
+    bookingTab.addEventListener("click", async () => {
       if (bookingContent.dataset.loaded) return;
       try {
         const response = await fetch(`/reservations/user/${userId}`, {
@@ -399,9 +398,10 @@ document.addEventListener("DOMContentLoaded", () => {
           .map(
             (reservation) => `
             <li>
-              <div>Habitación ${reservation.room_id.name}</div>
+              <div>Habitación ${reservation.room.name}</div>
               <div>Fecha de entrada ${reservation.arrival_date}</div>
               <div>Fecha de salida ${reservation.checkout_date}</div>
+              <tr>
             </li>
           `
           )
@@ -436,8 +436,8 @@ document.addEventListener("DOMContentLoaded", () => {
           .map(
             (reservation) => `
             <li>
-              ${reservation.user_id.name} reservó la habitación ${
-              reservation.room_id.name
+              ${reservation.user.name} reservó la habitación ${
+              reservation.room.name
             }
               <select
                 onchange="cambiarEstado(this.value, '${

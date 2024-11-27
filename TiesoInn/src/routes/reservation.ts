@@ -91,7 +91,7 @@ router.post('/',  authenticateToken, authorizaRole(['Cliente', 'Recepcionista'])
  */
 
 //Actualizar una reservacion | Permisos [Recepcionista]
-router.put('/:id',  authenticateToken, authorizaRole(['Cliente','Recepcionista']),  reservationController.updateReservation);
+router.put('/:id',  authenticateToken, authorizaRole(['Gerente','Recepcionista']),  reservationController.updateReservation);
 
 /**
  * @swagger
