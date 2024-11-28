@@ -2,15 +2,14 @@ import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import session from 'express-session';
 import dotenv from 'dotenv';
+import mongoose, { Document } from 'mongoose';
 import IUser from '../models/user';
 import userModel from '../models/user';
-import mongoose from 'mongoose';
 
 // Cargar variables de entorno
 dotenv.config();
 
 export const googleAuth = (app: any) => {
-    //Configuracion de la estrategia google
     passport.use(
         new GoogleStrategy(
             {
@@ -19,16 +18,14 @@ export const googleAuth = (app: any) => {
                 callbackURL: process.env.GOOGLE_CALLBACK_URL as string,
             },
             async (accessToken, refreshToken, profile, cb) => {
-                //Proceso para guardar el usuario en BDD o verificarlo
                 try {
-
                     let existingUser = await userModel.findOne({ email: profile.emails![0].value });
+
                     if (!existingUser) {
-                        //Existe o no el usuario
-                        const user_id = new mongoose.Types.ObjectId()
+                        const user_id = new mongoose.Types.ObjectId();
                         existingUser = await userModel.create({
                             user_id,
-                            name:profile.displayName,
+                            name: profile.displayName,
                             email: profile.emails![0].value,
                             role: 'Cliente',
                             password: '',
@@ -37,20 +34,22 @@ export const googleAuth = (app: any) => {
                         });
                         await existingUser.save();
                     }
-                    return cb(null, existingUser);
+
+                    // Transforma a objeto plano
+                    return cb(null, existingUser.toObject());
                 } catch (error) {
-                    return cb(error, profile); // Error 1
+                    return cb(error, undefined); // Cambia `profile` por `undefined`
                 }
             }
         )
     );
 
-    passport.serializeUser((user, cb) => {
-        cb(null, user);
+    passport.serializeUser<typeof IUser>((user, cb) => {
+        cb(null, user as any);
     });
 
-    passport.deserializeUser((user: typeof IUser, cb) => {
-        cb(null, user); // Error 2
+    passport.deserializeUser<typeof IUser>((user, cb) => {
+        cb(null, user as any);
     });
 
     app.use(

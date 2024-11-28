@@ -15,7 +15,7 @@ import { googleAuth } from './middlewares/authGoogle';
 //Importar swagger
 import swaggerJSDoc from 'swagger-jsdoc';
 import { serve, setup } from 'swagger-ui-express';
-import swaggerConfig from './../swagger.config.json';
+import swaggerConfig from './swagger.config.json';
 
 //Cargar variables de entorno
 dotenv.config();
