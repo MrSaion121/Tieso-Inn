@@ -9,7 +9,8 @@
     "start": "node .",
     "dev": "nodemon src/index.ts",
     "scripts": "tsc",
-    "build": "rimraf dist && tsc"
+    "build": "rimraf dist && tsc",
+    "postinstall": "npm run scripts"
   },
   "author": "Victor, Santiago, Rodrigo",
   "license": "MIT",
