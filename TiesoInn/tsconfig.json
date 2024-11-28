@@ -1,5 +1,6 @@
 {
-    "include": ["./src/**/*.ts"],       //Archivo origen
+    "include": ["./src/**/*.ts", "./src/**/*.d.ts", ],       //Archivo origen
+    "exclude": ["./src/test"],
     "compilerOptions": {
         "outDir": "dist",       //Archivo destino, donde guardar
         "target": "ES6",                //version de JS
@@ -9,6 +10,7 @@
         "module": "NodeNext",
         "resolveJsonModule": true,
         "strict": true,
-        "baseUrl": "src"
+        "baseUrl": "src",
+        "typeRoots": [".node_modules/@types", "./src/types"]
     }
 }

@@ -8,7 +8,8 @@
     "test": "jest src/test/routes",
     "start": "node .",
     "dev": "nodemon src/index.ts",
-    "scripts": "tsc"
+    "scripts": "tsc",
+    "build": "rimraf dist && tsc"
   },
   "author": "Victor, Santiago, Rodrigo",
   "license": "MIT",
@@ -27,6 +28,7 @@
     "@types/swagger-ui-express": "^4.1.6",
     "jest": "^29.7.0",
     "nodemon": "^3.1.7",
+    "rimraf": "^6.0.1",
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
