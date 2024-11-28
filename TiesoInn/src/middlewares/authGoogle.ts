@@ -39,7 +39,7 @@ export const googleAuth = (app: any) => {
                     }
                     return cb(null, existingUser);
                 } catch (error) {
-                    return cb(error, profile);
+                    return cb(error, profile); // Error 1
                 }
             }
         )
@@ -50,7 +50,7 @@ export const googleAuth = (app: any) => {
     });
 
     passport.deserializeUser((user: typeof IUser, cb) => {
-        cb(null, user);
+        cb(null, user); // Error 2
     });
 
     app.use(
