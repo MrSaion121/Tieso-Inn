@@ -8,6 +8,7 @@ El objetivo principal es crear una plataforma sencilla de utilizar para consulta
 - Victor Manuel Tellez Amezcua
 - Jose Santiago Oseguera García
 - Rodrigo López Coronado
+- Luis Antonio Cuaquentzi Avendaño
 
 # Instrucciones para ejecutar el proyecto
 
@@ -599,3 +600,31 @@ Recomendamos utilizar **Postman** para realizar las pruebas
     - `500`: Error al eliminar la reservación.
 
 Si todo salió correctamente, debe salir un código 200 y un mensaje de éxito y/o mostrar el contenido correspondiente. 
+
+## Commit Message Guidelines
+
+This repository follows the [Conventional Commits](https://www.conventionalcommits.org/) specification. All commit messages **must** follow this format:
+
+`<type>(<optional scope>): <description>`
+
+`<optional body>`
+
+`<optional footer>`
+
+Valid Commit Examples
+- feat: add user authentication
+- fix: resolve issue with login timeout
+- docs: update API documentation
+- chore(deps): update dependencies
+- feat(api): send an email to the customer when a product is shipped
+
+Commit Types
+- feat → A new feature
+- fix → A bug fix
+- docs → Documentation updates
+- chore → Maintenance tasks (e.g., dependency updates)
+- refactor → Code changes that don’t fix bugs or add features
+- test → Adding or modifying tests
+- style → Formatting changes (whitespace, linting, etc.)
+
+Pull requests with commits that do not follow this format will be rejected by automated checks.
