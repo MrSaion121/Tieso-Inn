@@ -1,0 +1,48 @@
+# Ensure the PR has a meaningful title
+fail("PR title must not be empty!") if github.pr_title.strip.empty?
+
+# Ensure PRs have a description
+fail("Please add a description to this PR") if github.pr_body.strip.length < 10
+
+# Warn if a PR modifies more than 500 lines
+warn("This PR is quite large. Consider breaking it into smaller PRs.") if git.lines_of_code > 500
+
+# Fail if a PR does not reference an issue (e.g., #123 in title)
+fail("This PR must reference an issue (e.g., #123 in the title)") unless github.pr_title =~ /#[0-9]+/
+
+# Warn if the PR does not have an assigned reviewer
+warn("This PR does not have a reviewer assigned.") if github.reviewers.empty?
+
+# Ensure commits follow Conventional Commits and additional formatting rules
+git.commits.each do |commit|
+  # Conventional Commits format
+  unless commit.message =~ /^(feat|fix|chore|docs|style|refactor|test)(\(\w+\))?: .+/
+    fail("Commit message '#{commit.message}' does not follow Conventional Commits format.")
+  end
+
+  lines = commit.message.split("\n")
+
+  # Ensure the title is a maximum of 50 characters
+  title = lines[0]
+  if title.length > 50
+    fail("Commit title '#{title}' exceeds 50 characters.")
+  end
+
+  # Ensure there is an empty line between title and description
+  if lines.length > 1 && !lines[1].strip.empty?
+    fail("Commit message must have an empty line between title and description.")
+  end
+
+  # Ensure the description has at least 5 characters
+  description = lines[2..].join("\n").strip if lines.length > 2
+  if description && description.length < 5
+    fail("Commit description must be at least 5 characters long.")
+  end
+
+  # Ensure each line in the description is not more than 72 characters
+  lines[2..].each do |line|
+    if line.length > 72
+      fail("Commit description line exceeds 72 characters: '#{line}'.")
+    end
+  end
+end
