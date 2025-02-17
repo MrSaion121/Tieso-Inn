@@ -10,12 +10,6 @@ warn("This PR is quite large. Consider breaking it into smaller PRs.") if git.li
 # Fail if a PR does not reference an issue (e.g., #123 in title)
 fail("This PR must reference an issue (e.g., #123 in the title)") unless github.pr_title =~ /#[0-9]+/
 
-# Or log just specific details, like the title
-message("PR Title: #{github.pr_title}")
-# Log the full PR details
-message("reviewers: #{github.pr_reviewers}")
-message("all: #{github.to_json}")
-
 # Warn if the PR does not have an assigned reviewer
 warn("This PR does not have a reviewer assigned.") if github.reviewers.empty?
 
