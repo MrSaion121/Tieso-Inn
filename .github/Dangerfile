@@ -11,7 +11,7 @@ warn("This PR is quite large. Consider breaking it into smaller PRs.") if git.li
 fail("This PR must reference an issue (e.g., #123 in the title)") unless github.pr_title =~ /#[0-9]+/
 
 # Warn if the PR does not have an assigned reviewer
-warn("This PR does not have a reviewer assigned.") if github.reviewers.empty?
+warn("This PR does not have a reviewer assigned.") if github.pr_reviewers.empty?
 
 # Ensure commits follow Conventional Commits and additional formatting rules
 git.commits.each do |commit|
