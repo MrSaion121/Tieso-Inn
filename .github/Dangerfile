@@ -6,7 +6,7 @@ fail("Please add a description to this PR") if github.pr_body.strip.length < 10
 
 # Warn if a PR modifies more than 500 lines
 warn("This PR is quite large. Consider breaking it into smaller PRs.") if git.lines_of_code > 500
- 
+
 # Ensure commits follow Conventional Commits and additional formatting rules
 git.commits.each do |commit|
   # Conventional Commits format
@@ -37,7 +37,7 @@ git.commits.each do |commit|
   if lines && lines.length > 2
     lines[2..].each do |line|
       if line.length > 72
-        warn("Line exceeds 72 characters: #{line}")
+        fail("Line exceeds 72 characters: #{line}")
       end
     end
   end

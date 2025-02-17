@@ -628,3 +628,14 @@ Commit Types
 - style → Formatting changes (whitespace, linting, etc.)
 
 Pull requests with commits that do not follow this format will be rejected by automated checks.
+
+Pull requests must:
+- Have a title
+- Have a description (at least 10 characters)
+
+Commits must:
+- Follow conventional commit format
+- Have at most 50 characters in the title
+- Have a line separating title and description (description is optional )
+- Description must be at least 5 characters long
+- Each line of description doesn't execeeds 72 characters

@@ -7,7 +7,7 @@ on:
   pull_request:
     branches:
       - '**'
- 
+
 jobs:
   danger:
     runs-on: ubuntu-latest
