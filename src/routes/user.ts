@@ -1,5 +1,5 @@
-import { Router } from "express"
-import usersController from "../controller/users.controller";
+import { Router } from 'express';
+import usersController from '../controller/users.controller';
 
 //Importacion middlewares
 import { authenticateToken } from '../middlewares/auth';
@@ -33,7 +33,7 @@ router.get('/', authenticateToken, authorizaRole(['Admin']), usersController.get
  *              description: user
  *          404:
  *              description: user not found
- *          500: 
+ *          500:
  *              description: server error
  */
 
@@ -41,7 +41,7 @@ router.get('/', authenticateToken, authorizaRole(['Admin']), usersController.get
 router.get('/:id', authenticateToken, usersController.getUserById);
 
 
-router.get('/profile/:id', usersController.getRenderUserById)
+router.get('/profile/:id', usersController.getRenderUserById);
 
 /**
  * @swagger
@@ -51,11 +51,11 @@ router.get('/profile/:id', usersController.getRenderUserById)
  *      description: create new user
  *      requestBody:
  *          required: true
- *          content: 
+ *          content:
  *              application/json:
  *                  schema:
  *                      $ref: '#/components/schemas/User'
- *      responses: 
+ *      responses:
  *          400:
  *              description: bad request
  *          201:
@@ -64,7 +64,7 @@ router.get('/profile/:id', usersController.getRenderUserById)
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/User'
- *          500: 
+ *          500:
  *              description: server error
  */
 
@@ -79,7 +79,7 @@ router.post('/', authenticateToken, usersController.createUser);
  *      description: update user
  *      requestBody:
  *          required: true
- *          content: 
+ *          content:
  *              application/json:
  *                  schema:
  *                      $ref: '#/components/schemas/User'

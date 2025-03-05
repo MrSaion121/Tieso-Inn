@@ -1,6 +1,5 @@
-import { Router } from "express";
-import path from "path";
-import UserController from "../controller/users.controller";
+import { Router } from 'express';
+import UserController from '../controller/users.controller';
 
 const router = Router();
 
@@ -18,7 +17,7 @@ router.get('/', (req, res) => {
  *      description: login and obtain jwt token
  *      requestBody:
  *          required: true
- *          content: 
+ *          content:
  *              application/json:
  *                  schema:
  *                      type: object
@@ -27,7 +26,7 @@ router.get('/', (req, res) => {
  *                              type: string
  *                          password:
  *                              type: string
- *      responses: 
+ *      responses:
  *          200:
  *              description: token generated succesfully
  *          401:
@@ -39,7 +38,7 @@ router.get('/', (req, res) => {
  *                          properties:
  *                              error:
  *                                  type: string
- *          500: 
+ *          500:
  *              description: server error
  */
 router.post('/', UserController.login);

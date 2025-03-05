@@ -5,99 +5,103 @@ import { HTTP_STATUS_CODES } from '../types/http-status-codes';
 class ChatController {
     async getChats(req: Request, res: Response) {
         try {
-            const chats = await SupportChat.find({})
-            res.status(HTTP_STATUS_CODES.SUCCESS).json(chats)
+            const chats = await SupportChat.find({});
+            res.status(HTTP_STATUS_CODES.SUCCESS).json(chats);
         } catch(error){
-            console.error(error)
-            res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({message: 'Error al obtener el chat'})
+            console.error(error);
+            res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({message: 'Error al obtener el chat'});
         }
     }
 
     async getChat(req: Request, res: Response) {
         try {
-            const chat_id = req.params['id']
-            const chat = await SupportChat.findOne({ customer_id: chat_id })
+            const chat_id = req.params['id'];
+            const chat = await SupportChat.findOne({ customer_id: chat_id });
             if(!chat) {
-                return res.status(HTTP_STATUS_CODES.NOT_FOUND).json({message: 'Chat no encontrado'})
+                res.status(HTTP_STATUS_CODES.NOT_FOUND).json({message: 'Chat no encontrado'});
+                return;
             }
-            res.status(HTTP_STATUS_CODES.SUCCESS).json(chat)
+            res.status(HTTP_STATUS_CODES.SUCCESS).json(chat);
         } catch(error){
-            console.error(error)
-            res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({message: 'Error al obtener el chat'})
+            console.error(error);
+            res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({message: 'Error al obtener el chat'});
         }
     }
 
     async cretateChat(req: Request, res: Response) {
-        const customer_id = req.params['id']
-        const hotel_help_id = process.env.HOTEL_HELP_ID as string
+        const customer_id = req.params['id'];
+        const hotel_help_id = process.env.HOTEL_HELP_ID as string;
         try {
             const chatExits = await SupportChat.findOne({ customer_id });
             if (chatExits) {
-                return res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({ message: 'El chat ya existe' })
+                res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({ message: 'El chat ya existe' });
+                return;
             }
 
             const newChat = new SupportChat({
                 customer_id,
                 hotel_help_id,
                 chatlog: []
-            })
+            });
 
             await newChat.save();
 
-            res.status(HTTP_STATUS_CODES.CREATED).json(newChat)
+            res.status(HTTP_STATUS_CODES.CREATED).json(newChat);
         } catch (error) {
-            console.error(error)
-            res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({message: 'Error al crear el chat'})
+            console.error(error);
+            res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({message: 'Error al crear el chat'});
         }
     }
 
     async deleteChat(req: Request, res: Response) {
         const customer_id = req.params['id'];
         try {
-            const deletedChat = await SupportChat.findOneAndDelete({ customer_id })
+            const deletedChat = await SupportChat.findOneAndDelete({ customer_id });
             if(!deletedChat) {
-                return res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({message: 'Chat no encontrado'})
+                res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({message: 'Chat no encontrado'});
+                return;
             }
-            return res.status(HTTP_STATUS_CODES.SUCCESS).json({message: 'El chat ha sido eliminado'})
+            res.status(HTTP_STATUS_CODES.SUCCESS).json({message: 'El chat ha sido eliminado'});
         } catch (error) {
-            console.error(error)
-            res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({message: 'Error al eliminar el chat'})
+            console.error(error);
+            res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({message: 'Error al eliminar el chat'});
         }
     }
 
-    async addMessage(req: Request, res: Response){
+    async addMessage(req: Request, res: Response) {
         const customer_id = req.params['id'];
-        const { sender, text } = req.body
+        const { sender, text } = req.body;
         try {
             const newMessage = {
                 sender,
                 text,
-                timestamp: new Date().toLocaleString("es-MX", {
-                    day: "numeric",
-                    month: "short",
-                    year: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
+                timestamp: new Date().toLocaleString('es-MX', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
                 })
-            }
+            };
 
             const result = await SupportChat.findOneAndUpdate(
-                { customer_id }, 
+                { customer_id },
                 { $push: { chatlog: newMessage } },
                 { new: true}
             );
 
             if (!result) {
-                return res.status(HTTP_STATUS_CODES.NOT_FOUND).json({message: 'Chat no encontrado'})
+                res.status(HTTP_STATUS_CODES.NOT_FOUND).json({message: 'Chat no encontrado'});
+                return;
             }
 
-            return res.status(HTTP_STATUS_CODES.SUCCESS).json({ message: "Mensaje añadido correctamente", chat: result })
+            res.status(HTTP_STATUS_CODES.SUCCESS).json({ message: 'Mensaje añadido correctamente', chat: result });
         } catch (error) {
-            console.error(error)
-            res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({message: 'Error al agregar el mensaje'})
+            console.error(error);
+            res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({message: 'Error al agregar el mensaje'});
         }
     }
 }
 
 const supportChat = new ChatController();
-export default supportChat; 
+export default supportChat;

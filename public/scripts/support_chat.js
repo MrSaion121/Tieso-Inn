@@ -183,5 +183,3 @@ document.addEventListener("DOMContentLoaded", async () => {
         messageBox.scrollTop = messageBox.scrollHeight;
     }
 });
-
-

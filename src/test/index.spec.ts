@@ -15,12 +15,12 @@ describe('Arranque de Servidor basico', () => {
     });
 
     // Cerrar recursos después de las pruebas
-    afterAll(async () => {
+    afterAll(async() => {
         await mongoose.connection.close(); // Cierra la conexión a MongoDB
     });
 
     //Caso 1: verificar rutas desconocidas
-    it('Debe iniciar y responder con un estatus 404 para rutas desconocidas', async () => {
+    it('Debe iniciar y responder con un estatus 404 para rutas desconocidas', async() => {
         const response = await request(app).get('/ruta-desconocida'); //Realiza la solicitud a una ruta random
 
         //Expectativa de resultado
@@ -29,9 +29,9 @@ describe('Arranque de Servidor basico', () => {
     });
 
     //Caso 2: Verificar respuesta HTML
-    it('Debe Responder con el HTML de login', async () => {
+    it('Debe Responder con el HTML de login', async() => {
         const response = await request(app).get('/login'); //Realiza la solicitud a ruta main
         expect(response.statusCode).toBe(HTTP_STATUS_CODES.SUCCESS); // Verificar que responda exitosamente
         expect(response.text).toContain('<html'); //Asegurarse que contenga HTML
-    })
+    });
 });

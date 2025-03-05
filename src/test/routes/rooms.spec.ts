@@ -1,7 +1,6 @@
 import request from 'supertest';
 import Room from '../../models/room';
 import { HTTP_STATUS_CODES } from '../../types/http-status-codes';
-import jwt from 'jsonwebtoken';
 
 //Cargar variables de entorno
 import dotenv from 'dotenv';
@@ -9,17 +8,11 @@ dotenv.config();
 const SERVER_URL = process.env.SERVER_URL || '';
 const PORT = process.env.PORT || 3000;
 //url del servidor
-const serverUrl = `${SERVER_URL}:${PORT}`
+const serverUrl = `${SERVER_URL}:${PORT}`;
 
 jest.mock('../../models/room');
 
 describe('Pruebas del endpoint /rooms', () => {
-    const mockToken = jwt.sign(
-        { email: 'admin@example.com', role: 'Gerente' },
-        process.env.SECRET_KEY!,
-        { expiresIn: '1h' }
-    );
-
     const mockCategory = {
         _id: '74835bfbd9d05121f51cfd45',
         category_id: '',
@@ -43,7 +36,7 @@ describe('Pruebas del endpoint /rooms', () => {
     });
 
     describe('GET /rooms', () => {
-        it('Debería devolver todas las habitaciones', async () => {
+        it('Debería devolver todas las habitaciones', async() => {
             (Room.find as jest.Mock).mockResolvedValue([
                 {...mockRoom, category_id: mockCategory}]);
 
@@ -54,7 +47,7 @@ describe('Pruebas del endpoint /rooms', () => {
             expect(response.body[0]).toHaveProperty('room_id', mockRoom.room_id);
         });
 
-        it('Debería manejar errores del servidor', async () => {
+        it('Debería manejar errores del servidor', async() => {
             (Room.find as jest.Mock).mockRejectedValue(new Error('Error del servidor'));
 
             const response = await request(serverUrl).get('/rooms');
@@ -66,7 +59,7 @@ describe('Pruebas del endpoint /rooms', () => {
 
     /*
     describe('GET /rooms/:room_id', () => {
-        it('Debería devolver una habitación específica', async () => {
+        it('Debería devolver una habitación específica', async() => {
             (Room.findOne as jest.Mock).mockResolvedValue(mockRoom);
 
             const response = await request(serverUrl).get(`/rooms/${mockRoom.room_id}`);
@@ -75,7 +68,7 @@ describe('Pruebas del endpoint /rooms', () => {
             expect(response.body).toHaveProperty('room_id', mockRoom.room_id);
         });
 
-        it('Debería devolver error si la habitación no existe', async () => {
+        it('Debería devolver error si la habitación no existe', async() => {
             (Room.findOne as jest.Mock).mockResolvedValue(null);
 
             const response = await request(serverUrl).get(`/rooms/${mockRoom.room_id}`);
@@ -86,7 +79,7 @@ describe('Pruebas del endpoint /rooms', () => {
     });
 
     describe('POST /rooms', () => {
-        it('Debería crear una nueva habitación si el usuario tiene el rol adecuado', async () => {
+        it('Debería crear una nueva habitación si el usuario tiene el rol adecuado', async() => {
             (Room.findOne as jest.Mock).mockResolvedValue(null);
             (Room.prototype.save as jest.Mock).mockResolvedValue(mockRoom);
 
@@ -99,7 +92,7 @@ describe('Pruebas del endpoint /rooms', () => {
             expect(response.body).toHaveProperty('room_id', mockRoom.room_id);
         });
 
-        it('Debería denegar acceso si el usuario no tiene el rol adecuado', async () => {
+        it('Debería denegar acceso si el usuario no tiene el rol adecuado', async() => {
             const invalidToken = jwt.sign(
                 { email: 'user@example.com', role: 'Cliente' },
                 process.env.SECRET_KEY!,
@@ -115,7 +108,7 @@ describe('Pruebas del endpoint /rooms', () => {
             expect(response.body).toHaveProperty('message', 'Permiso denegado');
         });
 
-        it('Debería manejar errores del servidor', async () => {
+        it('Debería manejar errores del servidor', async() => {
             (Room.prototype.save as jest.Mock).mockRejectedValue(new Error('Error del servidor'));
 
             const response = await request(serverUrl)
@@ -129,7 +122,7 @@ describe('Pruebas del endpoint /rooms', () => {
     });
 
     describe('PUT /rooms/:room_id', () => {
-        it('Debería actualizar una habitación existente', async () => {
+        it('Debería actualizar una habitación existente', async() => {
             (Room.findOneAndUpdate as jest.Mock).mockResolvedValue(mockRoom);
 
             const response = await request(serverUrl)
@@ -141,7 +134,7 @@ describe('Pruebas del endpoint /rooms', () => {
             expect(response.text).toContain('actualizada correctamente');
         });
 
-        it('Debería devolver error si la habitación no existe', async () => {
+        it('Debería devolver error si la habitación no existe', async() => {
             (Room.findOneAndUpdate as jest.Mock).mockResolvedValue(null);
 
             const response = await request(serverUrl)
@@ -153,7 +146,7 @@ describe('Pruebas del endpoint /rooms', () => {
             expect(response.text).toBe('Habitación no encontrada');
         });
 
-        it('Debería manejar errores del servidor', async () => {
+        it('Debería manejar errores del servidor', async() => {
             (Room.findOneAndUpdate as jest.Mock).mockRejectedValue(new Error('Error del servidor'));
 
             const response = await request(serverUrl)
@@ -167,7 +160,7 @@ describe('Pruebas del endpoint /rooms', () => {
     });
 
     describe('DELETE /rooms/:room_id', () => {
-        it('Debería eliminar una habitación existente', async () => {
+        it('Debería eliminar una habitación existente', async() => {
             (Room.findOneAndDelete as jest.Mock).mockResolvedValue(mockRoom);
 
             const response = await request(serverUrl)
@@ -178,7 +171,7 @@ describe('Pruebas del endpoint /rooms', () => {
             expect(response.text).toBe('Habitación eliminada correctamente');
         });
 
-        it('Debería devolver error si la habitación no existe', async () => {
+        it('Debería devolver error si la habitación no existe', async() => {
             (Room.findOneAndDelete as jest.Mock).mockResolvedValue(null);
 
             const response = await request(serverUrl)
@@ -189,7 +182,7 @@ describe('Pruebas del endpoint /rooms', () => {
             expect(response.text).toBe('Habitación no encontrada');
         });
 
-        it('Debería manejar errores del servidor', async () => {
+        it('Debería manejar errores del servidor', async() => {
             (Room.findOneAndDelete as jest.Mock).mockRejectedValue(new Error('Error del servidor'));
 
             const response = await request(serverUrl)

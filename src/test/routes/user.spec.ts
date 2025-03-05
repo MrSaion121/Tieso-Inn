@@ -33,14 +33,14 @@ describe('Pruebas del endpoint /users', () => {
         jest.clearAllMocks();
     });
 
-     // Cerrar conexión MongoDB
-    afterAll(async () => {
+    // Cerrar conexión MongoDB
+    afterAll(async() => {
         await mongoose.connection.close();
     });
 
     // GET: Obtener todos los usuarios
     describe('GET /users', () => {
-        it('Debería devolver todos los usuarios con estado 200', async () => {
+        it('Debería devolver todos los usuarios con estado 200', async() => {
             jest.spyOn(User, 'find').mockResolvedValue([mockUser]);
 
             const response = await request(app)
@@ -51,7 +51,7 @@ describe('Pruebas del endpoint /users', () => {
             expect(response.body).toEqual(expect.arrayContaining([expect.objectContaining({ email: mockUser.email })]));
         });
 
-        it('Debería devolver estado 401 si no hay token', async () => {
+        it('Debería devolver estado 401 si no hay token', async() => {
             const response = await request(app).get('/users');
             expect(response.status).toBe(HTTP_STATUS_CODES.UNATHORIZED);
         });
@@ -59,7 +59,7 @@ describe('Pruebas del endpoint /users', () => {
 
     // GET: Obtener un usuario por ID
     describe('GET /users/:id', () => {
-        it('Debería devolver un usuario con estado 200', async () => {
+        it('Debería devolver un usuario con estado 200', async() => {
             jest.spyOn(User, 'findOne').mockResolvedValue(mockUser);
 
             const response = await request(app)
@@ -70,7 +70,7 @@ describe('Pruebas del endpoint /users', () => {
             expect(response.body).toEqual(expect.objectContaining({ email: mockUser.email }));
         });
 
-        it('Debería devolver estado 404 si el usuario no existe', async () => {
+        it('Debería devolver estado 404 si el usuario no existe', async() => {
             jest.spyOn(User, 'findOne').mockResolvedValue(null);
 
             const response = await request(app)
@@ -83,7 +83,7 @@ describe('Pruebas del endpoint /users', () => {
 
     // POST: Crear un nuevo usuario
     describe('POST /users', () => {
-        it('Debería crear un usuario con estado 201', async () => {
+        it('Debería crear un usuario con estado 201', async() => {
             jest.spyOn(User.prototype, 'save').mockResolvedValue(mockUser);
 
             const response = await request(app)
@@ -95,7 +95,7 @@ describe('Pruebas del endpoint /users', () => {
             expect(response.body).toHaveProperty('message', 'Usuario Registrado con exito');
         });
 
-        it('Debería devolver estado 400 si el email ya existe', async () => {
+        it('Debería devolver estado 400 si el email ya existe', async() => {
             jest.spyOn(User, 'findOne').mockResolvedValue(mockUser);
 
             const response = await request(app)
@@ -109,7 +109,7 @@ describe('Pruebas del endpoint /users', () => {
 
     // PUT: Actualizar un usuario
     describe('PUT /users/:id', () => {
-        it('Debería actualizar un usuario con estado 200', async () => {
+        it('Debería actualizar un usuario con estado 200', async() => {
             jest.spyOn(User, 'findOneAndUpdate').mockResolvedValue({
                 ...mockUser,
                 name: 'Updated Name',
@@ -124,7 +124,7 @@ describe('Pruebas del endpoint /users', () => {
             expect(response.body.updatedUser).toHaveProperty('name', 'Updated Name');
         });
 
-        it('Debería devolver estado 404 si el usuario no existe', async () => {
+        it('Debería devolver estado 404 si el usuario no existe', async() => {
             jest.spyOn(User, 'findOneAndUpdate').mockResolvedValue(null);
 
             const response = await request(app)
@@ -138,7 +138,7 @@ describe('Pruebas del endpoint /users', () => {
 
     // DELETE: Eliminar un usuario
     describe('DELETE /users/:id', () => {
-        it('Debería eliminar un usuario con estado 200', async () => {
+        it('Debería eliminar un usuario con estado 200', async() => {
             jest.spyOn(User, 'findOneAndDelete').mockResolvedValue(mockUser);
 
             const response = await request(app)
@@ -148,7 +148,7 @@ describe('Pruebas del endpoint /users', () => {
             expect(response.status).toBe(HTTP_STATUS_CODES.SUCCESS);
         });
 
-        it('Debería devolver estado 404 si el usuario no existe', async () => {
+        it('Debería devolver estado 404 si el usuario no existe', async() => {
             jest.spyOn(User, 'findOneAndDelete').mockResolvedValue(null);
 
             const response = await request(app)

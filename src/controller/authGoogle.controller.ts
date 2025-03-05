@@ -1,12 +1,13 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-export const googleCallback = (req: Request, res: Response, next: NextFunction) => {
+export const googleCallback = (req: Request, res: Response): void => {
     const user = req.user;
 
     if (!user) {
         // Si no hay usuario, redirige al login
-        return res.redirect('/');
+        res.redirect('/');
+        return;
     }
 
     // Generar el token JWT

@@ -2,14 +2,15 @@ import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import session from 'express-session';
 import dotenv from 'dotenv';
-import mongoose, { Document } from 'mongoose';
+import mongoose from 'mongoose';
 import IUser from '../models/user';
 import userModel from '../models/user';
+import { Application } from 'express';
 
 // Cargar variables de entorno
 dotenv.config();
 
-export const googleAuth = (app: any) => {
+export const googleAuth = (app: Application): void => {
     passport.use(
         new GoogleStrategy(
             {
@@ -17,7 +18,7 @@ export const googleAuth = (app: any) => {
                 clientSecret: process.env.GOOGLE_SECRET_KEY as string,
                 callbackURL: process.env.GOOGLE_CALLBACK_URL as string,
             },
-            async (accessToken, refreshToken, profile, cb) => {
+            async(accessToken, refreshToken, profile, cb) => {
                 try {
                     let existingUser = await userModel.findOne({ email: profile.emails![0].value });
 
@@ -36,9 +37,9 @@ export const googleAuth = (app: any) => {
                     }
 
                     // Transforma a objeto plano
-                    return cb(null, existingUser.toObject());
+                    cb(null, existingUser.toObject());
                 } catch (error) {
-                    return cb(error, undefined); // Cambia `profile` por `undefined`
+                    cb(error, undefined); // Cambia `profile` por `undefined`
                 }
             }
         )

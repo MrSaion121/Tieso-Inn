@@ -1,4 +1,4 @@
-import { Request, response, Response } from 'express';
+import { Request, Response } from 'express';
 import Category from '../models/category';
 import { HTTP_STATUS_CODES } from '../types/http-status-codes';
 
@@ -34,7 +34,8 @@ class CategoriesController {
             const categoryExists = await Category.findOne({ category_id });
 
             if (categoryExists) {
-                return res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('Esta categoria ya existe');
+                res.status(HTTP_STATUS_CODES.BAD_REQUEST).send('Esta categoria ya existe');
+                return;
             }
 
             const newCategory = new Category({
@@ -69,9 +70,10 @@ class CategoriesController {
             const category_id = req.params['category_id'];
             const deletedCategory = await Category.findOneAndDelete({ category_id });
             if (!deletedCategory) {
-                return res.status(HTTP_STATUS_CODES.NOT_FOUND).send('Categoría no encontrada');
+                res.status(HTTP_STATUS_CODES.NOT_FOUND).send('Categoría no encontrada');
+                return;
             }
-            return res.status(HTTP_STATUS_CODES.SUCCESS).send('Categoría eliminada correctamente');
+            res.status(HTTP_STATUS_CODES.SUCCESS).send('Categoría eliminada correctamente');
         } catch (error) {
             console.error(error);
             res.status(HTTP_STATUS_CODES.SERVER_ERROR).send('Error al eliminar la categoría');

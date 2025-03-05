@@ -1,13 +1,12 @@
-import { Router } from "express";
-import reservationRoutes from './reservation'
-import userRoutes from './user'
+import { Router } from 'express';
+import reservationRoutes from './reservation';
+import userRoutes from './user';
 import categoryRoutes from './categories';
 import roomRoutes from './rooms';
 import loginRoutes from './login';
 import registerRoutes from './register';
 import googleRoutes from './google';
-import chatRoutes from './support_chat'
-import path from "path";
+import chatRoutes from './support_chat';
 
 const router = Router();
 
@@ -64,7 +63,7 @@ const router = Router();
  *              num_of_beds:
  *                  type: number
  *              capacity:
- *                  type: number 
+ *                  type: number
  *      Room:
  *          requires:
  *              - room_id
@@ -124,7 +123,7 @@ const router = Router();
  *                      - Pendiente
  *                      - Cancelado
  *                      - Confirmado
- * 
+ *
  */
 
 //Ruta raiz

@@ -21,12 +21,12 @@ describe('Pruebas del endpoint /login', () => {
     });
 
     // Cerrar recursos después de las pruebas
-    afterAll(async () => {
+    afterAll(async() => {
         await mongoose.connection.close(); // Cierra la conexión a MongoDB
     });
 
     //Prueba 1: usuario autenticado con token devuelto (Pendiente por ver el token)
-    it('Debería de hacer un login exitoso y devolver un token', async () => {
+    it('Debería de hacer un login exitoso y devolver un token', async() => {
         const mockUser = {
             user_id: new mongoose.Types.ObjectId().toString(),
             name: 'John Doe',
@@ -58,7 +58,7 @@ describe('Pruebas del endpoint /login', () => {
     });
 
     //Prueba 2: Retornar el error si no existe el correo
-    it('Debería retornar error si el correo no existe', async () => {
+    it('Debería retornar error si el correo no existe', async() => {
         (User.findOne as jest.Mock).mockResolvedValue(null);
 
         const response = await request(app)
@@ -73,7 +73,7 @@ describe('Pruebas del endpoint /login', () => {
     });
 
     //Prueba 3: El usuario escribe contraseña incorrecta, o no hay
-    it('Debería retornar error si la contraseña es incorrecta', async () => {
+    it('Debería retornar error si la contraseña es incorrecta', async() => {
         const mockUser = {
             email: 'johndoe@example.com',
             password: 'hashedPassword',
@@ -95,7 +95,7 @@ describe('Pruebas del endpoint /login', () => {
     });
 
     //Prueba 4: usuario tiene la cuenta habilitada (Activa)
-    it('Debería retornar exito si el estado de la cuenta esta activa', async () => {
+    it('Debería retornar exito si el estado de la cuenta esta activa', async() => {
         const mockUser = {
             email: 'johndoe@example.com',
             password: 'hashedPassword',
@@ -119,7 +119,7 @@ describe('Pruebas del endpoint /login', () => {
     });
 
     //Prueba 5: usuario tiene la cuenta bloqueada o anda elimianda (Pendiente por ver)
-    it('Debería retornar error si el usuario está bloqueado o eliminado', async () => {
+    it('Debería retornar error si el usuario está bloqueado o eliminado', async() => {
         //Caso 1: Usuario Bloqueado
         const blockedUser = {
             email: 'johndoe@example.com',

@@ -11,7 +11,7 @@ export const generateReservationPDF = (reservation: any, pdfPath: string): Promi
 
         doc.pipe(writeStream);
 
-        doc.fontSize(20).text("Reservation Details", { align: "center" });
+        doc.fontSize(20).text('Reservation Details', { align: 'center' });
         doc.moveDown();
 
         doc.fontSize(12).text(`Reservation Number: ${reservation.reservation_num}`);

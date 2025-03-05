@@ -8,7 +8,7 @@ import { engine } from 'express-handlebars';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 //importar rutas
-import router from './routes'
+import router from './routes';
 //importacion google
 import { googleAuth } from './middlewares/authGoogle';
 
@@ -21,7 +21,7 @@ import swaggerConfig from './swagger.config.json';
 dotenv.config();
 
 //Cargar server
-import { Server } from 'socket.io'
+import { Server } from 'socket.io';
 
 const app = express();
 const PORT  = process.env.PORT || 3000;
@@ -30,7 +30,7 @@ const PORT  = process.env.PORT || 3000;
 const dbUrl = process.env.DB_URL;
 
 //Path para estilos. (CSS/JS)
-app.use('/', express.static(path.join(__dirname, '..', 'public')))
+app.use('/', express.static(path.join(__dirname, '..', 'public')));
 
 // Middleware para manejar JSON
 app.use(express.json());
@@ -53,7 +53,7 @@ type HandlebarsHelpers = {
 const helpers: HandlebarsHelpers = {
     eq: (a, b) => a === b,
     or: (...args) => args.slice(0, -1).some(Boolean),
-}
+};
 
 app.engine('handlebars', engine({helpers}));
 app.set('view engine', 'handlebars');
@@ -63,8 +63,7 @@ const swaggerDocs = swaggerJSDoc(swaggerConfig);
 app.use('/swagger', serve, setup(swaggerDocs));
 
 //Conexion de MongoDB
-mongoose.connect(dbUrl as string)
-.then( res => {
+mongoose.connect(dbUrl as string).then(() => {
     console.log('Conexion exitosa con MongoDB!!..');
     const server = app.listen(PORT, () => {
         console.log(`Servidor escuchando en el puerto ${PORT}`);
@@ -72,26 +71,26 @@ mongoose.connect(dbUrl as string)
 
     const io = new Server(server);
 
-io.on('connection', (socket) => {
-    socket.on('joinRoom', (userData) => {
-        socket.join('room-' + userData.room)
-        socket.to('room-' + userData.room).emit('joinRoom', userData.user)
-    })
+    io.on('connection', (socket) => {
+        socket.on('joinRoom', (userData) => {
+            socket.join('room-' + userData.room);
+            socket.to('room-' + userData.room).emit('joinRoom', userData.user);
+        });
 
-    socket.on('sendNewMessage', (data) => {
-        //console.log('You got a new message:',data)
+        socket.on('sendNewMessage', (data) => {
+            //console.log('You got a new message:',data)
 
-        //socket.broadcast.emit('messageReceived', data)
-        socket.to('room-' + data.room).emit('messageReceived', data)
-    })
+            //socket.broadcast.emit('messageReceived', data)
+            socket.to('room-' + data.room).emit('messageReceived', data);
+        });
 
-    socket.on('leftRoom', (userData) => {
-        //console.log('A user has disconnected')
-        socket.to('room-' + userData.room).emit('leftRoom', userData.user)
-    })
-});
-}).catch(err => {
-    console.log('Error al conectar:', err);
+        socket.on('leftRoom', (userData) => {
+            //console.log('A user has disconnected')
+            socket.to('room-' + userData.room).emit('leftRoom', userData.user);
+        });
+    });
+}).catch((err) => {
+    console.error('Error al conectar:', err);
 });
 
 //Requerido para pruebas

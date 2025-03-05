@@ -10,11 +10,12 @@ export default [
         languageOptions: { globals: globals.browser }
     },
     {
-        ignores: ['dist/', 'node_modules/']
+        ignores: ['dist/', 'node_modules/', 'public/', '*.js']
     },
     {
         files: ['src/**/*.ts'],
         rules: {
+            "eol-last": ["error", "always"],
             '@typescript-eslint/explicit-module-boundary-types': 'warn',
             '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
             '@typescript-eslint/ban-ts-comment': 'warn',

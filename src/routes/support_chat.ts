@@ -1,11 +1,11 @@
-import { Router } from "express";
-import ChatController from "../controller/chat.controller";
-import { authenticateToken } from "../middlewares/auth";
+import { Router } from 'express';
+import ChatController from '../controller/chat.controller';
+import { authenticateToken } from '../middlewares/auth';
 
 const router = Router();
 
 router.get('/:id', (req, res) => {
-    res.render('support_chat')
+    res.render('support_chat');
 });
 
 /**
@@ -20,7 +20,7 @@ router.get('/:id', (req, res) => {
  *          500:
  *              description: server error
  */
-router.get('', authenticateToken, ChatController.getChats)
+router.get('', authenticateToken, ChatController.getChats);
 
 /**
  * @swagger
@@ -36,7 +36,7 @@ router.get('', authenticateToken, ChatController.getChats)
  *          500:
  *              description: server error
  */
-router.get('/chat/:id', authenticateToken, ChatController.getChat)
+router.get('/chat/:id', authenticateToken, ChatController.getChat);
 
 /**
  * @swagger
@@ -47,7 +47,7 @@ router.get('/chat/:id', authenticateToken, ChatController.getChat)
  *      responses:
  *          201:
  *              description: chat created
- *              content: 
+ *              content:
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/SupportChat'
@@ -83,11 +83,11 @@ router.delete('/:id', authenticateToken, ChatController.deleteChat);
  *      description: add message to chat
  *      requestBody:
  *          required: true
- *          content: 
+ *          content:
  *              application/json:
  *                  schema:
  *                      type: object
- *                      properties: 
+ *                      properties:
  *                          sender:
  *                              type: string
  *                              description: the id of the user who sent the message
@@ -102,6 +102,6 @@ router.delete('/:id', authenticateToken, ChatController.deleteChat);
  *          500:
  *              description: server error
  */
-router.put('/:id', authenticateToken, ChatController.addMessage)
+router.put('/:id', authenticateToken, ChatController.addMessage);
 
 export default router;

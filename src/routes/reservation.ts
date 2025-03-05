@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { reservationController } from '../controller/reservation.controller'
+import { reservationController } from '../controller/reservation.controller';
 
 //Importacion middlewares
 import { authenticateToken } from '../middlewares/auth';
@@ -34,7 +34,7 @@ router.get('/', authenticateToken, authorizaRole(['Recepcionista', 'Gerente']), 
  *              description: reservation
  *          404:
  *              description: reservation not found
- *          500: 
+ *          500:
  *              description: server error
  */
 
@@ -49,11 +49,11 @@ router.get('/:id', authenticateToken, authorizaRole(['Cliente', 'Recepcionista']
  *      description: create new reservation
  *      requestBody:
  *          required: true
- *          content: 
+ *          content:
  *              application/json:
  *                  schema:
  *                      $ref: '#/components/schemas/Reservation'
- *      responses: 
+ *      responses:
  *          400:
  *              description: bad request
  *          201:
@@ -62,7 +62,7 @@ router.get('/:id', authenticateToken, authorizaRole(['Cliente', 'Recepcionista']
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/Reservation'
- *          500: 
+ *          500:
  *              description: server error
  */
 
@@ -77,7 +77,7 @@ router.post('/',  authenticateToken, authorizaRole(['Cliente', 'Recepcionista'])
  *      description: update reservation
  *      requestBody:
  *          required: true
- *          content: 
+ *          content:
  *              application/json:
  *                  schema:
  *                      $ref: '#/components/schemas/Reservation'
@@ -127,7 +127,7 @@ router.delete('/:id',  authenticateToken, authorizaRole(['Cliente','Recepcionist
  */
 
 //Eliminar una reservacion | Permisos [Recepcionista]
-router.get('/room/:id', authenticateToken, reservationController.getReservationsByRoomId)
+router.get('/room/:id', authenticateToken, reservationController.getReservationsByRoomId);
 
 /**
  * @swagger
@@ -144,6 +144,6 @@ router.get('/room/:id', authenticateToken, reservationController.getReservations
  *              description: server error
  */
 
-router.get('/user/:id', authenticateToken, reservationController.getReservationsByUserId)
+router.get('/user/:id', authenticateToken, reservationController.getReservationsByUserId);
 
 export default router;

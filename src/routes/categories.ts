@@ -14,7 +14,7 @@ const router = Router();
  *      tags: [Categories]
  *      description: get all categories
  *      responses:
- *          200: 
+ *          200:
  *              description: array of categories
  *          500:
  *              description: server error
@@ -34,7 +34,7 @@ router.get('', authenticateToken, categoriesController.getAll);
  *              description: category
  *          404:
  *              description: category not found
- *          500: 
+ *          500:
  *              description: server error
  */
 
@@ -49,11 +49,11 @@ router.get('/:category_id', authenticateToken,  categoriesController.getCategory
  *      description: create new category
  *      requestBody:
  *          required: true
- *          content: 
+ *          content:
  *              application/json:
  *                  schema:
  *                      $ref: '#/components/schemas/Category'
- *      responses: 
+ *      responses:
  *          400:
  *              description: bad request
  *          201:
@@ -62,7 +62,7 @@ router.get('/:category_id', authenticateToken,  categoriesController.getCategory
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/Category'
- *          500: 
+ *          500:
  *              description: server error
  */
 
@@ -77,7 +77,7 @@ router.post('', authenticateToken, authorizaRole(['Admin']), categoriesControlle
  *      description: update category
  *      requestBody:
  *          required: true
- *          content: 
+ *          content:
  *              application/json:
  *                  schema:
  *                      $ref: '#/components/schemas/Category'

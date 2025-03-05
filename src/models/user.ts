@@ -1,4 +1,4 @@
-import { Schema, model, SchemaTypes, Document } from 'mongoose'
+import { Schema, model, SchemaTypes, Document } from 'mongoose';
 
 interface IUser extends Document {
     user_id: Schema.Types.ObjectId;
@@ -18,8 +18,8 @@ const userSchema = new Schema<IUser>({
     password: { type: SchemaTypes.String },
     cellphone: { type: SchemaTypes.String },
     status: { type: SchemaTypes.String, enum: ['Activo', 'Eliminado', 'Bloqueado'], default: 'Activo' },
-})
+});
 
 const user = model('users', userSchema);
 
-export default user
+export default user;

@@ -34,7 +34,7 @@ router.get('', roomsController.getAll);
  *              description: room
  *          404:
  *              description: room not found
- *          500: 
+ *          500:
  *              description: server error
  */
 
@@ -49,11 +49,11 @@ router.get('/:room_id', roomsController.getRoomByID);
  *      description: create new room
  *      requestBody:
  *          required: true
- *          content: 
+ *          content:
  *              application/json:
  *                  schema:
  *                      $ref: '#/components/schemas/Room'
- *      responses: 
+ *      responses:
  *          400:
  *              description: bad request
  *          201:
@@ -62,7 +62,7 @@ router.get('/:room_id', roomsController.getRoomByID);
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/Room'
- *          500: 
+ *          500:
  *              description: server error
  */
 
@@ -77,7 +77,7 @@ router.post('',  authenticateToken, authorizaRole(['Gerente']), roomsController.
  *      description: update room
  *      requestBody:
  *          required: true
- *          content: 
+ *          content:
  *              application/json:
  *                  schema:
  *                      $ref: '#/components/schemas/Room'

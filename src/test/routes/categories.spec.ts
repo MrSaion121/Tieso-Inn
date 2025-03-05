@@ -33,14 +33,14 @@ describe('Pruebas del endpoint /categories', () => {
     });
 
     // Cerrar recursos después de las pruebas
-    afterAll(async () => {
+    afterAll(async() => {
         await mongoose.connection.close(); // Cierra la conexión a MongoDB
     });
 
 
     // GET | /categories - Obtener todas las categorías
     describe('GET /categories', () => {
-        it('Debería devolver todas las categorías', async () => {
+        it('Debería devolver todas las categorías', async() => {
             (Category.find as jest.Mock).mockResolvedValue([mockCategory]);
 
             const response = await request(app)
@@ -51,7 +51,7 @@ describe('Pruebas del endpoint /categories', () => {
             expect(response.body).toBeInstanceOf(Array);                        //Se espera el arreglo de todas las categorias
         });
 
-        it('Debería manejar errores del servidor', async () => {
+        it('Debería manejar errores del servidor', async() => {
             (Category.find as jest.Mock).mockRejectedValue(new Error('Error del servidor'));
 
             const response = await request(app)
@@ -65,7 +65,7 @@ describe('Pruebas del endpoint /categories', () => {
 
     // GET | /categories/:category_id - Obtener una categoría por ID
     describe('GET /categories/:category_id', () => {
-        it('Debería devolver una categoría por su ID', async () => {
+        it('Debería devolver una categoría por su ID', async() => {
             (Category.findOne as jest.Mock).mockResolvedValue(mockCategory);
 
             const response = await request(app)
@@ -76,18 +76,18 @@ describe('Pruebas del endpoint /categories', () => {
             expect(response.body).toHaveProperty('category_id', mockCategory.category_id);      //Se espera devolver el id de la categoria
         });
 
-        it('Debería devolver 404 si la categoría no existe', async () => {
+        it('Debería devolver 404 si la categoría no existe', async() => {
             (Category.findOne as jest.Mock).mockResolvedValue(null);            //Forzar a que no exista la categoria
 
             const response = await request(app)
-                .get(`/categories/invalid_category_id`)
+                .get('/categories/invalid_category_id')
                 .set('Authorization', `Bearer ${mockToken}`);
 
             expect(response.statusCode).toBe(HTTP_STATUS_CODES.NOT_FOUND);
             expect(response.text).toBe('Categoría no encontrada');              //Se espera el mensaje de respuesta.
         });
 
-        it('Debería manejar errores del servidor', async () => {
+        it('Debería manejar errores del servidor', async() => {
             (Category.findOne as jest.Mock).mockRejectedValue(new Error('Error del servidor')); //Forza a rechazar la solicitud
 
             const response = await request(app)
@@ -101,7 +101,7 @@ describe('Pruebas del endpoint /categories', () => {
 
     //POST | /categories - Crear una categoría
     describe('POST /categories', () => {
-        it('Debería crear una nueva categoría', async () => {
+        it('Debería crear una nueva categoría', async() => {
             (Category.findOne as jest.Mock).mockResolvedValue(null);        // Asegurarse de que la categoría no exista
             (Category.prototype.save as jest.Mock).mockResolvedValue(mockCategory);
 
@@ -114,7 +114,7 @@ describe('Pruebas del endpoint /categories', () => {
             //expect(response.body).toHaveProperty('category_id', mockCategory.category_id);  //Se espera la respuesta del servidor de que se creo
         });
 
-        it('Debería devolver 400 si la categoría ya existe', async () => {
+        it('Debería devolver 400 si la categoría ya existe', async() => {
             (Category.findOne as jest.Mock).mockResolvedValue(mockCategory);    //Busca la categoria
 
             const response = await request(app)                                 //Manda la peticion
@@ -126,7 +126,7 @@ describe('Pruebas del endpoint /categories', () => {
             expect(response.text).toBe('Esta categoria ya existe');             //Se espera a que mande error, por que ya existe.
         });
 
-        it('Debería manejar errores del servidor', async () => {
+        it('Debería manejar errores del servidor', async() => {
             (Category.findOne as jest.Mock).mockResolvedValue(null); // Asegurarse de que la categoría no exista
             (Category.prototype.save as jest.Mock).mockRejectedValue(new Error('Error del servidor'));
 
@@ -142,7 +142,7 @@ describe('Pruebas del endpoint /categories', () => {
 
     // PUT | /categories/:category_id - Actualizar una categoría
     describe('PUT /categories/:category_id', () => {
-        it('Debería actualizar una categoría', async () => {
+        it('Debería actualizar una categoría', async() => {
             (Category.findOneAndUpdate as jest.Mock).mockResolvedValue(mockCategory);
 
             const response = await request(app)
@@ -154,7 +154,7 @@ describe('Pruebas del endpoint /categories', () => {
             expect(response.text).toBe(`Categoría ${mockCategory} actualizada correctamente`);  //Se espera la respuesta exitosa
         });
 
-        it('Debería manejar errores del servidor', async () => {
+        it('Debería manejar errores del servidor', async() => {
             (Category.findOneAndUpdate as jest.Mock).mockRejectedValue(new Error('Error del servidor'));    //Forzar error
 
             const response = await request(app)
@@ -169,7 +169,7 @@ describe('Pruebas del endpoint /categories', () => {
 
     //DELETE | /categories/:category_id - Eliminar una categoría
     describe('DELETE /categories/:category_id', () => {
-        it('Debería eliminar una categoría', async () => {
+        it('Debería eliminar una categoría', async() => {
             (Category.findOneAndDelete as jest.Mock).mockResolvedValue(mockCategory);   //Toma el mock de categoria
 
             const response = await request(app)
@@ -180,7 +180,7 @@ describe('Pruebas del endpoint /categories', () => {
             expect(response.text).toBe('Categoría eliminada correctamente');            //Se espera la respuesta exitoso
         });
 
-        it('Debería devolver 404 si la categoría no se encuentra', async () => {
+        it('Debería devolver 404 si la categoría no se encuentra', async() => {
             (Category.findOneAndDelete as jest.Mock).mockResolvedValue(null);           //Forzar a que no tenga
 
             const response = await request(app)
@@ -191,7 +191,7 @@ describe('Pruebas del endpoint /categories', () => {
             expect(response.text).toBe('Categoría no encontrada');                      //Se espera la respuesta no encontrada
         });
 
-        it('Debería manejar errores del servidor', async () => {
+        it('Debería manejar errores del servidor', async() => {
             (Category.findOneAndDelete as jest.Mock).mockRejectedValue(new Error('Error del servidor'));
 
             const response = await request(app)

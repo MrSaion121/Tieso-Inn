@@ -17,12 +17,12 @@ describe('Pruebas del endpoint /register', () => {
     });
 
     // Cerrar recursos después de las pruebas
-    afterAll(async () => {
+    afterAll(async() => {
         await mongoose.connection.close(); // Cierra la conexión a MongoDB
     });
 
     //Prueba 1: Registro exitoso
-    it('Debería registrar un usuario con éxito', async () => {
+    it('Debería registrar un usuario con éxito', async() => {
         (User.findOne as jest.Mock).mockResolvedValue(null);        // Simular que el usuario no existe
         (User.prototype.save as jest.Mock).mockResolvedValue({});   // Simular que el usuario se guarda exitosamente
 
@@ -40,7 +40,7 @@ describe('Pruebas del endpoint /register', () => {
     });
 
     //Prueba 2: Registro - Si ya esxiste el email = error
-    it('Debería retornar error si el email ya está en uso', async () => {
+    it('Debería retornar error si el email ya está en uso', async() => {
         (User.findOne as jest.Mock).mockResolvedValue({ email: 'johndoe@example.com' });
 
         const response = await request(app)
@@ -55,13 +55,13 @@ describe('Pruebas del endpoint /register', () => {
         expect(response.statusCode).toBe(HTTP_STATUS_CODES.BAD_REQUEST);
 
         //Normalizar texto quitando comillas adicionales.
-        const message = typeof response.body === "string" ? response.text.replace(/("|"$)/g, '') : response.body.message;
-        expect(message).toBe("Este email ya se esta usando");
+        const message = typeof response.body === 'string' ? response.text.replace(/('|'$)/g, '') : response.body.message;
+        expect(message).toBe('Este email ya se esta usando');
 
     });
 
     //Prueba 3: Registro - Falta el campo de contraseña = error
-    it('Debería retornar error si falta la contraseña', async () => {
+    it('Debería retornar error si falta la contraseña', async() => {
         const response = await request(app)
             .post('/register')
             .send({
@@ -72,9 +72,9 @@ describe('Pruebas del endpoint /register', () => {
 
         expect(response.statusCode).toBe(HTTP_STATUS_CODES.BAD_REQUEST);
         // Normaliza el texto quitando comillas adicionales
-        const message = typeof response.body === "string" ? response.text.replace(/(^"|"$)/g, '') : response.body.message;
+        const message = typeof response.body === 'string' ? response.text.replace(/(^'|'$)/g, '') : response.body.message;
 
-        expect(message).toBe("La contraseña es requerida.");
+        expect(message).toBe('La contraseña es requerida.');
 
     });
 });
