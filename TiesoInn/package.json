@@ -11,7 +11,8 @@
     "scripts": "tsc",
     "build": "rimraf dist && tsc",
     "postinstall": "npm run scripts",
-    "prepare": "husky"
+    "prepare": "husky",
+    "lint": "eslint"
   },
   "author": "Victor, Santiago, Rodrigo",
   "license": "MIT",
