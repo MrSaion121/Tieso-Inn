@@ -22,7 +22,7 @@ export default [
             'eqeqeq': ['error', 'always'],
             'semi': ['error', 'always'],
             'quotes': ['error', 'single'],
-            'indent': ['error', 2],
+            'indent': ['error', 4],
             'curly': ['error', 'all'],
             'consistent-return': 'warn',
             'brace-style': ['error', '1tbs'],
