@@ -267,7 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
   //Chat
   const chatTab = document.getElementById("tab-chats");
   const chatContent = document.getElementById("chats");
-  
+
   if (roomManageTab) {
     roomManageTab.addEventListener("click", async () => {
       if (roomManageContent.dataset.loaded) return;
@@ -276,7 +276,7 @@ document.addEventListener("DOMContentLoaded", () => {
           method: "GET",
           headers: {
             accept: "application/json"
-          } 
+          }
         });
         if (!response.ok) {
           throw new Error("Error al cargar las habitaciones");

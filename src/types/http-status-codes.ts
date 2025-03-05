@@ -9,4 +9,3 @@ export enum HTTP_STATUS_CODES {
     SERVER_ERROR = 500,
 
 }
-

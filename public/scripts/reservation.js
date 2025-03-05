@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
 
         const currentUrl = window.location.href;
-        
+
         const arrival_date = arrivalDateInput.value;
         const checkout_date = checkoutDateInput.value;
         const num_of_guest = numGuestInput.value;

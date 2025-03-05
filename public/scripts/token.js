@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const token = localStorage.getItem("token");
   if (!token) {
     logout()
-  } else { 
+  } else {
     try {
       const response = await fetch(`/users/${userId}`, {
         method: "GET",

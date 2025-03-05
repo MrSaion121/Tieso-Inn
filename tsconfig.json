@@ -1,9 +1,9 @@
 {
-    "include": ["./src/**/*.ts", "./src/**/*.d.ts", ],       //Archivo origen
+    "include": ["./src/**/*.ts", "./src/**/*.d.ts"],
     "exclude": ["./src/test"],
     "compilerOptions": {
-        "outDir": "dist",       //Archivo destino, donde guardar
-        "target": "ES6",                //version de JS
+        "outDir": "dist",
+        "target": "ES6",
         "noImplicitAny": true,
         "esModuleInterop": true,
         "moduleResolution": "NodeNext",

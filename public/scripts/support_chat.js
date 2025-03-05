@@ -11,7 +11,7 @@ function logout() {
 function createMessageElement({ className, user, message, isEvent = false }) {
     const newMessage = document.createElement("div");
     newMessage.className = className;
-  
+
     // Nombre de usuario (si aplica)
     if (user) {
         const userElement = document.createElement("span");
@@ -19,12 +19,12 @@ function createMessageElement({ className, user, message, isEvent = false }) {
         userElement.innerText = `${user}: `;
         newMessage.appendChild(userElement);
     }
-  
+
     // Contenido del mensaje
     const sanitizedMessage = message.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     const messageContent = document.createTextNode(sanitizedMessage);
     newMessage.appendChild(messageContent);
-  
+
     // Fecha y hora del mensaje (solo si no es un evento)
     if (!isEvent) {
         const messageDate = document.createElement("span");
@@ -38,7 +38,7 @@ function createMessageElement({ className, user, message, isEvent = false }) {
         });
         newMessage.appendChild(messageDate);
     }
-  
+
     return newMessage;
   }
 
@@ -49,13 +49,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     const roomID = window.location.href.split("/").pop();
     const username = localStorage.getItem("name");
     const user_id = localStorage.getItem("user_id");
-    
+
     if (!username || !user_id) {
         alert("Por favor inicia sesión antes de usar el chat.");
         window.location.href = "/login";
         return;
     }
-    
+
     try {
         const response = await fetch(`/support/chat/${roomID}`, {
             method: "GET",

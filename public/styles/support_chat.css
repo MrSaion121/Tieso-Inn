@@ -87,7 +87,7 @@ button:hover {
     padding: 10px;
     border-radius: 20px;
     width: fit-content;
-    max-width: 50%;    
+    max-width: 50%;
     margin-bottom: 5px;
     word-wrap: break-word;
     margin-right: auto;
@@ -99,7 +99,7 @@ button:hover {
 }
 
 .received-message .user-name {
-    color: #444; 
+    color: #444;
 }
 
 /* Estilos para mensajes de eventos */
