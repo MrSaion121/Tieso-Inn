@@ -1,0 +1,16 @@
+{
+    "include": ["./src/**/*.ts", "./src/**/*.d.ts"],
+    "exclude": ["./src/test"],
+    "compilerOptions": {
+        "outDir": "dist",
+        "target": "ES6",
+        "noImplicitAny": true,
+        "esModuleInterop": true,
+        "moduleResolution": "NodeNext",
+        "module": "NodeNext",
+        "resolveJsonModule": true,
+        "strict": true,
+        "baseUrl": "src",
+        "typeRoots": [".node_modules/@types", "./src/types"]
+    }
+}
