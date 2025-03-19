@@ -1,35 +1,31 @@
 # TIESO INN
 
-Tieso Inn es una página web que emula un negocio de hotelería.
-El objetivo principal es crear una plataforma sencilla de utilizar para consultar la disponibilidad de habitaciones y realizar reservaciones.
+Tieso Inn is a web page that emulates a hotel business.
+It's main objective is to create a simple to use platform that allows the user to check for which rooms are available and to make reservations
 
-# Miembros del equipo
+# Team Members
 
 - Victor Manuel Tellez Amezcua
 - Jose Santiago Oseguera García
 - Rodrigo López Coronado
-- Luis Antonio Cuaquentzi Avendaño
 
-# Instrucciones para ejecutar el proyecto
+# Instructions to execute the project
 
-### 1. Clonar el repositorio
-Clona el repositorio de GitHub en tu equipo local o descargando directamente el zip.
+### 1. Clone the repository
+Clone the GitHub repository in your local equipment or by downloading the zip directly
 ```bash
-git clone https://github.com/victortelles/Tecn.Des.Servidores_Proyecto.git
-```
-```bash
-https://codeload.github.com/victortelles/Tecn.Des.Servidores_Proyecto/zip/refs/heads/desarrollo?token=A5I7TOW6BE7QAGQMASLEJP3HBCHQO
+git clone https://github.com/MrSaion121/Tieso-Inn.git
 ```
 
-### 2. Asegúrate de estar en la rama main
-Antes de realizar cualquier cosa, asegúrate de encontrarte en la rama main
+### 2. Make sure to be in the main branch
+Before doing anything else, make sure to be in the main branch
 
 ```bash
 git checkout main
 ```
 
-### 3. Instalar dependencias
-Entra al directorio del proyecto y ejecuta los siguientes comandos para instalar todas las dependencias requeridas para el proyecto.
+### 3. Install dependencies
+Enter the project directory and execute the following commands to install all the required dependencies
 
 ```bash
 cd TiesoInn
@@ -38,7 +34,7 @@ cd TiesoInn
 npm install
 ```
 
-#### Dependencias
+#### Dependencies
 
 - bcryptjs 2.4.3
 - dotenv 16.4.5
@@ -47,7 +43,7 @@ npm install
 - swagger-jsdoc 6.2.8
 - swagger-ui-express 5.0.1
 
-#### Dependencias de desarrollador
+#### Dev dependencies
 
 - @types/bcryptjs 2.4.6
 - @types/express 4.17.21
@@ -59,35 +55,38 @@ npm install
 - ts-node 10.9.2
 - typescript 5.6.2
 
-### 4. Compilar el proyecto
+### 4. Compile the project
 ```bash
 npm run scripts
 ```
 
-### 5. Ejecutar el proyecto en modo producción
+### 5. Execute the project in production mode
 ```bash
 npm start
 ```
 
-### 6. Ejecutar el proyecto en modo desarrollo
-Para ejecutar la API en modo de desarrollo con reinicios automáticos, usa el siguiente comando:
+### 6. Execute the project in dev mode
+In order to execute the API in development mode with automatic reboots, use the following command
 ```bash
 npm run dev
 ```
 
-Deberá de estar corriendo en el puerto ***3000***
+It should be running on port ***3000***
 
-### Endpoints del CRUD de Usuarios
+### Conventional Commits
+Commits in the repository must follow the conventional commits specification, for more information click here https://www.conventionalcommits.org/en/v1.0.0/#specification
 
-### Caso pruebas
-Recomendamos utilizar **Postman** para realizar las pruebas
+### User CRUD Endpoints
 
-#### 1. Obtener todos los usuarios
+### Tests
+We recommend using **Postman** for API testing
+
+#### 1. Get All Users
 
 - **URL**: `/users`
-- **Método**: `GET`
-- **Descripción**: Obtiene la lista de todos los usuarios, omitiendo las contraseñas por seguridad.
-- **Respuesta de ejemplo**:
+- **Method**: `GET`
+- **Description**: Returns a list of all the users, omitting the passwords for safety
+- **Example Response**:
     ```json
     [
       {
@@ -107,14 +106,14 @@ Recomendamos utilizar **Postman** para realizar las pruebas
     ]
     ```
 
-#### 2. Obtener un usuario por correo electrónico
+#### 2. Get User by Email
 
 - **URL**: `/users/{email}`
-- **Método**: `GET`
-- **Descripción**: Obtiene los detalles de un usuario específico según su correo electrónico, omitiendo la contraseña.
-- **Parámetros**:
-    - `email` (en la URL) – El correo electrónico del usuario que se desea consultar.
-- **Respuesta de ejemplo**:
+- **Method**: `GET`
+- **Description**: Returns all details of a specific user by their email, omitting their password
+- **Parameters**:
+    - `email` (in the URL) – The user's email
+- **Example Response**:
     ```json
     {
       "name": "Juan Pérez",
@@ -124,16 +123,16 @@ Recomendamos utilizar **Postman** para realizar las pruebas
       "status": "active"
     }
     ```
-- **Errores posibles**:
-    - `404`: Usuario no encontrado.
-    - `500`: Error al conseguir el usuario.
+- **Possible errors**:
+    - `404`: User not found.
+    - `500`: Error while fetching user.
 
-#### 3. Crear un nuevo usuario
+#### 3. Create new User
 
 - **URL**: `/users`
-- **Método**: `POST`
-- **Descripción**: Crea un nuevo usuario con los datos proporcionados.
-- **Cuerpo de la solicitud**:
+- **Method**: `POST`
+- **Description**: Creates a new User with the given values.
+- **Body**:
     ```json
     {
       "name": "Carlos López",
@@ -144,7 +143,7 @@ Recomendamos utilizar **Postman** para realizar las pruebas
       "status": "active"
     }
     ```
-- **Respuesta de ejemplo**:
+- **Example Response**:
     ```json
     {
       "_id": "643f1b7c1bce8c0012345678",
@@ -155,18 +154,18 @@ Recomendamos utilizar **Postman** para realizar las pruebas
       "status": "active"
     }
     ```
-- **Errores posibles**:
-    - `400`: El correo ya está en uso.
-    - `500`: Error al crear el usuario.
+- **Possible errors**:
+    - `400`: The email is already in use.
+    - `500`: Error while creating the user.
 
-#### 4. Actualizar un usuario
+#### 4. Update a User
 
 - **URL**: `/users/{email}`
-- **Método**: `PUT`
-- **Descripción**: Actualiza la información de un usuario existente según su correo electrónico.
-- **Parámetros**:
-    - `email` (en la URL) – El correo electrónico del usuario a actualizar.
-- **Cuerpo de la solicitud**:
+- **Method**: `PUT`
+- **Description**: Updates a user's information with the given email
+- **Parameters**:
+    - `email` (in the URL) – The updated user's email.
+- **Body**:
     ```json
     {
       "name": "Carlos López Actualizado",
@@ -174,7 +173,7 @@ Recomendamos utilizar **Postman** para realizar las pruebas
       "status": "inactive"
     }
     ```
-- **Respuesta de ejemplo**:
+- **Example Response**:
     ```json
     {
       "message": "Usuario actualizado",
@@ -187,35 +186,35 @@ Recomendamos utilizar **Postman** para realizar las pruebas
       }
     }
     ```
-- **Errores posibles**:
-    - `404`: Usuario no encontrado.
-    - `500`: Error al actualizar el usuario.
+- **Possible errors**:
+    - `404`: User not found.
+    - `500`: Error while finding the user.
 
-#### 5. Eliminar un usuario
+#### 5. Delete a user
 
 - **URL**: `/users/{email}`
-- **Método**: `DELETE`
-- **Descripción**: Elimina un usuario del sistema según su correo electrónico.
-- **Parámetros**:
-    - `email` (en la URL) – El correo electrónico del usuario a eliminar.
-- **Respuesta de ejemplo**:
+- **Method**: `DELETE`
+- **Description**: Deletes a user with the given email
+- **Parameters**:
+    - `email` (in the URL) – The user's email.
+- **Example Response**:
     ```json
     {
-      "message": "Usuario eliminado con éxito"
+      "message": "User has been deleted successfully"
     }
     ```
-- **Errores posibles**:
-    - `400`: Usuario no encontrado.
-    - `500`: Error al eliminar el usuario.
+- **Possible errors**:
+    - `400`: User not found.
+    - `500`: Error while deleting the user.
 
-### Endpoints del CRUD de Categorías
+### Category CRUD Endpoints
 
-#### 1. Obtener todas las categorías
+#### 1. Get all Categories
 
 - **URL**: `/categories`
-- **Método**: `GET`
-- **Descripción**: Obtiene la lista de todas las categorías.
-- **Respuesta de ejemplo**:
+- **Method**: `GET`
+- **Description**: Returns a list of all categories.
+- **Example Response**:
     ```json
     [
       {
@@ -233,14 +232,14 @@ Recomendamos utilizar **Postman** para realizar las pruebas
     ]
     ```
 
-#### 2. Obtener una categoría por ID
+#### 2. Get a Category by ID
 
 - **URL**: `/categories/{category_id}`
-- **Método**: `GET`
-- **Descripción**: Obtiene los detalles de una categoría específica según su ID.
-- **Parámetros**:
-    - `category_id` (en la URL) – El ID de la categoría que se desea consultar.
-- **Respuesta de ejemplo**:
+- **Method**: `GET`
+- **Description**: Returns all details of a category with the given ID
+- **Parameters**:
+    - `category_id` (in the URL) – The ID of the category to be consulted.
+- **Example Response**:
     ```json
     {
       "category_id": "101",
@@ -249,16 +248,16 @@ Recomendamos utilizar **Postman** para realizar las pruebas
       "capacity": 4
     }
     ```
-- **Errores posibles**:
-    - `404`: Categoría no encontrada.
-    - `500`: Error al obtener la categoría.
+- **Possible errors**:
+    - `404`: Category not found.
+    - `500`: Error while fetching the category.
 
-#### 3. Crear una nueva categoría
+#### 3. Create a new Category
 
 - **URL**: `/categories`
-- **Método**: `POST`
-- **Descripción**: Crea una nueva categoría con los datos proporcionados.
-- **Cuerpo de la solicitud**:
+- **Method**: `POST`
+- **Description**: Create a new category with the given data.
+- **Body**:
     ```json
     {
       "category_id": "103",
@@ -267,7 +266,7 @@ Recomendamos utilizar **Postman** para realizar las pruebas
       "capacity": 6
     }
     ```
-- **Respuesta de ejemplo**:
+- **Example Response**:
     ```json
     {
       "_id": "643f1b7c1bce8c0012345679",
@@ -277,18 +276,18 @@ Recomendamos utilizar **Postman** para realizar las pruebas
       "capacity": 6
     }
     ```
-- **Errores posibles**:
-    - `400`: La categoría ya existe.
-    - `500`: Error al crear la categoría.
+- **Possible errors**:
+    - `400`: The category already exists.
+    - `500`: Error while creating the category.
 
-#### 4. Actualizar una categoría
+#### 4. Update a category
 
 - **URL**: `/categories/{category_id}`
-- **Método**: `PUT`
-- **Descripción**: Actualiza la información de una categoría existente según su ID.
-- **Parámetros**:
-    - `category_id` (en la URL) – El ID de la categoría a actualizar.
-- **Cuerpo de la solicitud**:
+- **Method**: `PUT`
+- **Description**: Updates the information of an existing category with the given ID.
+- **Parameters**:
+    - `category_id` (in the URL) – The ID of the category that will be updated.
+- **Body**:
     ```json
     {
       "name": "Habitación Familiar Grande",
@@ -296,7 +295,7 @@ Recomendamos utilizar **Postman** para realizar las pruebas
       "capacity": 8
     }
     ```
-- **Respuesta de ejemplo**:
+- **Example Response**:
     ```json
     {
       "message": "Categoría actualizada correctamente",
@@ -308,35 +307,35 @@ Recomendamos utilizar **Postman** para realizar las pruebas
       }
     }
     ```
-- **Errores posibles**:
-    - `404`: Categoría no encontrada.
-    - `500`: Error al actualizar la categoría.
+- **Possible errors**:
+    - `404`: Category not found.
+    - `500`: Error while updating the category.
 
-#### 5. Eliminar una categoría
+#### 5. Delete a Category
 
 - **URL**: `/categories/{category_id}`
-- **Método**: `DELETE`
-- **Descripción**: Elimina una categoría del sistema según su ID.
-- **Parámetros**:
-    - `category_id` (en la URL) – El ID de la categoría a eliminar.
-- **Respuesta de ejemplo**:
+- **Method**: `DELETE`
+- **Description**: Deletes a category with the given ID
+- **Parameters**:
+    - `category_id` (in the URL) – The ID of the category that will be eliminated.
+- **Example Response**:
     ```json
     {
       "message": "Categoría eliminada correctamente"
     }
     ```
-- **Errores posibles**:
-    - `400`: Categoría no encontrada.
-    - `500`: Error al eliminar la categoría.
+- **Possible errors**:
+    - `400`: Category not found
+    - `500`: Error while deleting the category.
 
-### Endpoints del CRUD de Habitaciones
+### Room CRUD Endpoints
 
-#### 1. Obtener todas las habitaciones
+#### 1. Get All Rooms
 
 - **URL**: `/rooms`
-- **Método**: `GET`
-- **Descripción**: Obtiene la lista de todas las habitaciones.
-- **Respuesta de ejemplo**:
+- **Method**: `GET`
+- **Description**: Returns a list of all the rooms.
+- **Example Response**:
     ```json
     [
       {
@@ -358,14 +357,14 @@ Recomendamos utilizar **Postman** para realizar las pruebas
     ]
     ```
 
-#### 2. Obtener una habitación por ID
+#### 2. Get Room by ID
 
 - **URL**: `/rooms/{room_id}`
-- **Método**: `GET`
-- **Descripción**: Obtiene los detalles de una habitación específica según su ID.
-- **Parámetros**:
-    - `room_id` (en la URL) – El ID de la habitación que se desea consultar.
-- **Respuesta de ejemplo**:
+- **Method**: `GET`
+- **Description**: Returns all the details of a room with the given ID.
+- **Parameters**:
+    - `room_id` (in the URL) – ID of the room.
+- **Example Response**:
     ```json
     {
       "room_id": "201",
@@ -376,16 +375,16 @@ Recomendamos utilizar **Postman** para realizar las pruebas
       "status": "available"
     }
     ```
-- **Errores posibles**:
-    - `404`: Habitación no encontrada.
-    - `500`: Error al obtener la habitación.
+- **Possible errors**:
+    - `404`: Room not found.
+    - `500`: Error finding the room.
 
-#### 3. Crear una nueva habitación
+#### 3. Create a new Room
 
 - **URL**: `/rooms`
-- **Método**: `POST`
-- **Descripción**: Crea una nueva habitación con los datos proporcionados.
-- **Cuerpo de la solicitud**:
+- **Method**: `POST`
+- **Description**: Create a new room with the specified parameters.
+- **Body**:
     ```json
     {
       "room_id": "203",
@@ -396,7 +395,7 @@ Recomendamos utilizar **Postman** para realizar las pruebas
       "status": "available"
     }
     ```
-- **Respuesta de ejemplo**:
+- **Example Response**:
     ```json
     {
       "_id": "643f1b7c1bce8c0012345680",
@@ -408,18 +407,18 @@ Recomendamos utilizar **Postman** para realizar las pruebas
       "status": "available"
     }
     ```
-- **Errores posibles**:
-    - `400`: La habitación ya existe o la categoría no existe.
-    - `500`: Error al crear la habitación.
+- **Possible errors**:
+    - `400`: The room already exists or the category doesn't exists.
+    - `500`: Error while creating the room.
 
-#### 4. Actualizar una habitación
+#### 4. Update the Room
 
 - **URL**: `/rooms/{room_id}`
-- **Método**: `PUT`
-- **Descripción**: Actualiza la información de una habitación existente según su ID.
-- **Parámetros**:
-    - `room_id` (en la URL) – El ID de la habitación a actualizar.
-- **Cuerpo de la solicitud**:
+- **Method**: `PUT`
+- **Description**: Update.
+- **Parameters**:
+    - `room_id` (in the URL) – The ID of the room that will be updated.
+- **Body**:
     ```json
     {
       "price_per_night": 1600,
@@ -427,7 +426,7 @@ Recomendamos utilizar **Postman** para realizar las pruebas
       "status": "available"
     }
     ```
-- **Respuesta de ejemplo**:
+- **Example Response**:
     ```json
     {
       "message": "Habitación actualizada correctamente",
@@ -441,35 +440,35 @@ Recomendamos utilizar **Postman** para realizar las pruebas
       }
     }
     ```
-- **Errores posibles**:
-    - `404`: Habitación no encontrada.
-    - `500`: Error al actualizar la habitación.
+- **Possible errors**:
+    - `404`: Room not found.
+    - `500`: Error while updating the room.
 
-#### 5. Eliminar una habitación
+#### 5. Delete a Room
 
 - **URL**: `/rooms/{room_id}`
-- **Método**: `DELETE`
-- **Descripción**: Elimina una habitación del sistema según su ID.
-- **Parámetros**:
-    - `room_id` (en la URL) – El ID de la habitación a eliminar.
-- **Respuesta de ejemplo**:
+- **Method**: `DELETE`
+- **Description**: Deletes a room with the given ID.
+- **Parameters**:
+    - `room_id` (in the URL) – The ID of the room that will be deleted.
+- **Example Response**:
     ```json
     {
       "message": "Habitación eliminada correctamente"
     }
     ```
-- **Errores posibles**:
-    - `400`: Habitación no encontrada.
-    - `500`: Error al eliminar la habitación.
+- **Possible errors**:
+    - `400`: Room not found.
+    - `500`: Error while deleting the room.
 
-### Endpoints del CRUD de Reservaciones
+### Reservation CRUD Endpoints
 
-##### 1. Obtener todas las reservaciones
+##### 1. Get all Reservations
 
 - **URL**: `/reservations`
-- **Método**: `GET`
-- **Descripción**: Obtiene la lista de todas las reservaciones.
-- **Respuesta de ejemplo**:
+- **Method**: `GET`
+- **Description**: Returns a list of all reservations.
+- **Example Response**:
     ```json
     [
       {
@@ -493,14 +492,14 @@ Recomendamos utilizar **Postman** para realizar las pruebas
     ]
     ```
 
-#### 2. Obtener una reservación por ID
+#### 2. Get a Reservation by ID
 
 - **URL**: `/reservations/{id}`
-- **Método**: `GET`
-- **Descripción**: Obtiene los detalles de una reservación específica según su ID.
-- **Parámetros**:
-    - `id` (en la URL) – El número de reservación que se desea consultar.
-- **Respuesta de ejemplo**:
+- **Method**: `GET`
+- **Description**: Get a reservation's details by it's ID
+- **Parameters**:
+    - `id` (in the URL) – The reservation's number.
+- **Example Response**:
     ```json
     {
       "reservation_num": 1,
@@ -512,16 +511,16 @@ Recomendamos utilizar **Postman** para realizar las pruebas
       "status": "confirmed"
     }
     ```
-- **Errores posibles**:
-    - `404`: Reservación no encontrada.
-    - `500`: Error al obtener la reservación.
+- **Possible errors**:
+    - `404`: Reservation not found
+    - `500`: Error while fetching the reservation
 
-#### 3. Crear una nueva reservación
+#### 3. Create a new Reservation
 
 - **URL**: `/reservations`
-- **Método**: `POST`
-- **Descripción**: Crea una nueva reservación con los datos proporcionados.
-- **Cuerpo de la solicitud**:
+- **Method**: `POST`
+- **Description**: Creates a reservation with the given values
+- **Body**:
     ```json
     {
       "email": "usuario@example.com",
@@ -532,7 +531,7 @@ Recomendamos utilizar **Postman** para realizar las pruebas
       "status": "confirmed"
     }
     ```
-- **Respuesta de ejemplo**:
+- **Example Response**:
     ```json
     {
       "reservation_num": 3,
@@ -544,18 +543,18 @@ Recomendamos utilizar **Postman** para realizar las pruebas
       "status": "confirmed"
     }
     ```
-- **Errores posibles**:
-    - `404`: Usuario o habitación no válidos.
-    - `500`: Error al crear la reservación.
+- **Possible errors**:
+    - `404`: Not valid User or Room.
+    - `500`: Error while creating the reservation.
 
-#### 4. Actualizar una reservación
+#### 4. Update the Reservation
 
 - **URL**: `/reservations/{id}`
-- **Método**: `PUT`
-- **Descripción**: Actualiza la información de una reservación existente según su ID.
-- **Parámetros**:
-    - `id` (en la URL) – El número de reservación a actualizar.
-- **Cuerpo de la solicitud**:
+- **Method**: `PUT`
+- **Description**: Updates the information of a reservatin with the given ID.
+- **Parameters**:
+    - `id` (in the URL) – The reservation's number.
+- **Body**:
     ```json
     {
       "email": "nuevo_email@example.com",
@@ -566,7 +565,7 @@ Recomendamos utilizar **Postman** para realizar las pruebas
       "status": "confirmed"
     }
     ```
-- **Respuesta de ejemplo**:
+- **Example Response**:
     ```json
     {
       "reservation_num": 1,
@@ -578,28 +577,28 @@ Recomendamos utilizar **Postman** para realizar las pruebas
       "status": "confirmed"
     }
     ```
-- **Errores posibles**:
-    - `404`: Reservación no encontrada.
-    - `500`: Error al actualizar la reservación.
+- **Possible errors**:
+    - `404`: Reservation not found.
+    - `500`: Error while fetching the reservation.
 
-#### 5. Eliminar una reservación
+#### 5. Delete a reservation
 
 - **URL**: `/reservations/{id}`
-- **Método**: `DELETE`
-- **Descripción**: Elimina una reservación del sistema según su ID.
-- **Parámetros**:
-    - `id` (en la URL) – El número de reservación a eliminar.
-- **Respuesta de ejemplo**:
+- **Method**: `DELETE`
+- **Description**: Deletes a reservation with the given ID
+- **Parameters**:
+    - `id` (in the URL) – The reservation's number
+- **Example Response**:
     ```json
     {
       "message": "Reserva eliminada correctamente"
     }
     ```
-- **Errores posibles**:
-    - `404`: Reservación no encontrada.
-    - `500`: Error al eliminar la reservación.
+- **Possible errors**:
+    - `404`: Reservation not found.
+    - `500`: Error while deleting the reservation.
 
-Si todo salió correctamente, debe salir un código 200 y un mensaje de éxito y/o mostrar el contenido correspondiente. 
+If everything works correctly, you should receive a code 200 with a success message and the corresponding content
 
 ## Commit Message Guidelines
 
