@@ -74,7 +74,7 @@ npm run dev
 It should be running on port ***3000***
 
 ### Conventional Commits
-Commits in the repository must follow the conventional commits specification, for more information click here https://www.conventionalcommits.org/en/v1.0.0/#specification 
+Commits in the repository must follow the conventional commits specification, for more information click here https://www.conventionalcommits.org/en/v1.0.0/#specification
 
 ### User CRUD Endpoints
 
@@ -514,7 +514,7 @@ We recommend using **Postman** for API testing
 - **Possible errors**:
     - `404`: Reservation not found
     - `500`: Error while fetching the reservation
-      
+
 #### 3. Create a new Reservation
 
 - **URL**: `/reservations`
@@ -547,7 +547,7 @@ We recommend using **Postman** for API testing
     - `404`: Not valid User or Room.
     - `500`: Error while creating the reservation.
 
-#### 4. Update the Reservation 
+#### 4. Update the Reservation
 
 - **URL**: `/reservations/{id}`
 - **Method**: `PUT`
