@@ -46,10 +46,12 @@ export const googleAuth = (app: Application): void => {
     );
 
     passport.serializeUser<typeof IUser>((user, cb) => {
+        // eslint-disable-next-line  @typescript-eslint/no-explicit-any
         cb(null, user as any);
     });
 
     passport.deserializeUser<typeof IUser>((user, cb) => {
+        // eslint-disable-next-line  @typescript-eslint/no-explicit-any
         cb(null, user as any);
     });
 

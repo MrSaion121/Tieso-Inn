@@ -99,19 +99,8 @@ class UsersController {
 
             await newUser.save();
 
-            //Generar el token
-            const token = jwt.sign(
-                { email: email, role: newUser.role },
-                process.env.SECRET_KEY!,
-                {
-                    expiresIn: '1h',
-                }
-            );
-
-            //responder con el token y redireccionar al user
             res.status(HTTP_STATUS_CODES.CREATED).json({
                 message: 'Usuario creado con exito',
-                //token: token
             });
 
             //Caso error:
@@ -250,19 +239,10 @@ class UsersController {
 
             await newUser.save();
 
-            //Generar el token
-            const token = jwt.sign(
-                { email: email, role: newUser.role },
-                process.env.SECRET_KEY!,
-                {
-                    expiresIn: '1h',
-                }
-            );
 
-            //responder con el token y redireccionar al user
+            //Redireccionar al user
             res.status(HTTP_STATUS_CODES.CREATED).json({
                 message: 'Usuario Registrado con exito',
-                // token: token
             });
 
             //Caso error:

@@ -1,13 +1,12 @@
-import { AuthUserPayload } from 'middlewares/auth';
+import { AuthUserPayload } from '../middlewares/auth';
 
-declare global {
-    namespace Express {
-        interface User extends AuthUserPayload {}
-    }
+// eslint-disable-next-line  @typescript-eslint/no-empty-object-type
+declare module 'express-serve-static-core' {
+    interface User extends AuthUserPayload {}
+}
 
-    namespace Passport {
-        interface AuthenticatedRequest extends Express.Request {
-            user: AuthUserPayload;
-        }
+declare module 'passport' {
+    interface AuthenticatedRequest extends Express.Request {
+        user: AuthUserPayload;
     }
 }
