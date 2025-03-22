@@ -38,3 +38,4 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
         res.status(HTTP_STATUS_CODES.UNATHORIZED).json({ message: 'Token inválido' });
     }
 };
+
