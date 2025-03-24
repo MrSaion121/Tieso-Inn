@@ -9,7 +9,7 @@ interface IRoom extends Document {
     status: string;
 }
 
-const roomSchema = new Schema ({
+const roomSchema = new Schema<IRoom> ({
     room_id: { type: Schema.Types.ObjectId, required: true },
     category_id: { type: Schema.Types.ObjectId, ref: 'category', required: true },
     price_per_night: { type: Number, required: true },

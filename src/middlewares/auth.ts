@@ -8,12 +8,10 @@ export interface AuthUserPayload extends JwtPayload {
     role: string;
 }
 
-// Extiende la interfaz Request
-declare global {
-    namespace Express {
-        interface Request {
-            user?: AuthUserPayload; // Añade la propiedad user
-        }
+// Extiende la interfaz Request directamente
+declare module 'express-serve-static-core' {
+    interface Request {
+        user?: AuthUserPayload; // Añade la propiedad user
     }
 }
 
@@ -40,3 +38,4 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
         res.status(HTTP_STATUS_CODES.UNATHORIZED).json({ message: 'Token inválido' });
     }
 };
+

@@ -1,7 +1,8 @@
 import PDFDocument from 'pdfkit';
 import fs from 'fs';
+import { IReservation } from '../models/reservation';
 
-export const generateReservationPDF = (reservation: any, pdfPath: string): Promise<void> => {
+export const generateReservationPDF = (reservation: IReservation, pdfPath: string): Promise<void> => {
     return new Promise((resolve, reject) => {
         const doc = new PDFDocument();
         const writeStream = fs.createWriteStream(pdfPath);

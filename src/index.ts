@@ -47,7 +47,7 @@ app.use(router);
 // Configuración del motor de plantillas
 type HandlebarsHelpers = {
     eq: (a: string | number, b: string | number) => boolean;
-    or: (...args: any[]) => boolean;
+    or: (...args: unknown[]) => boolean;
 }
 
 const helpers: HandlebarsHelpers = {
