@@ -6,6 +6,7 @@
   "scripts": {
     "console": "echo \"Error: no test specified\" && exit 1",
     "test": "jest --coverage",
+    "test:file":"jest test/index.spec.ts",
     "start": "node .",
     "dev": "nodemon src/index.ts",
     "scripts": "tsc",
