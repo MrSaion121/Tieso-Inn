@@ -38,13 +38,13 @@ class ChatController {
                 return;
             }
 
-            const newChat = new SupportChat({
+            const newChat = {
                 customer_id,
                 hotel_help_id,
                 chatlog: []
-            });
+            };
 
-            await newChat.save();
+            await SupportChat.create(newChat);
 
             res.status(HTTP_STATUS_CODES.CREATED).json(newChat);
         } catch (error) {

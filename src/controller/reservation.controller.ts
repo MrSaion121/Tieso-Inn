@@ -176,7 +176,7 @@ class ReservationController {
             }
 
             // Crea la nueva reservación
-            const newReservation = new Reservation({
+            const newReservation = {
                 reservation_num: reservationNumber.toString(), // Número de reserva auto-incremental
                 user_id,
                 room_id, // : roomObjectId,                      // ( _id de la habitacion)
@@ -184,10 +184,10 @@ class ReservationController {
                 checkout_date,
                 num_of_guest,
                 status
-            });
+            };
 
             // almacenamos la reservación en la base de datos
-            await newReservation.save();
+            await Reservation.create(newReservation);
             res.status(HTTP_STATUS_CODES.CREATED).json(newReservation);
 
         } catch (error) {

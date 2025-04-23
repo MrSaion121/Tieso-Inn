@@ -1,6 +1,6 @@
 import request from 'supertest';
-import app from '../index';
-import { HTTP_STATUS_CODES } from '../types/http-status-codes';
+import app from '../src/index';
+import { HTTP_STATUS_CODES } from '../src/types/http-status-codes';
 //Cargar variables de entorno
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
