@@ -1,37 +1,37 @@
 import request from 'supertest';
 import app from '../src/index';
 import { HTTP_STATUS_CODES } from '../src/types/http-status-codes';
-//Cargar variables de entorno
+// Load environment variables
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 dotenv.config();
 
-//Creacion prueba
-describe('Arranque de Servidor basico', () => {
+// Test creation
+describe('Basic Server Startup', () => {
 
-    //Limpiar todos los mocks antes de cada prueba
+    // Clear all mocks before each test
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    // Cerrar recursos después de las pruebas
+    // Close resources after tests
     afterAll(async() => {
-        await mongoose.connection.close(); // Cierra la conexión a MongoDB
+        await mongoose.connection.close(); // Close the connection to MongoDB
     });
 
-    //Caso 1: verificar rutas desconocidas
-    it('Debe iniciar y responder con un estatus 404 para rutas desconocidas', async() => {
-        const response = await request(app).get('/ruta-desconocida'); //Realiza la solicitud a una ruta random
+    // Test case 1: Verify unknown routes
+    it('Should start and respond with a 404 status for unknown routes', async() => {
+        const response = await request(app).get('/unknown-route'); // Make the request to a random route
 
-        //Expectativa de resultado
-        expect(response.statusCode).toBe(HTTP_STATUS_CODES.NOT_FOUND); //Validar el estatus
-        expect(response.body).toEqual({}); //Si no hay body CODE : 404 | NOT Found
+        // Expected result
+        expect(response.statusCode).toBe(HTTP_STATUS_CODES.NOT_FOUND); // Validate the status
+        expect(response.body).toEqual({}); // If there is no body CODE : 404 | NOT Found
     });
 
-    //Caso 2: Verificar respuesta HTML
-    it('Debe Responder con el HTML de login', async() => {
-        const response = await request(app).get('/login'); //Realiza la solicitud a ruta main
-        expect(response.statusCode).toBe(HTTP_STATUS_CODES.SUCCESS); // Verificar que responda exitosamente
-        expect(response.text).toContain('<html'); //Asegurarse que contenga HTML
+    // Test case 2: Verify HTML response
+    it('Should respond with the login HTML', async() => {
+        const response = await request(app).get('/login'); // Make the request to the main route
+        expect(response.statusCode).toBe(HTTP_STATUS_CODES.SUCCESS); // Verify that it responds successfully
+        expect(response.text).toContain('<html'); // Ensure it contains HTML
     });
 });
