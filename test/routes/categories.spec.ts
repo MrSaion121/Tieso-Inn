@@ -18,11 +18,11 @@ const mockCategory = {
 };
 
 // Mock User Tokens
-const adminToken = jwt.sign(
-    { email: 'admin@example.com', role: 'Admin' },
-    process.env.SECRET_KEY!,
-    { expiresIn: '1h' }
-);
+// const adminToken = jwt.sign(
+//     { email: 'admin@example.com', role: 'Admin' },
+//     process.env.SECRET_KEY!,
+//     { expiresIn: '1h' }
+// );
 
 const clientToken = jwt.sign(
     { email: 'client@example.com', role: 'Cliente' },
