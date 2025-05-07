@@ -5,7 +5,7 @@ import categoryRoutes from './categories';
 import roomRoutes from './rooms';
 import loginRoutes from './login';
 import registerRoutes from './register';
-import googleRoutes from './google';
+//import googleRoutes from './google';
 import chatRoutes from './support_chat';
 
 const router = Router();
@@ -148,7 +148,7 @@ router.use('/login', loginRoutes);
 router.use('/register', registerRoutes);
 
 // /google
-router.use('/auth/google', googleRoutes);
+//router.use('/auth/google', googleRoutes);
 
 // /users
 router.use('/users', userRoutes);
