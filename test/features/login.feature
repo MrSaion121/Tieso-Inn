@@ -4,4 +4,3 @@ Feature: Login User
     Given I open the login page
     When I fill in the login form with valid data
     Then I should be redirected to the home page
-    
