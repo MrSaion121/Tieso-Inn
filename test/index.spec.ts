@@ -1,5 +1,6 @@
 import request from 'supertest';
-import app from '../src/index';
+import { app } from '../src/index';
+import { server } from '../src/index';
 import { HTTP_STATUS_CODES } from '../src/types/http-status-codes';
 // Load environment variables
 import dotenv from 'dotenv';
@@ -17,6 +18,7 @@ describe('Basic Server Startup', () => {
     // Close resources after tests
     afterAll(async() => {
         await mongoose.connection.close(); // Close the connection to MongoDB
+        server.close();
     });
 
     // Test case 1: Verify unknown routes

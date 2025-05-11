@@ -22,8 +22,10 @@ dotenv.config();
 
 //Cargar server
 import { Server } from 'socket.io';
+import { Server as HttpServer } from 'http';
 
 const app = express();
+let server: HttpServer;
 const PORT  = process.env.PORT || 3000;
 
 //Importar la Hash de MongoDB
@@ -65,7 +67,7 @@ app.use('/swagger', serve, setup(swaggerDocs));
 //Conexion de MongoDB
 mongoose.connect(dbUrl as string).then(() => {
     console.log('Conexion exitosa con MongoDB!!..');
-    const server = app.listen(PORT, () => {
+    server = app.listen(PORT, () => {
         console.log(`Servidor escuchando en el puerto ${PORT}`);
     });
 
@@ -94,4 +96,4 @@ mongoose.connect(dbUrl as string).then(() => {
 });
 
 //Requerido para pruebas
-export default app;
+export { app, server };
