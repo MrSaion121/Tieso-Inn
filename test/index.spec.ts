@@ -18,7 +18,9 @@ describe('Basic Server Startup', () => {
     // Close resources after tests
     afterAll(async() => {
         await mongoose.connection.close(); // Close the connection to MongoDB
-        server.close();
+        if (server) {
+            server.close();
+        }
     });
 
     // Test case 1: Verify unknown routes

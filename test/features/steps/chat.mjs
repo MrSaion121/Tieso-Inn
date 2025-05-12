@@ -42,4 +42,3 @@ Then("I should see the message {string} in the chat", async function (expectedMe
   assert.ok(texto.includes(expectedMessage));
   await driver.quit();
 });
-
