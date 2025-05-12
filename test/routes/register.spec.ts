@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from '../../src/index';
+import { app } from '../../src/index';
 import User from '../../src/models/user';
 import { HTTP_STATUS_CODES } from '../../src/types/http-status-codes';
 import mongoose from 'mongoose';

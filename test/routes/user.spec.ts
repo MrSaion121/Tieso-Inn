@@ -2,7 +2,7 @@ import request from 'supertest';
 import { HTTP_STATUS_CODES } from '../../src/types/http-status-codes';
 import jwt from 'jsonwebtoken';
 import User from '../../src/models/user';
-import app from '../../src/index';
+import { app } from '../../src/index';
 import mongoose from 'mongoose';
 
 // Load environment variables
