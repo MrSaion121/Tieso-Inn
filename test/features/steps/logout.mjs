@@ -34,4 +34,5 @@ Then('I should see the login button or link', async function () {
     5000
   );
   assert.ok(await loginLink.isDisplayed());
+  await driver.quit();
 });

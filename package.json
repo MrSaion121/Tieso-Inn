@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "console": "echo \"Error: no test specified\" && exit 1",
-    "test": "jest test/index.spec.ts --coverage",
+    "test": "jest --coverage",
     "test:file":"jest test/routes/user.spec.ts",
     "cucumber": "cucumber-js test/features/",
     "start": "node .",
