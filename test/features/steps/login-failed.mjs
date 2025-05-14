@@ -1,13 +1,18 @@
 import { Given, When, Then } from "@cucumber/cucumber";
 import { Builder, By, until, Key } from "selenium-webdriver";
 import assert from "assert";
+import dotenv from 'dotenv';
 
+dotenv.config();
+// eslint-disable-next-line no-undef
+const PORT  = process.env.PORT || 3000;
+const baseUrl = `http://localhost:${PORT}`;
 let driver;
 
 Given("I visit the home page", async function () {
   driver = await new Builder().forBrowser("chrome").build();
   // Go to home page
-  await driver.get("http://localhost:3000/");
+  await driver.get(baseUrl);
 });
 
 When("I click the dropdown button", async function () {
