@@ -22,5 +22,20 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Create .env file
+        run: |
+          echo "DB_URL=${{ secrets.DB_URL}}" > .env
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+          echo "HOTEL_HELP_ID=${{ secrets.HOTEL_HELP_ID }}" >> .env
+          echo "SERVER_URL=${{ vars.SERVER_URL }}" >> .env
+          echo "PORT=${{ vars.PORT }}" >> .env
+          echo "GOOGLE_ACCOUNT_ID=${{ secrets.GOOGLE_ACCOUNT_ID }}" >> .env
+          echo "GOOGLE_SECRET_KEY=${{ secrets.GOOGLE_SECRET_KEY }}" >> .env
+          echo "GOOGLE_CALLBACK_URL=${{ secrets.GOOGLE_CALLBACK_URL }}" >> .env
+          echo "S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }}" >> .env
+          echo "S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }}" >> .env
+          echo "S3_REGION=${{ vars.S3_REGION }}" >> .env
+          echo "S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> .env
+
       - name: Run Tests
         run: npm run test
