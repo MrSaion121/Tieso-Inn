@@ -10,7 +10,7 @@ export default [
         languageOptions: { globals: globals.browser }
     },
     {
-        ignores: ['dist/', 'node_modules/', 'public/', 'coverage/']
+        ignores: ['dist/', 'node_modules/', 'public/', 'coverage/','TiesoInn/']
     },
     {
         files: ['src/**/*.ts'],
