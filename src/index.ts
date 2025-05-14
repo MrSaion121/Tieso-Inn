@@ -10,7 +10,7 @@ import dotenv from 'dotenv';
 //importar rutas
 import router from './routes';
 //importacion google
-//import { googleAuth } from './middlewares/authGoogle';
+import { googleAuth } from './middlewares/authGoogle';
 
 //Importar swagger
 import swaggerJSDoc from 'swagger-jsdoc';
@@ -22,10 +22,8 @@ dotenv.config();
 
 //Cargar server
 import { Server } from 'socket.io';
-import { Server as HttpServer } from 'http';
 
 const app = express();
-let server: HttpServer;
 const PORT  = process.env.PORT || 3000;
 
 //Importar la Hash de MongoDB
@@ -41,7 +39,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Configurar autenticación con Google
-//googleAuth(app);
+googleAuth(app);
 
 //Configuracion de rutas
 app.use(router);
@@ -67,7 +65,7 @@ app.use('/swagger', serve, setup(swaggerDocs));
 //Conexion de MongoDB
 mongoose.connect(dbUrl as string).then(() => {
     console.log('Conexion exitosa con MongoDB!!..');
-    server = app.listen(PORT, () => {
+    const server = app.listen(PORT, () => {
         console.log(`Servidor escuchando en el puerto ${PORT}`);
     });
 
@@ -96,4 +94,4 @@ mongoose.connect(dbUrl as string).then(() => {
 });
 
 //Requerido para pruebas
-export { app, server };
+export default app;

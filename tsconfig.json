@@ -1,6 +1,6 @@
 {
-    "include": ["./src/**/*.ts", "./src/**/*.d.ts", "./test/**/*.ts"],
-    "exclude": [],
+    "include": ["./src/**/*.ts", "./src/**/*.d.ts"],
+    "exclude": ["./src/test"],
     "compilerOptions": {
         "outDir": "dist",
         "target": "ES6",
@@ -11,7 +11,6 @@
         "resolveJsonModule": true,
         "strict": true,
         "baseUrl": "src",
-        "typeRoots": ["node_modules/@types", "./src/types"],
-        "types": ["jest"]
+        "typeRoots": ["node_modules/@types", "./src/types"]
     }
 }
