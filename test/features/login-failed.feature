@@ -7,4 +7,3 @@ Feature: Failed Login Flow
     And I should be on the login page
     When I fill in the login form with invalid data
     Then I should see an error message for failed login
-
